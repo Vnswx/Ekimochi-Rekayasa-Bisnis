@@ -15,17 +15,17 @@
         .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
         .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .success { color: green; padding: 10px; background: #d4edda; border-radius: 4px; margin-bottom: 15px; }
-        .error { color: red; font-size: 14px; margin-top: 5px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; }
-        input[type="text"], input[type="email"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #0056b3; }
+        .avatar-container { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
+        .avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+        .info-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .btn { display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; margin-top: 20px; }
+        .btn:hover { background: #0056b3; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #007bff; text-decoration: none; }
-        .back-link:hover { text-decoration: underline; }
         .logout-form { display: inline; }
         .logout-btn { background: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
-        .logout-btn:hover { background: #c82333; }
+        .badge { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+        .badge-admin { background: #dc3545; color: white; }
+        .badge-user { background: #28a745; color: white; }
     </style>
 </head>
 <body>
@@ -49,40 +49,39 @@
         @endif
 
         <div class="card">
-            <h2>Edit Profile</h2>
-            <p style="margin-bottom: 20px; color: #666;">Perbarui informasi profile Anda. Email dapat ditambahkan untuk fitur reset password.</p>
-
-            <form method="POST" action="{{ route('profile.update') }}">
-                @csrf
-                @method('PUT')
-
-                <div class="form-group">
-                    <label for="name">Nama Lengkap</label>
-                    <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}">
-                    @error('name')
-                        <div class="error">{{ $message }}</div>
-                    @enderror
+            <h2 style="margin-bottom: 20px;">Profile Saya</h2>
+            
+            <div class="avatar-container">
+                <img src="{{ $user->avatar }}" alt="Avatar" class="avatar">
+                <div>
+                    <h3>{{ $user->name }}</h3>
+                    <p style="color: #666;">@{{ $user->username }}</p>
+                    <span class="badge {{ $user->isAdmin() ? 'badge-admin' : 'badge-user' }}">
+                        {{ strtoupper($user->role) }}
+                    </span>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" value="{{ $user->username }}" disabled style="background: #f5f5f5; color: #666;">
-                    <small style="color: #666;">Username tidak dapat diubah</small>
+            <div>
+                <div class="info-row">
+                    <strong>Username:</strong>
+                    <span>{{ $user->username }}</span>
                 </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" placeholder="Masukkan email untuk reset password">
-                    @error('email')
-                        <div class="error">{{ $message }}</div>
-                    @enderror
-                    @if(!$user->email)
-                        <small style="color: #666;">Tambahkan email untuk menggunakan fitur reset password</small>
-                    @endif
+                <div class="info-row">
+                    <strong>Email:</strong>
+                    <span>{{ $user->email ?? 'Belum diisi' }}</span>
                 </div>
+                <div class="info-row">
+                    <strong>Role:</strong>
+                    <span>{{ ucfirst($user->role) }}</span>
+                </div>
+                <div class="info-row">
+                    <strong>Bergabung:</strong>
+                    <span>{{ $user->created_at->format('d M Y') }}</span>
+                </div>
+            </div>
 
-                <button type="submit">Simpan Perubahan</button>
-            </form>
+            <a href="{{ route('profile.edit') }}" class="btn">Edit Profile</a>
         </div>
     </div>
 </body>
