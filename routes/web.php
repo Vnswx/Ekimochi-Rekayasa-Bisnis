@@ -42,6 +42,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 });
 
+// Public Catalog Routes
+Route::get('/products', [App\Http\Controllers\ProductCatalogController::class, 'index'])->name('catalog.index');
+Route::get('/products/{product}', [App\Http\Controllers\ProductCatalogController::class, 'show'])->name('catalog.show');
+
 // Authenticated routes
 Route::middleware('auth')->group(function () {
     // Logout
