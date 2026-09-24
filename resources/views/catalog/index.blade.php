@@ -1,219 +1,239 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Produk - Ekimochi</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; color: #333; }
-        
-        /* Navbar */
-        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-brand { font-size: 28px; font-weight: bold; text-decoration: none; color: white; }
-        .nav-links { display: flex; gap: 25px; align-items: center; }
-        .nav-links a { color: white; text-decoration: none; transition: opacity 0.3s; }
-        .nav-links a:hover { opacity: 0.8; }
-        .btn-auth { background: white; color: #667eea; padding: 8px 20px; border-radius: 20px; font-weight: 600; }
-        
-        /* Hero Section */
-        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center; }
-        .hero h1 { font-size: 36px; margin-bottom: 10px; }
-        .hero p { font-size: 18px; opacity: 0.9; }
-        
-        /* Container */
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
-        
-        /* Filter Section */
-        .filter-section { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 30px; }
-        .filter-row { display: flex; gap: 15px; flex-wrap: wrap; align-items: end; }
-        .filter-group { flex: 1; min-width: 200px; }
-        .filter-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 14px; }
-        .filter-group input, .filter-group select { width: 100%; padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .filter-group input:focus, .filter-group select:focus { outline: none; border-color: #667eea; }
-        .btn-filter { background: #667eea; color: white; border: none; padding: 11px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
-        .btn-filter:hover { background: #5568d3; transform: translateY(-1px); }
-        .btn-reset { background: #6c757d; color: white; border: none; padding: 11px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-block; }
-        
-        /* Product Grid */
-        .products-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .products-header h2 { font-size: 24px; color: #333; }
-        .product-count { color: #666; font-size: 14px; }
-        
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-        
-        /* Product Card */
-        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s; cursor: pointer; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-        .product-image { width: 100%; height: 220px; object-fit: cover; background: #f0f0f0; }
-        .product-content { padding: 20px; }
-        .product-category { font-size: 12px; color: #667eea; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
-        .product-name { font-size: 18px; font-weight: 600; color: #333; margin-bottom: 10px; line-height: 1.4; }
-        .product-price { font-size: 24px; font-weight: bold; color: #667eea; margin-bottom: 10px; }
-        .product-stock { font-size: 13px; color: #666; margin-bottom: 15px; }
-        .stock-available { color: #28a745; font-weight: 600; }
-        .stock-low { color: #ffc107; font-weight: 600; }
-        .stock-out { color: #dc3545; font-weight: 600; }
-        .btn-detail { display: block; text-align: center; background: #667eea; color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s; }
-        .btn-detail:hover { background: #5568d3; }
-        
-        /* Empty State */
-        .empty-state { text-align: center; padding: 60px 20px; }
-        .empty-state-icon { font-size: 64px; margin-bottom: 20px; opacity: 0.3; }
-        .empty-state h3 { font-size: 24px; color: #666; margin-bottom: 10px; }
-        .empty-state p { color: #999; }
-        
-        /* Pagination */
-        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 40px; flex-wrap: wrap; }
-        .pagination a, .pagination span { padding: 10px 16px; border-radius: 8px; text-decoration: none; color: #667eea; border: 1px solid #ddd; transition: all 0.3s; }
-        .pagination a:hover { background: #667eea; color: white; border-color: #667eea; }
-        .pagination .active { background: #667eea; color: white; border-color: #667eea; font-weight: 600; }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 28px; }
-            .hero p { font-size: 16px; }
-            .filter-row { flex-direction: column; }
-            .filter-group { width: 100%; }
-            .product-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-            .nav-links { gap: 15px; font-size: 14px; }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">🍡 Ekimochi</a>
-            <div class="nav-links">
-                <a href="{{ route('catalog.index') }}">Katalog</a>
-                @auth
-                    <a href="{{ route('dashboard') }}">Dashboard</a>
-                    @if(Auth::user()->isAdmin())
-                        <a href="{{ route('admin.products.index') }}">Admin</a>
-                    @endif
-                    <a href="{{ route('profile.show') }}">Profile</a>
-                @else
-                    <a href="{{ route('login') }}" class="btn-auth">Login</a>
-                @endauth
-            </div>
-        </div>
+@extends('layouts.app')
+
+@section('title', 'Katalog Produk - Ekimochi')
+
+@section('content')
+<div class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- Header & Breadcrumb -->
+  <div class="mb-8">
+    <nav class="text-xs text-gray-500 mb-3">
+      <a href="{{ route('home') }}" class="hover:text-[#D26986]">Beranda</a>
+      <span class="mx-2">/</span>
+      <span class="text-gray-900 font-semibold">Katalog Produk</span>
     </nav>
+    <h1 class="text-3xl font-extrabold text-gray-900">Katalog Produk Ekimochi</h1>
+    <p class="text-sm text-gray-500 mt-1">Eksplorasi seluruh varian mochi lembut dan paket box spesial kami.</p>
+  </div>
 
-    <!-- Hero -->
-    <div class="hero">
-        <h1>Katalog Produk Ekimochi</h1>
-        <p>Temukan berbagai varian mochi premium dengan cita rasa istimewa</p>
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+    <!-- Sidebar Filter -->
+    <div class="lg:col-span-1 space-y-6">
+      <!-- Search Box -->
+      <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm">
+        <h3 class="font-bold text-gray-900 text-sm border-b border-rose-100 pb-3 mb-4">
+          <i class="fa-solid fa-magnifying-glass text-[#D26986] mr-2"></i> Cari Produk
+        </h3>
+        <form method="GET" action="{{ route('catalog.index') }}">
+          <input 
+            type="text" 
+            name="search" 
+            value="{{ request('search') }}"
+            placeholder="Nama produk atau SKU..."
+            class="w-full px-4 py-2.5 text-xs border border-rose-200 rounded-full focus:outline-none focus:border-[#D26986] bg-[#FFF9FA]"
+          >
+          <button type="submit" class="w-full mt-3 bg-[#D26986] hover:bg-[#BD5773] text-white text-xs font-bold py-2.5 rounded-full transition">
+            <i class="fa-solid fa-search mr-1"></i> Cari
+          </button>
+          @if(request()->hasAny(['search', 'category', 'stock', 'sort']))
+          <a href="{{ route('catalog.index') }}" class="block w-full mt-2 text-center bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold py-2.5 rounded-full transition">
+            <i class="fa-solid fa-times mr-1"></i> Reset Filter
+          </a>
+          @endif
+        </form>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm">
+        <h3 class="font-bold text-gray-900 text-sm border-b border-rose-100 pb-3 mb-4">
+          <i class="fa-solid fa-filter text-[#D26986] mr-2"></i> Kategori Produk
+        </h3>
+        <div class="space-y-2">
+          <a href="{{ route('catalog.index', array_merge(request()->except('category'), request()->only(['search', 'stock', 'sort']))) }}" 
+             class="block w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition flex items-center justify-between {{ !request('category') ? 'bg-[#D26986] text-white' : 'bg-white text-gray-600 hover:bg-[#FBE8EE]' }}">
+            <span>Semua Produk</span>
+            <span class="text-[10px]">({{ $products->total() }})</span>
+          </a>
+          @foreach($categories as $category)
+          <a href="{{ route('catalog.index', array_merge(request()->except('category'), ['category' => $category->id] + request()->only(['search', 'stock', 'sort']))) }}" 
+             class="block w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition flex items-center justify-between {{ request('category') == $category->id ? 'bg-[#D26986] text-white' : 'bg-white text-gray-600 hover:bg-[#FBE8EE]' }}">
+            <span>{{ $category->name }}</span>
+            <span class="text-[10px]">({{ $category->products_count }})</span>
+          </a>
+          @endforeach
+        </div>
+      </div>
+
+      <!-- Stock Filter -->
+      <div class="bg-white p-5 rounded-3xl border border-rose-100 shadow-sm">
+        <h3 class="font-bold text-gray-900 text-sm border-b border-rose-100 pb-3 mb-4">
+          <i class="fa-solid fa-box text-[#D26986] mr-2"></i> Ketersediaan
+        </h3>
+        <div class="space-y-2">
+          <a href="{{ route('catalog.index', array_merge(request()->except('stock'), request()->only(['search', 'category', 'sort']))) }}" 
+             class="block w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition {{ !request('stock') ? 'bg-[#D26986] text-white' : 'bg-white text-gray-600 hover:bg-[#FBE8EE]' }}">
+            Semua
+          </a>
+          <a href="{{ route('catalog.index', array_merge(request()->except('stock'), ['stock' => 'available'] + request()->only(['search', 'category', 'sort']))) }}" 
+             class="block w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition {{ request('stock') == 'available' ? 'bg-[#D26986] text-white' : 'bg-white text-gray-600 hover:bg-[#FBE8EE]' }}">
+            <i class="fa-solid fa-check-circle mr-1"></i> Tersedia
+          </a>
+          <a href="{{ route('catalog.index', array_merge(request()->except('stock'), ['stock' => 'out'] + request()->only(['search', 'category', 'sort']))) }}" 
+             class="block w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition {{ request('stock') == 'out' ? 'bg-[#D26986] text-white' : 'bg-white text-gray-600 hover:bg-[#FBE8EE]' }}">
+            <i class="fa-solid fa-times-circle mr-1"></i> Habis
+          </a>
+        </div>
+      </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Filter Section -->
-        <div class="filter-section">
-            <form method="GET" action="{{ route('catalog.index') }}">
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <label for="search">Cari Produk</label>
-                        <input type="text" id="search" name="search" placeholder="Nama produk atau SKU..." value="{{ request('search') }}">
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="category">Kategori</label>
-                        <select id="category" name="category">
-                            <option value="">Semua Kategori</option>
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
-                                    {{ $cat->name }} ({{ $cat->products_count }})
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="stock">Ketersediaan</label>
-                        <select id="stock" name="stock">
-                            <option value="">Semua</option>
-                            <option value="available" {{ request('stock') == 'available' ? 'selected' : '' }}>Tersedia</option>
-                            <option value="out" {{ request('stock') == 'out' ? 'selected' : '' }}>Habis</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="sort">Urutkan</label>
-                        <select id="sort" name="sort">
-                            <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Terbaru</option>
-                            <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Terlama</option>
-                            <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama A-Z</option>
-                            <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Nama Z-A</option>
-                            <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Harga Terendah</option>
-                            <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Harga Tertinggi</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group" style="flex: 0;">
-                        <button type="submit" class="btn-filter">Filter</button>
-                    </div>
-                    
-                    @if(request()->hasAny(['search', 'category', 'stock', 'sort']))
-                        <div class="filter-group" style="flex: 0;">
-                            <a href="{{ route('catalog.index') }}" class="btn-reset">Reset</a>
-                        </div>
-                    @endif
-                </div>
-            </form>
+    <!-- Product Area -->
+    <div class="lg:col-span-3 space-y-6">
+      <!-- Sorting Bar -->
+      <div class="bg-white p-4 rounded-2xl border border-rose-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="text-xs text-gray-500 font-medium">
+          Menampilkan <strong class="text-gray-900">{{ $products->count() }}</strong> dari <strong class="text-gray-900">{{ $products->total() }}</strong> produk
+        </span>
+        <form method="GET" action="{{ route('catalog.index') }}" class="flex items-center space-x-2 w-full sm:w-auto">
+          @foreach(request()->except('sort') as $key => $value)
+          <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+          @endforeach
+          <span class="text-xs text-gray-500 whitespace-nowrap">Urutkan:</span>
+          <select name="sort" onchange="this.form.submit()" class="text-xs border border-rose-200 rounded-xl px-3 py-2 focus:outline-none focus:border-[#D26986] bg-[#FFF9FA] text-gray-700 w-full sm:w-auto">
+            <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Terbaru</option>
+            <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Terlama</option>
+            <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama A-Z</option>
+            <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Nama Z-A</option>
+            <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Harga Terendah</option>
+            <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Harga Tertinggi</option>
+          </select>
+        </form>
+      </div>
+
+      <!-- Search/Filter Info -->
+      @if(request()->hasAny(['search', 'category', 'stock']))
+      <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-xs text-blue-800">
+        <div class="flex items-start gap-2">
+          <i class="fa-solid fa-info-circle text-sm mt-0.5"></i>
+          <div class="flex-1">
+            <span class="font-semibold">Filter aktif:</span>
+            @if(request('search'))
+            <span class="ml-2 inline-block bg-blue-200 px-2 py-1 rounded-full">Pencarian: "{{ request('search') }}"</span>
+            @endif
+            @if(request('category'))
+            <span class="ml-2 inline-block bg-blue-200 px-2 py-1 rounded-full">Kategori: {{ $categories->find(request('category'))->name ?? 'Unknown' }}</span>
+            @endif
+            @if(request('stock'))
+            <span class="ml-2 inline-block bg-blue-200 px-2 py-1 rounded-full">Stok: {{ request('stock') == 'available' ? 'Tersedia' : 'Habis' }}</span>
+            @endif
+          </div>
         </div>
+      </div>
+      @endif
 
-        <!-- Products Header -->
-        <div class="products-header">
-            <h2>Produk Kami</h2>
-            <span class="product-count">{{ $products->total() }} produk ditemukan</span>
+      <!-- Product Grid -->
+      @if($products->count() > 0)
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach($products as $product)
+        <div class="bg-white rounded-3xl p-5 shadow-sm hover:shadow-xl transition border border-rose-100 flex flex-col justify-between group">
+          <a href="{{ route('catalog.show', $product->id) }}" class="cursor-pointer">
+            <div class="relative overflow-hidden rounded-2xl mb-4">
+              <img 
+                src="{{ $product->image ? asset('images/homepage/' . $product->image) : asset('images/placeholder-product.png') }}" 
+                alt="{{ $product->name }}" 
+                class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500"
+              >
+              @if($product->stock == 0)
+              <span class="absolute top-3 left-3 bg-gray-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Habis</span>
+              @elseif($product->stock < 10)
+              <span class="absolute top-3 left-3 bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Stok Terbatas</span>
+              @endif
+            </div>
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="bg-[#FBE8EE] text-[#D26986] text-[10px] font-semibold px-2 py-0.5 rounded">{{ $product->category->name }}</span>
+              @if($product->unit)
+              <span class="bg-gray-100 text-gray-600 text-[10px] font-semibold px-2 py-0.5 rounded">{{ $product->unit }}</span>
+              @endif
+            </div>
+            <h3 class="font-bold text-base text-gray-800 group-hover:text-[#D26986] transition">{{ $product->name }}</h3>
+            @if($product->description)
+            <p class="text-gray-500 text-xs mt-1 leading-relaxed line-clamp-2">{{ Str::limit($product->description, 80) }}</p>
+            @endif
+          </a>
+          <div class="flex items-center justify-between mt-4 pt-4 border-t border-rose-50">
+            <div>
+              <span class="text-[9px] text-gray-400 block uppercase font-bold">Harga</span>
+              <span class="text-base font-extrabold text-[#D26986]">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+              @if($product->stock > 0)
+              <span class="block text-[9px] text-gray-500 mt-0.5">Stok: {{ $product->stock }}</span>
+              @endif
+            </div>
+            @if($product->stock > 0)
+            <button onclick="addToCart('{{ $product->name }}', {{ $product->price }}, '{{ $product->image ? asset('images/homepage/' . $product->image) : asset('images/placeholder-product.png') }}')" 
+                    class="w-9 h-9 rounded-full bg-[#D26986] hover:bg-[#BD5773] text-white flex items-center justify-center shadow-md transition transform active:scale-95">
+              <i class="fa-solid fa-plus text-xs"></i>
+            </button>
+            @else
+            <button disabled class="w-9 h-9 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center cursor-not-allowed">
+              <i class="fa-solid fa-ban text-xs"></i>
+            </button>
+            @endif
+          </div>
         </div>
+        @endforeach
+      </div>
 
-        <!-- Product Grid -->
-        @if($products->count() > 0)
-            <div class="product-grid">
-                @foreach($products as $product)
-                    <div class="product-card" onclick="window.location='{{ route('catalog.show', $product) }}'">
-                        @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="product-image">
-                        @else
-                            <div class="product-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px;">🍡</div>
-                        @endif
-                        
-                        <div class="product-content">
-                            <div class="product-category">{{ $product->category->name }}</div>
-                            <h3 class="product-name">{{ $product->name }}</h3>
-                            <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                            
-                            <div class="product-stock">
-                                @if($product->stock > 10)
-                                    <span class="stock-available">✓ Stok Tersedia</span>
-                                @elseif($product->stock > 0)
-                                    <span class="stock-low">⚠ Stok Terbatas ({{ $product->stock }} {{ $product->unit }})</span>
-                                @else
-                                    <span class="stock-out">✗ Stok Habis</span>
-                                @endif
-                            </div>
-                            
-                            <a href="{{ route('catalog.show', $product) }}" class="btn-detail" onclick="event.stopPropagation()">Lihat Detail</a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+      <!-- Pagination -->
+      @if($products->hasPages())
+      <div class="bg-white p-4 rounded-2xl border border-rose-100 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-gray-500">
+            Halaman {{ $products->currentPage() }} dari {{ $products->lastPage() }}
+          </div>
+          <div class="flex items-center gap-2">
+            {{ $products->links('pagination::tailwind') }}
+          </div>
+        </div>
+      </div>
+      @endif
 
-            <!-- Pagination -->
-            <div class="pagination">
-                {{ $products->links() }}
-            </div>
-        @else
-            <div class="empty-state">
-                <div class="empty-state-icon">🔍</div>
-                <h3>Produk tidak ditemukan</h3>
-                <p>Coba gunakan kata kunci atau filter yang berbeda</p>
-                <a href="{{ route('catalog.index') }}" class="btn-filter" style="margin-top: 20px; display: inline-block;">Lihat Semua Produk</a>
-            </div>
-        @endif
+      @else
+      <!-- Empty State -->
+      <div class="bg-white rounded-3xl p-12 text-center border border-rose-100 shadow-sm">
+        <i class="fa-solid fa-box-open text-6xl text-gray-300 mb-4"></i>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Produk Tidak Ditemukan</h3>
+        <p class="text-sm text-gray-500 mb-6">Tidak ada produk yang sesuai dengan filter Anda.</p>
+        <a href="{{ route('catalog.index') }}" class="inline-block bg-[#D26986] hover:bg-[#BD5773] text-white px-6 py-3 rounded-full font-semibold text-sm transition">
+          <i class="fa-solid fa-arrow-left mr-2"></i> Lihat Semua Produk
+        </a>
+      </div>
+      @endif
     </div>
-</body>
-</html>
+  </div>
+</div>
+
+<!-- Cart Functions -->
+<script>
+function addToCart(name, price, image) {
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const existingIndex = cart.findIndex(item => item.name === name);
+  
+  if (existingIndex > -1) {
+    cart[existingIndex].qty += 1;
+  } else {
+    cart.push({ name, price, image, qty: 1 });
+  }
+  
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartBadge();
+  alert('✅ ' + name + ' ditambahkan ke keranjang!');
+}
+
+function updateCartBadge() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  const badge = document.getElementById('cart-badge');
+  if (badge) badge.textContent = totalItems;
+}
+
+document.addEventListener('DOMContentLoaded', updateCartBadge);
+</script>
+@endsection
