@@ -116,7 +116,6 @@
         </div>
     </div>
 
-    <!-- Edit Modal (Simple) -->
     <div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
         <div style="background: white; max-width: 500px; margin: 100px auto; padding: 30px; border-radius: 8px;">
             <h3 style="margin-bottom: 20px;">Edit Kategori</h3>
