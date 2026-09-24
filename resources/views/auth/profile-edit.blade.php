@@ -1,280 +1,155 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile - Ekimochi</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; color: #333; }
-        
-        /* Navbar */
-        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-brand { font-size: 28px; font-weight: bold; text-decoration: none; color: white; }
-        .nav-links { display: flex; gap: 25px; align-items: center; }
-        .nav-links a { color: white; text-decoration: none; transition: opacity 0.3s; font-weight: 500; }
-        .nav-links a:hover { opacity: 0.8; }
-        .logout-btn { background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
-        .logout-btn:hover { background: rgba(255,255,255,0.3); }
-        
-        /* Container */
-        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-        .back-link { display: inline-block; color: #667eea; text-decoration: none; margin-bottom: 20px; font-weight: 600; }
-        .back-link:hover { text-decoration: underline; }
-        
-        /* Messages */
-        .success { background: #d4edda; color: #155724; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #28a745; }
-        .error { background: #f8d7da; color: #721c24; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #dc3545; }
-        .error ul { margin: 0; padding-left: 20px; }
-        
-        /* Card */
-        .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 35px; margin-bottom: 25px; }
-        .section-title { font-size: 22px; font-weight: 600; color: #333; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #667eea; display: flex; align-items: center; gap: 10px; }
-        .section-icon { font-size: 24px; }
-        
-        /* Avatar Preview */
-        .avatar-preview { display: flex; align-items: center; gap: 25px; margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 8px; }
-        .avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #667eea; }
-        .avatar-info h3 { font-size: 20px; margin-bottom: 5px; color: #333; }
-        .avatar-info p { font-size: 14px; color: #666; }
-        
-        /* Form */
-        .form-group { margin-bottom: 25px; }
-        .form-label { display: block; margin-bottom: 8px; color: #555; font-weight: 600; font-size: 14px; }
-        .form-input { width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 15px; transition: all 0.3s; }
-        .form-input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
-        .form-input:disabled { background: #f5f5f5; cursor: not-allowed; }
-        .form-hint { font-size: 13px; color: #999; margin-top: 6px; display: block; }
-        .validation-error { color: #dc3545; font-size: 13px; margin-top: 6px; display: block; }
-        
-        /* File Input Custom */
-        .file-input-wrapper { position: relative; }
-        .file-input { width: 100%; padding: 12px 15px; border: 2px dashed #e0e0e0; border-radius: 8px; cursor: pointer; transition: all 0.3s; background: #fafafa; }
-        .file-input:hover { border-color: #667eea; background: #f0f4ff; }
-        
-        /* Buttons */
-        .btn { padding: 12px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s; border: none; text-decoration: none; display: inline-block; }
-        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3); }
-        .btn-secondary { background: #6c757d; color: white; margin-left: 10px; }
-        .btn-secondary:hover { background: #5a6268; }
-        .btn-danger { background: #dc3545; color: white; }
-        .btn-danger:hover { background: #c82333; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3); }
-        
-        /* Info Box */
-        .info-box { background: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px 20px; border-radius: 4px; margin-bottom: 20px; }
-        .info-box.warning { background: #fff3cd; border-left-color: #ffc107; }
-        .info-box strong { display: block; margin-bottom: 5px; }
-        .info-box small { color: #666; }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container { padding: 20px 15px; }
-            .card { padding: 25px; }
-            .avatar-preview { flex-direction: column; text-align: center; }
-            .btn { width: 100%; margin: 5px 0 !important; }
-            .nav-links { gap: 15px; font-size: 14px; }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">🍡 Ekimochi</a>
-            <div class="nav-links">
-                <a href="{{ route('catalog.index') }}">Katalog</a>
-                <a href="{{ route('dashboard') }}">Dashboard</a>
-                @if(Auth::user()->isAdmin())
-                    <a href="{{ route('admin.products.index') }}">Admin</a>
-                @endif
-                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="logout-btn">Logout</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+@extends('layouts.app')
 
-    <!-- Main Content -->
-    <div class="container">
-        <a href="{{ route('profile.show') }}" class="back-link">← Kembali ke Profile</a>
+@section('title', 'Edit Profile - Ekimochi')
 
-        @if(session('success'))
-            <div class="success">✓ {{ session('success') }}</div>
-        @endif
+@section('content')
+<div class="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <a href="{{ route('profile.show') }}" class="inline-flex items-center text-[#D26986] hover:text-[#BD5773] font-semibold text-sm mb-6">
+    <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Profile
+  </a>
 
-        @if($errors->any())
-            <div class="error">
-                <strong>Terjadi kesalahan:</strong>
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+  @if(session('success'))
+  <div class="mb-6 p-4 rounded-2xl bg-green-50 border border-green-200 text-green-800 text-sm flex items-center gap-3">
+    <i class="fa-solid fa-circle-check text-xl"></i>
+    <span>{{ session('success') }}</span>
+  </div>
+  @endif
 
-        <!-- Profile Photo Section -->
-        <div class="card">
-            <h2 class="section-title">
-                <span class="section-icon">📸</span>
-                Foto Profile
-            </h2>
-            
-            <div class="avatar-preview">
-                <img src="{{ $user->avatar }}" alt="Avatar" class="avatar" id="avatarPreview">
-                <div class="avatar-info">
-                    <h3>{{ $user->name }}</h3>
-                    <p>@{{ $user->username }} • {{ ucfirst($user->role) }}</p>
-                    @if(!$user->profile_photo)
-                        <p style="font-size: 12px; color: #999; margin-top: 5px;">Default avatar - huruf "{{ $user->initial }}"</p>
-                    @endif
-                </div>
-            </div>
+  @if($errors->any())
+  <div class="mb-6 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-sm">
+    <p class="font-semibold mb-2">Terjadi kesalahan:</p>
+    <ul class="list-disc list-inside space-y-1">
+      @foreach($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+  @endif
 
-            <form method="POST" action="{{ route('profile.photo.upload') }}" enctype="multipart/form-data" style="margin-bottom: 15px;">
-                @csrf
-                <div class="form-group">
-                    <label for="photo" class="form-label">Upload Foto Baru</label>
-                    <input type="file" id="photo" name="photo" accept="image/*" class="file-input" onchange="previewImage(event)">
-                    <small class="form-hint">Format: JPG, PNG, GIF. Maksimal 2MB</small>
-                    @error('photo')
-                        <span class="validation-error">{{ $message }}</span>
-                    @enderror
-                </div>
-                <button type="submit" class="btn btn-primary">📤 Upload Foto</button>
-            </form>
+  <!-- Basic Info Card -->
+  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-8 mb-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
+      <i class="fa-solid fa-user text-[#D26986]"></i>
+      Informasi Dasar
+    </h2>
+    
+    <form method="POST" action="{{ route('profile.update') }}">
+      @csrf
+      @method('PUT')
 
-            @if($user->profile_photo)
-                <form method="POST" action="{{ route('profile.photo.delete') }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Hapus foto profile dan kembali ke avatar default?')">🗑️ Hapus Foto</button>
-                </form>
-            @endif
+      <div class="space-y-5">
+        <div>
+          <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap *</label>
+          <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" required 
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#D26986] focus:ring-2 focus:ring-[#D26986]/20 transition">
+          @error('name')
+            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+          @enderror
         </div>
 
-        <!-- Basic Info Section -->
-        <div class="card">
-            <h2 class="section-title">
-                <span class="section-icon">👤</span>
-                Informasi Dasar
-            </h2>
-            
-            <form method="POST" action="{{ route('profile.update') }}">
-                @csrf
-                @method('PUT')
-
-                <div class="form-group">
-                    <label for="name" class="form-label">Nama Lengkap *</label>
-                    <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" required class="form-input">
-                    @error('name')
-                        <span class="validation-error">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="username" class="form-label">Username *</label>
-                    <input type="text" id="username" name="username" value="{{ old('username', $user->username) }}" required class="form-input">
-                    <small class="form-hint">Username harus unik dan tidak boleh sama dengan user lain</small>
-                    @error('username')
-                        <span class="validation-error">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <button type="submit" class="btn btn-primary">💾 Simpan Perubahan</button>
-            </form>
+        <div>
+          <label for="username" class="block text-sm font-semibold text-gray-700 mb-2">Username *</label>
+          <input type="text" id="username" name="username" value="{{ old('username', $user->username) }}" required 
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#D26986] focus:ring-2 focus:ring-[#D26986]/20 transition">
+          <p class="text-xs text-gray-500 mt-1">Username harus unik</p>
+          @error('username')
+            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+          @enderror
         </div>
 
-        <!-- Email Section -->
-        <div class="card">
-            <h2 class="section-title">
-                <span class="section-icon">📧</span>
-                Email Account
-            </h2>
-            
-            @if(!$user->email)
-                <div class="info-box warning">
-                    <strong>⚠️ Email belum diisi</strong>
-                    <small>Email diperlukan untuk menggunakan fitur reset password</small>
-                </div>
-            @endif
+        <button type="submit" class="inline-flex items-center gap-2 bg-[#D26986] hover:bg-[#BD5773] text-white px-6 py-3 rounded-full font-semibold text-sm shadow-md transition transform active:scale-95">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Simpan Perubahan
+        </button>
+      </div>
+    </form>
+  </div>
 
-            <form method="POST" action="{{ route('profile.email') }}">
-                @csrf
-                @method('PUT')
+  <!-- Email Card -->
+  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-8 mb-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
+      <i class="fa-solid fa-envelope text-[#D26986]"></i>
+      Email Account
+    </h2>
+    
+    @if(!$user->email)
+    <div class="mb-4 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-lg">
+      <p class="text-sm font-semibold text-amber-800"> Email belum diisi</p>
+      <p class="text-xs text-amber-700 mt-1">Email diperlukan untuk reset password</p>
+    </div>
+    @endif
 
-                <div class="form-group">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" placeholder="contoh@email.com" class="form-input">
-                    <small class="form-hint">Email harus unik dan valid</small>
-                    @error('email')
-                        <span class="validation-error">{{ $message }}</span>
-                    @enderror
-                </div>
+    <form method="POST" action="{{ route('profile.email') }}">
+      @csrf
+      @method('PUT')
 
-                <button type="submit" class="btn btn-primary">
-                    {{ $user->email ? '✏️ Update Email' : '➕ Tambah Email' }}
-                </button>
-            </form>
+      <div class="space-y-5">
+        <div>
+          <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+          <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" placeholder="contoh@email.com"
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#D26986] focus:ring-2 focus:ring-[#D26986]/20 transition">
+          <p class="text-xs text-gray-500 mt-1">Email harus unik dan valid</p>
+          @error('email')
+            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+          @enderror
         </div>
 
-        <!-- Security Section -->
-        <div class="card">
-            <h2 class="section-title">
-                <span class="section-icon">🔒</span>
-                Security - Ubah Password
-            </h2>
-            
-            <div class="info-box">
-                <strong>🛡️ Keamanan Password</strong>
-                <small>Gunakan password yang kuat dengan minimal 8 karakter</small>
-            </div>
+        <button type="submit" class="inline-flex items-center gap-2 bg-[#D26986] hover:bg-[#BD5773] text-white px-6 py-3 rounded-full font-semibold text-sm shadow-md transition transform active:scale-95">
+          <i class="fa-solid fa-{{ $user->email ? 'pen' : 'plus' }}"></i>
+          {{ $user->email ? 'Update Email' : 'Tambah Email' }}
+        </button>
+      </div>
+    </form>
+  </div>
 
-            <form method="POST" action="{{ route('profile.password') }}">
-                @csrf
-                @method('PUT')
-
-                <div class="form-group">
-                    <label for="current_password" class="form-label">Password Saat Ini *</label>
-                    <input type="password" id="current_password" name="current_password" required class="form-input">
-                    @error('current_password')
-                        <span class="validation-error">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="password" class="form-label">Password Baru *</label>
-                    <input type="password" id="password" name="password" required class="form-input">
-                    <small class="form-hint">Minimal 8 karakter</small>
-                    @error('password')
-                        <span class="validation-error">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="password_confirmation" class="form-label">Konfirmasi Password Baru *</label>
-                    <input type="password" id="password_confirmation" name="password_confirmation" required class="form-input">
-                </div>
-
-                <button type="submit" class="btn btn-primary">🔐 Ubah Password</button>
-            </form>
-        </div>
+  <!-- Password Card -->
+  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
+      <i class="fa-solid fa-lock text-[#D26986]"></i>
+      Ubah Password
+    </h2>
+    
+    <div class="mb-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded-lg">
+      <p class="text-sm font-semibold text-blue-800"> Keamanan Password</p>
+      <p class="text-xs text-blue-700 mt-1">Gunakan password kuat minimal 8 karakter</p>
     </div>
 
-    <script>
-        function previewImage(event) {
-            const input = event.target;
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('avatarPreview').src = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
-</body>
-</html>
+    <form method="POST" action="{{ route('profile.password') }}">
+      @csrf
+      @method('PUT')
+
+      <div class="space-y-5">
+        <div>
+          <label for="current_password" class="block text-sm font-semibold text-gray-700 mb-2">Password Saat Ini *</label>
+          <input type="password" id="current_password" name="current_password" required 
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#D26986] focus:ring-2 focus:ring-[#D26986]/20 transition">
+          @error('current_password')
+            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password Baru *</label>
+          <input type="password" id="password" name="password" required 
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#D26986] focus:ring-2 focus:ring-[#D26986]/20 transition">
+          <p class="text-xs text-gray-500 mt-1">Minimal 8 karakter</p>
+          @error('password')
+            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div>
+          <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">Konfirmasi Password Baru *</label>
+          <input type="password" id="password_confirmation" name="password_confirmation" required 
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#D26986] focus:ring-2 focus:ring-[#D26986]/20 transition">
+        </div>
+
+        <button type="submit" class="inline-flex items-center gap-2 bg-[#D26986] hover:bg-[#BD5773] text-white px-6 py-3 rounded-full font-semibold text-sm shadow-md transition transform active:scale-95">
+          <i class="fa-solid fa-shield-halved"></i>
+          Ubah Password
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+@endsection

@@ -1,67 +1,272 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Ekimochi</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
-        .container { max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { margin-bottom: 20px; color: #333; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #555; }
-        input[type="text"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #218838; }
-        .error { color: red; font-size: 14px; margin-top: 5px; }
-        .links { margin-top: 15px; text-align: center; }
-        .links a { color: #007bff; text-decoration: none; }
-        .links a:hover { text-decoration: underline; }
-    </style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Daftar - Ekimochi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-low": "#feefff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container": "#fae8fd",
+            "surface-container-high": "#f5e2f7",
+            "on-surface": "#221826",
+            "on-surface-variant": "#574048",
+            "primary": "#b10e6b",
+            "primary-container": "#d23284",
+            "on-primary": "#ffffff",
+            "primary-fixed": "#ffd9e4",
+            "on-primary-fixed": "#3e0022",
+            "secondary": "#00668a",
+            "secondary-fixed": "#c4e7ff",
+            "on-secondary-fixed": "#001e2c",
+            "background": "#fff7fc",
+            "outline-variant": "#debec8"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+  </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Register</h1>
-        
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-            
-            <div class="form-group">
-                <label for="name">Nama Lengkap</label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}" required autofocus>
-                @error('name')
-                    <div class="error">{{ $message }}</div>
-                @enderror
-            </div>
+<body class="bg-background font-['Inter'] text-on-surface antialiased flex items-center justify-center p-4 lg:p-6">
 
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" value="{{ old('username') }}" required>
-                @error('username')
-                    <div class="error">{{ $message }}</div>
-                @enderror
-            </div>
+  <main class="w-full max-w-6xl h-[92vh] max-h-[720px] bg-surface-container-lowest rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 border border-outline-variant/30">
+    
+    <!-- Kolom Kiri: Visual Atmosfer Produk (5 Kolom) -->
+    <div class="hidden lg:flex lg:col-span-5 relative bg-primary-fixed/30 flex-col justify-between p-8 overflow-hidden">
+      <!-- Background Image dengan Overlay Elegan -->
+      <div class="absolute inset-0 z-0">
+        <img class="w-full h-full object-cover transform scale-105 hover:scale-100 transition-transform duration-1000" src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1000&q=80" alt="Artisanal Wagashi Spread"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#221826]/80 via-[#221826]/20 to-transparent"></div>
+      </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                @error('password')
-                    <div class="error">{{ $message }}</div>
-                @enderror
-            </div>
+      <!-- Header Brand di atas Gambar -->
+      <div class="relative z-10 flex items-center justify-between">
+        <div class="bg-white/80 backdrop-blur-md px-4 py-1.5 rounded-full shadow-sm">
+          <span class="text-xs font-bold tracking-widest text-primary uppercase">Edisi Musim Semi</span>
+        </div>
+        <span class="material-symbols-outlined text-white/80">bakery_dining</span>
+      </div>
 
-            <div class="form-group">
-                <label for="password_confirmation">Konfirmasi Password</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" required>
-            </div>
+      <!-- Konten Footer di dalam Gambar -->
+      <div class="relative z-10 text-white space-y-2">
+        <h3 class="font-['Plus_Jakarta_Sans'] text-2xl font-bold tracking-tight">Artisanal Mochi & Wagashi</h3>
+        <p class="text-sm text-white/80 leading-relaxed font-light">
+          Nikmati kelembutan mochi autentik Jepang yang dibuat segar setiap hari dengan bahan-bahan premium pilihan.
+        </p>
+        <div class="flex items-center gap-2 pt-2 text-xs text-secondary-fixed">
+          <span class="material-symbols-outlined text-[16px]">verified</span>
+          <span>Pengiriman berpendingin aman sampai tujuan</span>
+        </div>
+      </div>
+    </div>
 
-            <button type="submit">Daftar</button>
+    <!-- Kolom Kanan: Form Auth (7 Kolom) -->
+    <div class="lg:col-span-7 p-6 sm:p-8 lg:p-10 flex flex-col justify-between bg-surface-container-lowest overflow-y-auto">
+      
+      <!-- Top Bar: Navigasi Kembali & Tab Switcher -->
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <a class="inline-flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors text-xs font-semibold px-3 py-1.5 rounded-full bg-surface-container-low" href="{{ route('dashboard') }}">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>Beranda</span>
+          </a>
+          
+          <!-- Tab Masuk / Daftar -->
+          <div class="flex items-center gap-1 p-1 bg-surface-container-low rounded-full">
+            <a href="{{ route('login') }}" class="px-4 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-all">
+              Masuk
+            </a>
+            <a href="{{ route('register') }}" class="px-4 py-1.5 rounded-full text-xs font-bold bg-primary text-on-primary shadow-sm transition-all">
+              Daftar
+            </a>
+          </div>
+        </div>
+
+        <!-- Heading Form -->
+        <div class="mb-5">
+          <h2 class="font-['Plus_Jakarta_Sans'] text-xl sm:text-2xl font-bold text-on-surface tracking-tight">
+            Buat Akun Baru
+          </h2>
+          <p class="text-xs sm:text-sm text-on-surface-variant mt-0.5">
+            Daftar sekarang dan nikmati promo spesial untuk member baru.
+          </p>
+        </div>
+
+        <!-- Success/Error Messages -->
+        @if(session('success'))
+        <div class="mb-4 p-3 rounded-2xl bg-green-50 border border-green-200 text-green-800 text-xs flex items-center gap-2">
+          <span class="material-symbols-outlined text-[16px]">check_circle</span>
+          <span>{{ session('success') }}</span>
+        </div>
+        @endif
+
+        @if($errors->any())
+        <div class="mb-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2">
+          <span class="material-symbols-outlined text-[16px]">error</span>
+          <div class="flex-1">
+            @foreach($errors->all() as $error)
+              <p>{{ $error }}</p>
+            @endforeach
+          </div>
+        </div>
+        @endif
+
+        <!-- Form Register -->
+        <form method="POST" action="{{ route('register') }}" class="space-y-3">
+          @csrf
+          
+          <div>
+            <label class="block text-xs font-semibold text-on-surface mb-1">Nama Lengkap</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[18px]">person</span>
+              <input 
+                name="name" 
+                value="{{ old('name') }}"
+                class="w-full pl-10 pr-3 py-2.5 rounded-full bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/50 text-xs focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm transition-all @error('name') ring-2 ring-red-400 @enderror" 
+                placeholder="Nama lengkap Anda" 
+                required 
+                type="text"
+                autofocus
+              />
+            </div>
+            @error('name')
+            <p class="text-xs text-red-600 mt-1 ml-3">{{ $message }}</p>
+            @enderror
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-on-surface mb-1">Username</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[18px]">badge</span>
+              <input 
+                name="username" 
+                value="{{ old('username') }}"
+                class="w-full pl-10 pr-3 py-2.5 rounded-full bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/50 text-xs focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm transition-all @error('username') ring-2 ring-red-400 @enderror" 
+                placeholder="Username unik untuk login" 
+                required 
+                type="text"
+              />
+            </div>
+            @error('username')
+            <p class="text-xs text-red-600 mt-1 ml-3">{{ $message }}</p>
+            @enderror
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-on-surface mb-1">Kata Sandi</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[18px]">lock</span>
+              <input 
+                name="password"
+                class="w-full pl-10 pr-10 py-2.5 rounded-full bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/50 text-xs focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm transition-all @error('password') ring-2 ring-red-400 @enderror" 
+                id="password-field" 
+                placeholder="Minimal 8 karakter" 
+                required 
+                type="password"
+              />
+              <button aria-label="Toggle password" class="absolute right-3 text-on-surface-variant hover:text-primary transition-colors focus:outline-none" onclick="togglePasswordVisibility(event)" type="button">
+                <span class="material-symbols-outlined text-[18px]" id="password-toggle-icon">visibility</span>
+              </button>
+            </div>
+            @error('password')
+            <p class="text-xs text-red-600 mt-1 ml-3">{{ $message }}</p>
+            @enderror
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-on-surface mb-1">Konfirmasi Kata Sandi</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[18px]">lock_reset</span>
+              <input 
+                name="password_confirmation"
+                class="w-full pl-10 pr-10 py-2.5 rounded-full bg-surface-container-low text-on-surface placeholder:text-on-surface-variant/50 text-xs focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm transition-all" 
+                id="password-confirm-field" 
+                placeholder="Ketik ulang kata sandi" 
+                required 
+                type="password"
+              />
+              <button aria-label="Toggle password" class="absolute right-3 text-on-surface-variant hover:text-primary transition-colors focus:outline-none" onclick="togglePasswordConfirmVisibility(event)" type="button">
+                <span class="material-symbols-outlined text-[18px]" id="password-confirm-toggle-icon">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button class="w-full mt-2 flex items-center justify-center gap-2 py-2.5 px-6 rounded-full bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-md hover:shadow-lg transition-all" type="submit">
+            <span>Daftar Sekarang</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </button>
         </form>
 
-        <div class="links">
-            Sudah punya akun? <a href="{{ route('login') }}">Login</a>
+        <!-- Login Link -->
+        <div class="mt-4 text-center text-xs text-on-surface-variant">
+          Sudah punya akun? 
+          <a href="{{ route('login') }}" class="text-primary font-semibold hover:underline">Masuk di sini</a>
         </div>
+      </div>
+
+      <!-- Footer Info Keamanan -->
+      <div class="pt-4 mt-4 border-t border-surface-container-high flex items-center justify-between text-[11px] text-on-surface-variant">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[14px] text-secondary">verified_user</span>
+          <span>Enkripsi SSL 256-bit</span>
+        </div>
+        <a class="flex items-center gap-1 text-primary hover:underline font-medium" href="https://wa.me/6281200000000" target="_blank">
+          <span class="material-symbols-outlined text-[14px]">chat</span>
+          <span>Bantuan CS</span>
+        </a>
+      </div>
+
     </div>
+  </main>
+
+  <script>
+    function togglePasswordVisibility(event) {
+      event.preventDefault();
+      const passwordInput = document.getElementById('password-field');
+      const toggleIcon = document.getElementById('password-toggle-icon');
+      if (!passwordInput || !toggleIcon) return;
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.textContent = 'visibility_off';
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.textContent = 'visibility';
+      }
+    }
+
+    function togglePasswordConfirmVisibility(event) {
+      event.preventDefault();
+      const passwordInput = document.getElementById('password-confirm-field');
+      const toggleIcon = document.getElementById('password-confirm-toggle-icon');
+      if (!passwordInput || !toggleIcon) return;
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.textContent = 'visibility_off';
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.textContent = 'visibility';
+      }
+    }
+  </script>
 </body>
 </html>
