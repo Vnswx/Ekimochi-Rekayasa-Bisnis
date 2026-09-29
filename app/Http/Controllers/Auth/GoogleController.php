@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 use Exception;
 
 class GoogleController extends Controller
@@ -18,15 +19,17 @@ class GoogleController extends Controller
      */
     public function redirectToGoogle(): RedirectResponse
     {
-        // Check if Socialite is available
-        if (!class_exists(\Laravel\Socialite\Facades\Socialite::class)) {
-            return redirect()->route('login')->with('info', 'Login dengan Google belum tersedia. Silakan install Laravel Socialite terlebih dahulu.');
-        }
-
         try {
-            return \Laravel\Socialite\Facades\Socialite::driver('google')->redirect();
+            // Fix SSL certificate path for Guzzle/Socialite
+            $certPath = 'C:\laragon\bin\php\php-8.3.16-Win32-vs16-x64\extras\ssl\cacert.pem';
+            
+            return Socialite::driver('google')
+                ->setHttpClient(new \GuzzleHttp\Client([
+                    'verify' => file_exists($certPath) ? $certPath : true
+                ]))
+                ->redirect();
         } catch (Exception $e) {
-            return redirect()->route('login')->with('info', 'Login dengan Google belum dikonfigurasi. Silakan setup Google OAuth credentials di .env');
+            return redirect()->route('login')->with('error', 'Login dengan Google belum dikonfigurasi. Error: ' . $e->getMessage());
         }
     }
 
@@ -35,13 +38,15 @@ class GoogleController extends Controller
      */
     public function handleGoogleCallback(): RedirectResponse
     {
-        // Check if Socialite is available
-        if (!class_exists(\Laravel\Socialite\Facades\Socialite::class)) {
-            return redirect()->route('login')->with('info', 'Login dengan Google belum tersedia. Silakan install Laravel Socialite terlebih dahulu.');
-        }
-
         try {
-            $googleUser = \Laravel\Socialite\Facades\Socialite::driver('google')->user();
+            // Fix SSL certificate path for Guzzle/Socialite
+            $certPath = 'C:\laragon\bin\php\php-8.3.16-Win32-vs16-x64\extras\ssl\cacert.pem';
+            
+            $googleUser = Socialite::driver('google')
+                ->setHttpClient(new \GuzzleHttp\Client([
+                    'verify' => file_exists($certPath) ? $certPath : true
+                ]))
+                ->user();
 
             // Find existing user by google_id or email
             $user = User::where('google_id', $googleUser->getId())
@@ -81,8 +86,14 @@ class GoogleController extends Controller
             return redirect()->route('dashboard')->with('success', 'Login dengan Google berhasil!');
 
         } catch (Exception $e) {
+            // Log error untuk debugging
+            \Log::error('Google OAuth Error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return redirect()->route('login')->withErrors([
-                'email' => 'Gagal login dengan Google. Silakan coba lagi atau gunakan email/password.',
+                'email' => 'Gagal login dengan Google: ' . $e->getMessage(),
             ]);
         }
     }
