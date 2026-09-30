@@ -65,6 +65,7 @@ class ProductCatalogController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
         $categories = Category::withCount('products')->get();
+        // dd($products);
 
         return view('catalog.index', compact('products', 'categories'));
     }

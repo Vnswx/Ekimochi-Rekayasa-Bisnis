@@ -137,7 +137,7 @@
           <a href="{{ route('catalog.show', $product->id) }}" class="cursor-pointer">
             <div class="relative overflow-hidden rounded-2xl mb-4">
               <img 
-                src="{{ $product->image ? asset('images/homepage/' . $product->image) : asset('images/placeholder-product.png') }}" 
+                src="{{ asset('storage/' . $product->image) }}" 
                 alt="{{ $product->name }}" 
                 class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500"
               >
@@ -167,10 +167,13 @@
               @endif
             </div>
             @if($product->stock > 0)
-            <button onclick="addToCart('{{ $product->name }}', {{ $product->price }}, '{{ $product->image ? asset('images/homepage/' . $product->image) : asset('images/placeholder-product.png') }}')" 
-                    class="w-9 h-9 rounded-full bg-[#D26986] hover:bg-[#BD5773] text-white flex items-center justify-center shadow-md transition transform active:scale-95">
-              <i class="fa-solid fa-plus text-xs"></i>
-            </button>
+            <form method="POST" action="{{ route('cart.add', $product) }}" style="display: inline;">
+              @csrf
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="w-9 h-9 rounded-full bg-[#D26986] hover:bg-[#BD5773] text-white flex items-center justify-center shadow-md transition transform active:scale-95">
+                <i class="fa-solid fa-plus text-xs"></i>
+              </button>
+            </form>
             @else
             <button disabled class="w-9 h-9 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center cursor-not-allowed">
               <i class="fa-solid fa-ban text-xs"></i>
@@ -209,31 +212,4 @@
     </div>
   </div>
 </div>
-
-<!-- Cart Functions -->
-<script>
-function addToCart(name, price, image) {
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const existingIndex = cart.findIndex(item => item.name === name);
-  
-  if (existingIndex > -1) {
-    cart[existingIndex].qty += 1;
-  } else {
-    cart.push({ name, price, image, qty: 1 });
-  }
-  
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartBadge();
-  alert('✅ ' + name + ' ditambahkan ke keranjang!');
-}
-
-function updateCartBadge() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-  const badge = document.getElementById('cart-badge');
-  if (badge) badge.textContent = totalItems;
-}
-
-document.addEventListener('DOMContentLoaded', updateCartBadge);
-</script>
 @endsection

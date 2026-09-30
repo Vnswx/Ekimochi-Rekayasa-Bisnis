@@ -71,7 +71,7 @@
               <div class="md:flex items-center space-x-1 text-sm font-medium text-gray-600">
                 <a href="/" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Beranda</a>
                 <a href="{{ route('catalog.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Katalog</a>
-                <a href="#paket" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Paket Box</a>
+                <a href="{{ route('packages.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Paket Box</a>
                 <a href="#tentang" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Tentang Kami</a>
                 <a href="#outlet" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Outlet</a>
                 <a href="#faq" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">FAQ</a>
@@ -157,7 +157,7 @@
       <a href="#beranda" class="block text-gray-700 font-medium hover:text-[#D26986]">Beranda</a>
       <a href="katalog.html" class="block text-gray-700 font-medium hover:text-[#D26986]">Katalog</a>
       <a href="#varian" class="block text-gray-700 font-medium hover:text-[#D26986]">Varian Rasa</a>
-      <a href="#paket" class="block text-gray-700 font-medium hover:text-[#D26986]">Paket Box</a>
+      <a href="{{ route('packages.index') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Paket Box</a>
       <a href="#tentang" class="block text-gray-700 font-medium hover:text-[#D26986]">Tentang Kami</a>
       <a href="#outlet" class="block text-gray-700 font-medium hover:text-[#D26986]">Outlet</a>
       <a href="#faq" class="block text-gray-700 font-medium hover:text-[#D26986]">FAQ</a>
@@ -178,10 +178,10 @@
             Dibuat dari setiap bahan pilihan, super kenyal di luar dan lumer di mulut. Pilihan rasa premium: Lotus Biscoff.
           </p>
           <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-            <a href="#varian" class="w-full sm:w-auto bg-[#D26986] hover:bg-[#BD5773] text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-rose-200 transition transform active:scale-95 text-center">
+            <a href="{{ route('catalog.index') }}" class="w-full sm:w-auto bg-[#D26986] hover:bg-[#BD5773] text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-rose-200 transition transform active:scale-95 text-center">
               Lihat Varian Rasa <i class="fa-solid fa-arrow-right ml-2"></i>
             </a>
-            <a href="#paket" class="w-full sm:w-auto bg-white hover:bg-rose-50 text-[#D26986] border border-rose-200 font-bold px-8 py-4 rounded-full shadow-sm transition text-center">
+            <a href="{{ route('catalog.index') }}" class="w-full sm:w-auto bg-white hover:bg-rose-50 text-[#D26986] border border-rose-200 font-bold px-8 py-4 rounded-full shadow-sm transition text-center">
               Paket Box Pilihan
             </a>
           </div>
@@ -262,7 +262,7 @@
            style="display: {{ $index < 6 ? 'flex' : 'none' }};">
         <div>
           <div class="relative overflow-hidden rounded-2xl mb-4">
-            <img src="{{ asset('images/homepage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-56 object-cover transform hover:scale-105 transition duration-500">
+            <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-56 object-cover transform hover:scale-105 transition duration-500">
             @if($loop->first)
             <span class="absolute top-3 left-3 bg-[#D26986] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Terlaris</span>
             @endif
@@ -313,7 +313,7 @@
           <span class="absolute top-4 right-4 bg-{{ $index === 0 ? 'rose' : 'indigo' }}-50 text-{{ $index === 0 ? '[#D26986]' : 'indigo-700' }} text-xs font-bold px-3 py-1 rounded-full">{{ $index === 0 ? 'Paling Hemat' : 'Eksklusif' }}</span>
           @endif
           <div>
-            <img src="{{ asset('images/homepage/' . $box->image) }}" alt="{{ $box->name }}" class="w-full h-48 object-cover rounded-2xl mb-6">
+            <img src="{{ asset('storage/' . $box->image) }}" alt="{{ $box->name }}" class="w-full h-48 object-cover rounded-2xl mb-6">
             <h3 class="text-xl font-extrabold text-gray-900">{{ $box->name }}</h3>
             <p class="text-xs text-gray-500 mt-1">{{ Str::limit($box->description, 90) }}</p>
             <ul class="mt-4 space-y-2 text-xs text-gray-600">
@@ -775,7 +775,7 @@
 
       const products = [
         @foreach($products as $product)
-        { name: '{{ $product->name }}', price: {{ $product->price }}, img: '{{ asset('images/homepage/' . $product->image) }}' },
+        { name: '{{ $product->name }}', price: {{ $product->price }}, img: '{{ asset('storage/' . $product->image) }}' },
         @endforeach
       ];
 
