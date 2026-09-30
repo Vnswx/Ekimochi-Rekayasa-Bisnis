@@ -23,18 +23,29 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request): RedirectResponse
     {
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->only('email', 'password');
         $remember = $request->boolean('remember');
+
+        // Try login with email first, then try with username
+        $loginField = filter_var($credentials['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $credentials[$loginField] = $credentials['email'];
+        unset($credentials['email']);
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('dashboard')->with('success', 'Login berhasil!');
+            // Redirect based on user role
+            $user = Auth::user();
+            if ($user->isAdmin()) {
+                return redirect()->route('admin.dashboard')->with('success', 'Selamat datang, Admin!');
+            }
+
+            return redirect()->intended(route('dashboard'))->with('success', 'Login berhasil!');
         }
 
         return back()->withErrors([
-            'username' => 'Username atau password salah.',
-        ])->onlyInput('username');
+            'email' => 'Email/Username atau password salah.',
+        ])->onlyInput('email');
     }
 
     /**

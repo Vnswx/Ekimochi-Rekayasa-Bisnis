@@ -1,0 +1,73 @@
+<!-- Navbar -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-rose-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center space-x-8">
+        <a href="#" class="flex items-center space-x-2">
+          <!-- <span class="text-2xl font-extrabold text-[#D26986] tracking-tight flex items-center">
+            <i class="fa-solid fa-cookie-bite mr-2 text-rose-400"></i>Ekimochi
+          </span> -->
+          <img src="img/logo perusahaan.png" alt="" style="width: 200px;">
+        </a>
+        <!-- Nav Links Desktop -->
+        <!-- Navbar Utama -->
+        <!-- Navbar Utama Tanpa Dropdown -->
+        <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-rose-100 shadow-sm">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+
+
+              <!-- Navlist Navigasi -->
+              <div class="md:flex items-center space-x-1 text-sm font-medium text-gray-600">
+    <a href="#beranda" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Beranda</a>
+    <a href="#varian" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Varian Rasa</a>
+    <a href="#paket" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Paket Box</a>
+    <a href="#tentang" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Tentang Kami</a>
+    <a href="#outlet" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Outlet</a>
+    <a href="#faq" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">FAQ</a>
+</div>
+
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Right Actions -->
+      <div class="flex items-center space-x-4">
+        <!-- Search Button -->
+        <button onclick="openSearchModal()"
+          class="p-2 text-gray-600 hover:text-[#D26986] transition rounded-full hover:bg-rose-50">
+          <i class="fa-solid fa-magnifying-glass text-lg"></i>
+        </button>
+        <!-- Cart Button with Badge -->
+        <button onclick="toggleCartDrawer()"
+          class="relative p-2 text-gray-600 hover:text-[#D26986] transition rounded-full hover:bg-rose-50">
+          <i class="fa-solid fa-cart-shopping text-lg"></i>
+          <span id="cart-badge"
+            class="absolute top-0 right-0 bg-[#D26986] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
+        </button>
+        <!-- Login Button -->
+        <button onclick="openLoginModal()"
+          class="hidden sm:flex items-center space-x-2 bg-[#D26986] hover:bg-[#BD5773] text-white px-5 py-2.5 rounded-full font-semibold text-sm shadow-md transition transform active:scale-95">
+          <i class="fa-solid fa-user"></i>
+          <span>Pesan Sekarang</span>
+        </button>
+        <!-- Mobile Menu Toggle -->
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600 hover:text-[#D26986]">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-rose-100 px-6 py-4 space-y-3 shadow-lg">
+      <a href="#beranda" class="block text-gray-700 font-medium hover:text-[#D26986]">Beranda</a>
+      <a href="#varian" class="block text-gray-700 font-medium hover:text-[#D26986]">Varian Rasa</a>
+      <a href="#paket" class="block text-gray-700 font-medium hover:text-[#D26986]">Paket Box</a>
+      <a href="#tentang" class="block text-gray-700 font-medium hover:text-[#D26986]">Tentang Kami</a>
+      <a href="#outlet" class="block text-gray-700 font-medium hover:text-[#D26986]">Outlet</a>
+      <a href="#faq" class="block text-gray-700 font-medium hover:text-[#D26986]">FAQ</a>
+      <button onclick="openLoginModal()"
+        class="w-full bg-[#D26986] text-white py-2 rounded-full font-semibold mt-2">Login / Register</button>
+    </div>
+  </header>
