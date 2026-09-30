@@ -119,7 +119,7 @@
           <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
             <div class="flex items-center gap-3">
               <img 
-                src="{{ $product->image ? asset('images/homepage/' . $product->image) : asset('images/placeholder-product.png') }}" 
+                src="{{ asset('storage/' . $product->image) }}" 
                 alt="{{ $product->name }}" 
                 class="w-12 h-12 rounded-lg object-cover"
               >

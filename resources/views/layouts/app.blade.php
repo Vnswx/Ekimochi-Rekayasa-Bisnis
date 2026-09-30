@@ -48,7 +48,7 @@
               <div class="md:flex items-center space-x-1 text-sm font-medium text-gray-600">
                 <a href="/" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Beranda</a>
                 <a href="{{ route('catalog.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Katalog</a>
-                <a href="#paket" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Paket Box</a>
+                <a href="{{ route('packages.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Paket Box</a>
                 <a href="#tentang" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Tentang Kami</a>
                 <a href="#outlet" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Outlet</a>
                 <a href="#faq" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">FAQ</a>
@@ -65,10 +65,12 @@
           <i class="fa-solid fa-magnifying-glass text-lg"></i>
         </button>
         <!-- Cart Button with Badge -->
-        <button onclick="toggleCartDrawer()" class="relative p-2 text-gray-600 hover:text-[#D26986] transition rounded-full hover:bg-rose-50">
+        <a href="{{ route('cart.index') }}" class="relative p-2 text-gray-600 hover:text-[#D26986] transition rounded-full hover:bg-rose-50">
           <i class="fa-solid fa-cart-shopping text-lg"></i>
-          <span id="cart-badge" class="absolute top-0 right-0 bg-[#D26986] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
-        </button>
+          <span id="cart-badge" class="absolute top-0 right-0 bg-[#D26986] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
+            {{ array_sum(session('cart', [])) }}
+          </span>
+        </a>
         
         @auth
         <!-- Profile Dropdown (Authenticated) -->
@@ -132,9 +134,8 @@
     <!-- Mobile Menu Dropdown -->
     <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-rose-100 px-6 py-4 space-y-3 shadow-lg">
       <a href="#beranda" class="block text-gray-700 font-medium hover:text-[#D26986]">Beranda</a>
-      <a href="katalog.html" class="block text-gray-700 font-medium hover:text-[#D26986]">Katalog</a>
-      <a href="#varian" class="block text-gray-700 font-medium hover:text-[#D26986]">Varian Rasa</a>
-      <a href="#paket" class="block text-gray-700 font-medium hover:text-[#D26986]">Paket Box</a>
+      <a href="{{ route('catalog.index') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Katalog</a>
+      <a href="{{ route('packages.index') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Paket Box</a>
       <a href="#tentang" class="block text-gray-700 font-medium hover:text-[#D26986]">Tentang Kami</a>
       <a href="#outlet" class="block text-gray-700 font-medium hover:text-[#D26986]">Outlet</a>
       <a href="#faq" class="block text-gray-700 font-medium hover:text-[#D26986]">FAQ</a>

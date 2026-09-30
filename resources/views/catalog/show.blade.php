@@ -1,184 +1,251 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $product->name }} - Ekimochi</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; color: #333; }
-        
-        /* Navbar */
-        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-brand { font-size: 28px; font-weight: bold; text-decoration: none; color: white; }
-        .nav-links { display: flex; gap: 25px; align-items: center; }
-        .nav-links a { color: white; text-decoration: none; transition: opacity 0.3s; }
-        .nav-links a:hover { opacity: 0.8; }
-        .btn-auth { background: white; color: #667eea; padding: 8px 20px; border-radius: 20px; font-weight: 600; }
-        
-        /* Container */
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
-        .back-link { display: inline-block; color: #667eea; text-decoration: none; margin-bottom: 20px; font-weight: 600; }
-        .back-link:hover { text-decoration: underline; }
-        
-        /* Product Detail */
-        .product-detail { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 40px; }
-        .product-main { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 40px; }
-        
-        .product-image-section { }
-        .product-image { width: 100%; height: 500px; object-fit: cover; border-radius: 12px; background: #f0f0f0; }
-        
-        .product-info { display: flex; flex-direction: column; gap: 20px; }
-        .product-category { font-size: 14px; color: #667eea; font-weight: 600; text-transform: uppercase; }
-        .product-name { font-size: 32px; font-weight: bold; color: #333; line-height: 1.3; }
-        .product-sku { font-size: 14px; color: #999; }
-        .product-price { font-size: 36px; font-weight: bold; color: #667eea; margin: 10px 0; }
-        
-        .product-stock { padding: 15px; background: #f8f9fa; border-radius: 8px; }
-        .stock-available { color: #28a745; font-weight: 600; }
-        .stock-low { color: #ffc107; font-weight: 600; }
-        .stock-out { color: #dc3545; font-weight: 600; }
-        
-        .product-description { }
-        .product-description h3 { font-size: 18px; margin-bottom: 10px; color: #555; }
-        .product-description p { line-height: 1.8; color: #666; }
-        
-        .product-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-top: 20px; border-top: 1px solid #eee; }
-        .meta-item { }
-        .meta-label { font-size: 14px; color: #999; margin-bottom: 5px; }
-        .meta-value { font-size: 16px; font-weight: 600; color: #333; }
-        
-        /* Related Products */
-        .related-section { margin-top: 60px; }
-        .related-section h2 { font-size: 28px; margin-bottom: 30px; color: #333; }
-        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        
-        .related-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s; cursor: pointer; }
-        .related-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
-        .related-image { width: 100%; height: 180px; object-fit: cover; background: #f0f0f0; }
-        .related-content { padding: 15px; }
-        .related-name { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 8px; }
-        .related-price { font-size: 18px; font-weight: bold; color: #667eea; }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .product-main { grid-template-columns: 1fr; padding: 20px; }
-            .product-image { height: 350px; }
-            .product-name { font-size: 24px; }
-            .product-price { font-size: 28px; }
-            .product-meta { grid-template-columns: 1fr; }
-            .related-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">🍡 Ekimochi</a>
-            <div class="nav-links">
-                <a href="{{ route('catalog.index') }}">Katalog</a>
-                @auth
-                    <a href="{{ route('dashboard') }}">Dashboard</a>
-                    @if(Auth::user()->isAdmin())
-                        <a href="{{ route('admin.products.index') }}">Admin</a>
-                    @endif
-                    <a href="{{ route('profile.show') }}">Profile</a>
-                @else
-                    <a href="{{ route('login') }}" class="btn-auth">Login</a>
-                @endauth
-            </div>
-        </div>
-    </nav>
+@extends('layouts.app')
 
-    <!-- Main Content -->
-    <div class="container">
-        <a href="{{ route('catalog.index') }}" class="back-link">← Kembali ke Katalog</a>
-        
-        <!-- Product Detail -->
-        <div class="product-detail">
-            <div class="product-main">
-                <!-- Product Image -->
-                <div class="product-image-section">
-                    @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="product-image">
-                    @else
-                        <div class="product-image" style="display: flex; align-items: center; justify-content: center; font-size: 120px;">🍡</div>
-                    @endif
-                </div>
-                
-                <!-- Product Info -->
-                <div class="product-info">
-                    <div>
-                        <div class="product-category">{{ $product->category->name }}</div>
-                        <h1 class="product-name">{{ $product->name }}</h1>
-                        <div class="product-sku">SKU: {{ $product->sku }}</div>
-                    </div>
-                    
-                    <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                    
-                    <div class="product-stock">
-                        @if($product->stock > 10)
-                            <span class="stock-available">✓ Stok Tersedia ({{ $product->stock }} {{ $product->unit }})</span>
-                        @elseif($product->stock > 0)
-                            <span class="stock-low">⚠ Stok Terbatas ({{ $product->stock }} {{ $product->unit }})</span>
-                        @else
-                            <span class="stock-out">✗ Stok Habis</span>
-                        @endif
-                    </div>
-                    
-                    @if($product->description)
-                        <div class="product-description">
-                            <h3>Deskripsi Produk</h3>
-                            <p>{{ $product->description }}</p>
-                        </div>
-                    @endif
-                    
-                    <div class="product-meta">
-                        <div class="meta-item">
-                            <div class="meta-label">Kategori</div>
-                            <div class="meta-value">{{ $product->category->name }}</div>
-                        </div>
-                        <div class="meta-item">
-                            <div class="meta-label">Satuan</div>
-                            <div class="meta-value">{{ $product->unit }}</div>
-                        </div>
-                        <div class="meta-item">
-                            <div class="meta-label">Status</div>
-                            <div class="meta-value">{{ $product->status === 'active' ? 'Aktif' : 'Tidak Aktif' }}</div>
-                        </div>
-                        <div class="meta-item">
-                            <div class="meta-label">Ditambahkan</div>
-                            <div class="meta-value">{{ $product->created_at->format('d M Y') }}</div>
-                        </div>
-                    </div>
-                </div>
+@section('title', $product->name . ' - Ekimochi')
+
+@section('content')
+<div class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- Breadcrumb -->
+  <nav class="text-xs text-gray-500 mb-6">
+    <a href="{{ route('home') }}" class="hover:text-[#D26986] transition">Beranda</a>
+    <span class="mx-2">/</span>
+    <a href="{{ route('catalog.index') }}" class="hover:text-[#D26986] transition">Katalog</a>
+    <span class="mx-2">/</span>
+    <span class="text-gray-900 font-semibold">{{ $product->name }}</span>
+  </nav>
+
+  <!-- Product Detail Card -->
+  <div class="bg-white rounded-3xl border border-rose-100 shadow-sm overflow-hidden mb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 sm:p-10">
+      
+      <!-- Product Image Section -->
+      <div class="space-y-4">
+        <div class="aspect-square w-full bg-gradient-to-br from-[#FBE8EE] to-white rounded-2xl overflow-hidden border border-rose-100 shadow-inner">
+          @if($product->image)
+            <img src="{{ asset('storage/' . $product->image) }}" 
+                 alt="{{ $product->name }}" 
+                 class="w-full h-full object-cover">
+          @else
+            <div class="w-full h-full flex items-center justify-center text-9xl">
+              🍡
             </div>
+          @endif
         </div>
         
-        <!-- Related Products -->
-        @if($relatedProducts->count() > 0)
-            <div class="related-section">
-                <h2>Produk Terkait</h2>
-                <div class="related-grid">
-                    @foreach($relatedProducts as $related)
-                        <div class="related-card" onclick="window.location='{{ route('catalog.show', $related) }}'">
-                            @if($related->image)
-                                <img src="{{ asset('storage/' . $related->image) }}" alt="{{ $related->name }}" class="related-image">
-                            @else
-                                <div class="related-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px;">🍡</div>
-                            @endif
-                            
-                            <div class="related-content">
-                                <div class="related-name">{{ $related->name }}</div>
-                                <div class="related-price">Rp {{ number_format($related->price, 0, ',', '.') }}</div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
+        <!-- Quick Info Badges -->
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-[#FBE8EE] text-[#D26986]">
+            <i class="fa-solid fa-tag mr-1.5"></i>
+            {{ $product->category->name }}
+          </span>
+          <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+            <i class="fa-solid fa-barcode mr-1.5"></i>
+            SKU: {{ $product->sku }}
+          </span>
+          @if($product->status === 'active')
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+              <i class="fa-solid fa-check-circle mr-1.5"></i>
+              Aktif
+            </span>
+          @endif
+        </div>
+      </div>
+
+      <!-- Product Info Section -->
+      <div class="flex flex-col justify-between space-y-6">
+        <div class="space-y-4">
+          <!-- Product Name & Price -->
+          <div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-3">
+              {{ $product->name }}
+            </h1>
+            <div class="flex items-baseline space-x-2">
+              <span class="text-4xl font-extrabold text-[#D26986]">
+                Rp {{ number_format($product->price, 0, ',', '.') }}
+              </span>
+              <span class="text-sm text-gray-500">/ {{ $product->unit }}</span>
             </div>
-        @endif
+          </div>
+
+          <!-- Stock Status -->
+          <div class="p-4 rounded-2xl border-2 {{ $product->stock > 10 ? 'bg-green-50 border-green-200' : ($product->stock > 0 ? 'bg-yellow-50 border-yellow-200' : 'bg-red-50 border-red-200') }}">
+            @if($product->stock > 10)
+              <div class="flex items-center space-x-2 text-green-700">
+                <i class="fa-solid fa-circle-check text-xl"></i>
+                <span class="font-bold text-sm">Stok Tersedia</span>
+              </div>
+              <p class="text-xs text-green-600 mt-1">{{ $product->stock }} {{ $product->unit }} siap dikirim</p>
+            @elseif($product->stock > 0)
+              <div class="flex items-center space-x-2 text-yellow-700">
+                <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                <span class="font-bold text-sm">Stok Terbatas</span>
+              </div>
+              <p class="text-xs text-yellow-600 mt-1">Tersisa {{ $product->stock }} {{ $product->unit }}</p>
+            @else
+              <div class="flex items-center space-x-2 text-red-700">
+                <i class="fa-solid fa-circle-xmark text-xl"></i>
+                <span class="font-bold text-sm">Stok Habis</span>
+              </div>
+              <p class="text-xs text-red-600 mt-1">Produk sedang tidak tersedia</p>
+            @endif
+          </div>
+
+          <!-- Description -->
+          @if($product->description)
+          <div class="pt-4 border-t border-rose-100">
+            <h3 class="text-sm font-bold text-gray-900 mb-2 flex items-center">
+              <i class="fa-solid fa-align-left text-[#D26986] mr-2"></i>
+              Deskripsi Produk
+            </h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              {{ $product->description }}
+            </p>
+          </div>
+          @endif
+
+          <!-- Product Meta -->
+          <div class="grid grid-cols-2 gap-4 pt-4 border-t border-rose-100">
+            <div class="bg-[#FFF9FA] p-3 rounded-xl">
+              <p class="text-xs text-gray-500 mb-1">Kategori</p>
+              <p class="text-sm font-bold text-gray-900">{{ $product->category->name }}</p>
+            </div>
+            <div class="bg-[#FFF9FA] p-3 rounded-xl">
+              <p class="text-xs text-gray-500 mb-1">Satuan</p>
+              <p class="text-sm font-bold text-gray-900">{{ $product->unit }}</p>
+            </div>
+            <div class="bg-[#FFF9FA] p-3 rounded-xl">
+              <p class="text-xs text-gray-500 mb-1">Ditambahkan</p>
+              <p class="text-sm font-bold text-gray-900">{{ $product->created_at->format('d M Y') }}</p>
+            </div>
+            <div class="bg-[#FFF9FA] p-3 rounded-xl">
+              <p class="text-xs text-gray-500 mb-1">Terakhir Update</p>
+              <p class="text-sm font-bold text-gray-900">{{ $product->updated_at->format('d M Y') }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-3 pt-4">
+          @if($product->stock > 0)
+          <!-- Add to Cart Form -->
+          <form method="POST" action="{{ route('cart.add', $product) }}" class="space-y-3">
+            @csrf
+            
+            <!-- Quantity Selector -->
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">
+                <i class="fa-solid fa-calculator mr-1"></i>
+                Jumlah
+              </label>
+              <div class="flex items-center space-x-3">
+                <button type="button" onclick="decrementQty()" class="w-12 h-12 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-xl transition">
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+                <input type="number" 
+                       id="quantity" 
+                       name="quantity" 
+                       value="1" 
+                       min="1" 
+                       max="{{ $product->stock }}"
+                       class="flex-1 text-center px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-[#D26986] focus:ring-2 focus:ring-[#FBE8EE] text-lg font-bold"
+                       readonly>
+                <button type="button" onclick="incrementQty()" class="w-12 h-12 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-xl transition">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+              <p class="text-xs text-gray-500 mt-2">Maksimal: {{ $product->stock }} {{ $product->unit }}</p>
+            </div>
+
+            <button type="submit" class="w-full bg-[#D26986] hover:bg-[#BD5773] text-white font-bold py-4 rounded-2xl transition transform active:scale-95 shadow-lg flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-cart-plus text-lg"></i>
+              <span>Tambah ke Keranjang</span>
+            </button>
+          </form>
+          @else
+          <button disabled class="w-full bg-gray-300 text-gray-500 font-bold py-4 rounded-2xl cursor-not-allowed flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-ban text-lg"></i>
+            <span>Stok Habis</span>
+          </button>
+          @endif
+          
+          <a href="{{ route('catalog.index') }}" class="block w-full bg-white hover:bg-gray-50 text-[#D26986] font-bold py-4 rounded-2xl transition border-2 border-[#D26986] text-center">
+            <i class="fa-solid fa-arrow-left mr-2"></i>
+            Kembali ke Katalog
+          </a>
+        </div>
+      </div>
     </div>
-</body>
-</html>
+  </div>
+
+  <!-- Related Products -->
+  @if($relatedProducts->count() > 0)
+  <div class="mt-16">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-extrabold text-gray-900">Produk Terkait</h2>
+      <a href="{{ route('catalog.index', ['category' => $product->category_id]) }}" class="text-xs font-semibold text-[#D26986] hover:text-[#BD5773] transition">
+        Lihat Semua <i class="fa-solid fa-arrow-right ml-1"></i>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      @foreach($relatedProducts as $related)
+      <a href="{{ route('catalog.show', $related) }}" class="group bg-white rounded-2xl border border-rose-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
+        <!-- Product Image -->
+        <div class="aspect-square bg-gradient-to-br from-[#FBE8EE] to-white overflow-hidden">
+          @if($related->image)
+            <img src="{{ asset('storage/' . $related->image) }}" 
+                 alt="{{ $related->name }}" 
+                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+          @else
+            <div class="w-full h-full flex items-center justify-center text-6xl">
+              🍡
+            </div>
+          @endif
+        </div>
+        
+        <!-- Product Info -->
+        <div class="p-4 space-y-2">
+          <h3 class="text-sm font-bold text-gray-900 line-clamp-2 group-hover:text-[#D26986] transition">
+            {{ $related->name }}
+          </h3>
+          <div class="flex items-center justify-between">
+            <span class="text-lg font-extrabold text-[#D26986]">
+              Rp {{ number_format($related->price, 0, ',', '.') }}
+            </span>
+            @if($related->stock > 0)
+              <span class="text-[10px] font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                <i class="fa-solid fa-check"></i> Tersedia
+              </span>
+            @else
+              <span class="text-[10px] font-semibold text-red-600 bg-red-50 px-2 py-1 rounded-full">
+                Habis
+              </span>
+            @endif
+          </div>
+        </div>
+      </a>
+      @endforeach
+    </div>
+  </div>
+  @endif
+</div>
+
+<script>
+  function incrementQty() {
+    const input = document.getElementById('quantity');
+    const max = parseInt(input.max);
+    const current = parseInt(input.value);
+    if (current < max) {
+      input.value = current + 1;
+    }
+  }
+
+  function decrementQty() {
+    const input = document.getElementById('quantity');
+    const min = parseInt(input.min);
+    const current = parseInt(input.value);
+    if (current > min) {
+      input.value = current - 1;
+    }
+  }
+</script>
+@endsection
