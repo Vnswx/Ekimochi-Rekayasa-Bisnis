@@ -51,6 +51,9 @@ Route::get('/products/{product}', [App\Http\Controllers\ProductCatalogController
 // Public Dashboard (Landing Page)
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+// FAQ Page
+Route::view('/faq', 'faq')->name('faq');
+
 // Cart Routes (public)
 Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{product}', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
