@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "surface-variant": "#efddf1",
+        "surface-dim": "#e6d4e9",
+        "on-primary-fixed": "#3e0022",
+        "on-background": "#221826",
+        "on-error": "#ffffff",
+        "surface-bright": "#fff7fc",
+        "primary-fixed": "#ffd9e4",
+        "on-secondary-fixed-variant": "#004c69",
+        "on-secondary-fixed": "#001e2c",
+        "surface": "#fff7fc",
+        "inverse-on-surface": "#fdebff",
+        "surface-container-lowest": "#ffffff",
+        "secondary-container": "#40c2fd",
+        "outline-variant": "#debec8",
+        "primary-container": "#d23284",
+        "secondary-fixed": "#c4e7ff",
+        "secondary": "#00668a",
+        "on-surface": "#221826",
+        "outline": "#8b7079",
+        "on-error-container": "#93000a",
+        "on-surface-variant": "#574048",
+        "surface-container-highest": "#efddf1",
+        "surface-container-high": "#f5e2f7",
+        "on-secondary-container": "#004d6a",
+        "error": "#ba1a1a",
+        "secondary-fixed-dim": "#7bd0ff",
+        "on-secondary": "#ffffff",
+        "tertiary": "#a12e70",
+        "inverse-primary": "#ffb0cd",
+        "primary-fixed-dim": "#ffb0cd",
+        "surface-container-low": "#feefff",
+        "tertiary-fixed": "#ffd8e7",
+        "on-tertiary-fixed-variant": "#85145a",
+        "on-tertiary-container": "#fffbff",
+        "surface-tint": "#b4136d",
+        "on-tertiary-fixed": "#3d0026",
+        "tertiary-container": "#c0488a",
+        "surface-container": "#fae8fd",
+        "on-primary-container": "#fffbff",
+        "on-tertiary": "#ffffff",
+        "on-primary": "#ffffff",
+        "inverse-surface": "#382c3c",
+        "error-container": "#ffdad6",
+        "on-primary-fixed-variant": "#8c0053",
+        "background": "#fff7fc",
+        "primary": "#b10e6b",
+        "tertiary-fixed-dim": "#ffafd3"
+      },
+      "borderRadius": {
+        "DEFAULT": "1rem",
+        "lg": "2rem",
+        "xl": "3rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "space-sm": "0.5rem",
+        "space-xs": "0.25rem",
+        "margin": "3rem",
+        "space-lg": "1.5rem",
+        "margin-mobile": "1.25rem",
+        "gutter-mobile": "1rem",
+        "space-xl": "2.5rem",
+        "gutter": "1.5rem",
+        "space-md": "1rem"
+      },
+      "fontFamily": {
+        "body-md": ["Inter"],
+        "display-lg-mobile": ["Plus Jakarta Sans"],
+        "body-sm": ["Inter"],
+        "label-md": ["Plus Jakarta Sans"],
+        "headline-xl-mobile": ["Plus Jakarta Sans"],
+        "headline-sm": ["Plus Jakarta Sans"],
+        "headline-xl": ["Plus Jakarta Sans"],
+        "headline-lg": ["Plus Jakarta Sans"],
+        "headline-md": ["Plus Jakarta Sans"],
+        "label-lg": ["Plus Jakarta Sans"],
+        "label-sm": ["Plus Jakarta Sans"],
+        "body-lg": ["Inter"],
+        "display-lg": ["Plus Jakarta Sans"]
+      },
+      "fontSize": {
+        "body-md": ["15px", {"lineHeight": "24px", "fontWeight": "400"}],
+        "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+        "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+        "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+        "headline-xl-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.015em", "fontWeight": "700"}],
+        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+        "label-lg": ["15px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+        "label-sm": ["11px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+        "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+      }
+    }
+  }
+}</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased"><div class="fixed top-0 left-0 w-full z-50"><div class="w-full bg-primary text-on-primary py-space-xs px-margin text-center font-label-sm text-label-sm flex items-center justify-center gap-space-sm shadow-[0_1px_8px_rgba(177,14,107,0.15)]"><span class="material-symbols-outlined text-[15px]">local_mall</span><span>🌸 Gratis Ongkir Pengiriman Instan khusus pembelian Box of 6 hari ini! Gunakan kode: <span class="underline font-bold">EKISWEET</span></span></div><header class="w-full bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)]"><div class="h-20 w-full max-w-[1280px] mx-auto px-margin flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-xl"><a class="flex items-center gap-space-sm shrink-0" data-path="beranda" href="#"><img alt="Ekimochi Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEHv5d_JfvyYWkoPBLUFEL2AwSP6yWNHfyjXpFLVJNBq9oLP3zJPJGUsbjjCe19ENYOTDGKBBDwxybOr7HfRBjCQNJrKen-b3vlsen8i8uXUPRuWGaJxk8GVxdKqShjx9lNbzctnHGEUT4VdvDHlGTB_kpLXE44z3e5QA7gyqaNX5ZS7YkC1tzCDY8NSBDK-0coFwovbMYgs89DeabbL0WmCTXvxfGPj-js_rR2pY"/><span class="font-headline-sm text-headline-sm tracking-tight text-primary font-bold">ekimochi</span></a><nav class="hidden xl:flex items-center gap-space-md" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-full px-4 py-2"><a class="px-4 py-2 text-on-surface-variant font-label-md text-label-md rounded-full hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="beranda" href="#">Beranda</a><a class="px-4 py-2 text-on-surface-variant font-label-md text-label-md rounded-full hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="varian-rasa" href="#">Varian Rasa</a><a class="px-4 py-2 text-on-surface-variant font-label-md text-label-md rounded-full hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="paket-box" href="#">Paket Box</a><a class="bg-primary-container text-on-primary-container font-semibold rounded-full px-4 py-2 font-label-md text-label-md" data-path="tentang-kami" href="#">Tentang Kami</a><a class="px-4 py-2 text-on-surface-variant font-label-md text-label-md rounded-full hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="outlet-dan-faq" href="#">Outlet &amp; FAQ</a></nav></div><div class="flex items-center gap-space-md flex-1 justify-end"><div class="hidden md:flex items-center relative max-w-xs w-full"><span class="material-symbols-outlined absolute left-4 text-outline text-[18px]">search</span><input class="w-full pl-10 pr-4 py-space-xs rounded-full bg-surface-container-lowest font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-secondary-container shadow-[0_2px_6px_-1px_rgba(74,62,78,0.03)]" placeholder="Cari rasa favoritmu..." type="text"/></div><a class="relative p-space-sm rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all shadow-[0_2px_6px_-1px_rgba(74,62,78,0.03)] flex items-center justify-center" data-path="keranjang" href="#"><span class="material-symbols-outlined text-[22px]">shopping_bag</span><span class="absolute -top-1 -right-1 bg-primary text-on-primary font-label-sm text-label-sm rounded-full h-5 w-5 flex items-center justify-center leading-none">3</span></a><a class="hidden sm:inline-flex items-center gap-space-xs px-space-lg py-space-sm rounded-full bg-primary text-on-primary font-label-lg text-label-lg shadow-[0_8px_20px_rgba(236,72,153,0.28)] hover:bg-primary-container transition-all" data-path="login" href="#"><span class="material-symbols-outlined text-[18px]">local_mall</span><span>Pesan Sekarang</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header></div><main class="w-full pt-28 bg-surface"><div class="flex flex-col w-full">
+<!-- Top Breadcrumb & Ambient Backing -->
+<section class="relative w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin pt-4 pb-space-lg">
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant"><a class="hover:text-primary transition-colors flex items-center gap-1" href="#"><span class="material-symbols-outlined text-[16px]">home</span><span>Beranda</span></a><span class="text-outline-variant text-[14px]">/</span><span class="text-primary font-semibold">Tentang Kami</span></div>
+</section>
+<!-- Hero Section: Split Editorial Story with Founder Quote -->
+<section class="relative w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin pb-space-xl">
+<!-- Ambient Diffused Glow -->
+<div class="absolute -top-10 -right-20 w-96 h-96 bg-primary-fixed/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute top-40 -left-20 w-80 h-80 bg-secondary-fixed/50 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<!-- Left Narrative Column -->
+<div class="lg:col-span-7 flex flex-col items-start gap-space-md">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-fixed text-primary font-label-sm text-label-sm shadow-[0_2px_8px_rgba(236,72,153,0.12)]">
+<span class="material-symbols-outlined text-[15px]">spa</span>
+<span>Kisah di Balik Kelembutan Awan</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">
+          Perjalanan Ekimochi: Merajut Kehangatan Tradisi Wagashi &amp; Cita Rasa Modern
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+          Sejak musim semi 2021, Ekimochi mendedikasikan cinta dan presisi kuliner untuk menghadirkan daifuku mochi artisan bertekstur selembut awan di Indonesia. Mengawinkan kemurnian metode ketan Kyoto dengan buah-buahan tropis segar pilihan, kami percaya setiap gigitan adalah pelukan hangat yang memanjakan jiwa.
+        </p>
+<!-- Founder Quote Pill Card -->
+<div class="mt-space-sm p-space-md md:p-space-lg rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)] flex items-start gap-space-md max-w-xl">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[24px]">format_quote</span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="font-body-md text-body-md text-on-surface italic">
+              “Mochi bukan sekadar kudapan manis, melainkan seni merayakan momen bersama orang terkasih melalui kelembutan yang jujur tanpa kompromi.”
+            </p>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-md text-label-md text-primary font-bold">Aiko Rahardjo</span>
+<span class="text-outline-variant text-[12px]">•</span>
+<span class="font-label-sm text-label-sm text-outline">Founder &amp; Head Wagashi Artisan</span>
+</div>
+</div>
+</div>
+<!-- Quick Interaction Badges -->
+<div class="flex items-center gap-space-sm flex-wrap pt-2">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span>Kyoto Craftsmanship Standard</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Sertifikasi Halal LPOM MUI</span>
+</div>
+</div>
+</div>
+<!-- Right Visual Column (Inspiration Photography Card) -->
+<div class="lg:col-span-5 relative">
+<div class="relative p-3 rounded-xl bg-surface-container-lowest shadow-[0_12px_32px_-4px_rgba(236,72,153,0.14)]">
+<div class="relative overflow-hidden rounded-lg aspect-[4/3] w-full">
+<img alt="Sajian Daifuku Mochi Artisan Ekimochi" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1WzW0XLz5phzcq3DTfF1aPMftbalMJYQ9KmwAEamJxoDXc1sWQEkRFO8mfauHsy1TzRqfHSiUhgGhGFtQS6AlMr3YBA4qF7pt78_hmGY3bxidCXAXY5nLQouMgpOkEk-DpG59MuxYbK3hxH2WYVPlYIwTDhB5o9FjFaClYhekCtnYLLRQ5kbrpnHFlwXKT7ZnJZ0ZTN-m1hmgij-unnQp2OxUJ21Ugqc1HVty2n3MgbHA_BnH0LMQcvdHY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/40 via-transparent to-transparent pointer-events-none"></div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<span class="px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm shadow-sm">
+                Senopati Flagship Tasting Studio
+              </span>
+<span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-[16px]">favorite</span>
+</span>
+</div>
+</div>
+<!-- Micro Floating Decorative Element -->
+<div class="absolute -bottom-6 -left-6 bg-surface-container-lowest/95 backdrop-blur-md p-4 rounded-lg shadow-[0_12px_28px_-4px_rgba(74,62,78,0.1)] flex items-center gap-3 hidden sm:flex">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">cloud</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Pillow-Soft Crust</p>
+<p class="font-body-sm text-body-sm text-outline">Kekenyalan elastis 100% alami</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Brand Story & Philosophy Section -->
+<section class="w-full bg-surface-container-low py-space-xl">
+<div class="w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md mb-space-xl">
+<div class="max-w-xl">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">Filosofi &amp; Dedikasi</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">
+            Menghidupkan Semangat ‘Ichi-go Ichi-e’ dalam Setiap Lembut Adonan
+          </h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+          Terinspirasi dari lorong berbatu distrik Gion, Kyoto. Setiap pertemuan adalah momen langka nan berharga yang tak akan berulang persis sama. Kami menuangkan penghormatan tersebut ke dalam setiap sajian mochi hangat maupun dingin.
+        </p>
+</div>
+<!-- 3 Value Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg mb-space-xl">
+<!-- Card 1 -->
+<div class="p-space-lg rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)] flex flex-col gap-space-sm hover:-translate-y-1 transition-transform duration-300">
+<div class="w-14 h-14 rounded-full bg-primary-fixed flex items-center justify-center text-primary shadow-inner">
+<span class="material-symbols-outlined text-[28px]">grain</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">100% Beras Ketan Pilihan</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Diimpor langsung dari sentra pertanian beras ketan khusus yang ditumbuk berulang kali secara presisi demi menghasilkan tekstur <em>snow-soft</em> elastis tanpa tambahan pengenyal sintetis maupun pengawet.
+          </p>
+<div class="mt-auto pt-space-xs flex items-center gap-2 text-primary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Bebas Gluten &amp; Lembut Alami</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-space-lg rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)] flex flex-col gap-space-sm hover:-translate-y-1 transition-transform duration-300">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shadow-inner">
+<span class="material-symbols-outlined text-[28px]">ac_unit</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Fresh Daily Chilled</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Diproduksi terbatas setiap hari sebelum pukul 08.00 pagi. Semua pengiriman terjaga dalam rantai pendingin bersuhu 4°C untuk mengunci kelembapan krim mascarpone dan kesegaran saripati buah.
+          </p>
+<div class="mt-auto pt-space-xs flex items-center gap-2 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">thermostat</span>
+<span>Rantai Dingin 4°C Terjamin</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-space-lg rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)] flex flex-col gap-space-sm hover:-translate-y-1 transition-transform duration-300">
+<div class="w-14 h-14 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary shadow-inner">
+<span class="material-symbols-outlined text-[28px]">eco</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Kearifan Bahan Alami</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Harmoni stroberi segar Grade A perkebunan dataran tinggi Ciwidey berpadu dengan bubuk Matcha ceremonial Uji, Kyoto. Kemanisan alami tanpa pewarna buatan yang berlebihan.
+          </p>
+<div class="mt-auto pt-space-xs flex items-center gap-2 text-tertiary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Bahan Baku Bersih &amp; Halal</span>
+</div>
+</div>
+</div>
+<!-- Milestone Statistics Row -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-space-md p-space-lg rounded-xl bg-surface-container shadow-[0_2px_8px_rgba(74,62,78,0.03)] text-center">
+<div class="flex flex-col items-center justify-center p-space-sm">
+<span class="font-display-lg text-display-lg text-primary font-bold">250k+</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">Butir Daifuku Dinikmati</span>
+</div>
+<div class="flex flex-col items-center justify-center p-space-sm">
+<span class="font-display-lg text-display-lg text-secondary font-bold">12+</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">Varian Rasa Signature &amp; Seasonal</span>
+</div>
+<div class="flex flex-col items-center justify-center p-space-sm">
+<span class="font-display-lg text-display-lg text-primary font-bold">4</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">Atelier &amp; Boutique Cafe</span>
+</div>
+<div class="flex flex-col items-center justify-center p-space-sm">
+<div class="flex items-center gap-1">
+<span class="font-display-lg text-display-lg text-tertiary font-bold">4.9</span>
+<span class="material-symbols-outlined text-tertiary text-[32px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">Tingkat Kepuasan Pelanggan</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Open Kitchen Artisan Showcase (3 Steps Process) -->
+<section class="w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin py-space-xl">
+<div class="text-center max-w-2xl mx-auto mb-space-xl">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Artisan Craftsmanship</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">
+        Sentuhan Cinta di Balik Dapur Terbuka Ekimochi
+      </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+        Setiap butir daifuku dikerjakan secara teliti oleh para pengrajin wagashi bersertifikat, memadukan teknik tradisional dengan standar higienis modern.
+      </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<!-- Step 1 -->
+<div class="flex flex-col gap-space-md rounded-lg p-space-md bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)]">
+<div class="relative overflow-hidden rounded-md aspect-[4/3] w-full bg-surface-container">
+<img class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" data-alt="A Japanese pastry chef carefully inspecting fresh glossy red strawberries and premium organic green tea matcha powder on a clean marble cafe kitchen counter, warm golden soft light, pastel studio backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApKVxt0UWLrVvotp_lmgyut90dzbjazFgidT-L4LY4EpDBv3COxuVq-7E9gYt2C9nPKbDccttW6UEXJ_bnqmvWSIvqg3DasC6m_gXw1FGalzag2_jTLXaB_xsXC6_4LH7h79-qfMHRDq3Ye-03d8NNVC1XxvV-e60Aemmonjt3iPtRUFo7xU3kMrJg_K06jiJFUpSbGgtDsj18fJwKurWYh0MJV6jzjAluPnJTAMp2cheF1tmpAPis"/>
+<span class="absolute top-3 left-3 w-8 h-8 rounded-full bg-primary text-on-primary font-headline-sm text-headline-sm flex items-center justify-center shadow-md">
+            1
+          </span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Pilihan Bahan Baku Segar</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Penyortiran ketat buah stroberi beraroma manis alami serta bubuk Uji matcha murni grade seremonial dari perkebunan terpilih.
+          </p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col gap-space-md rounded-lg p-space-md bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)]">
+<div class="relative overflow-hidden rounded-md aspect-[4/3] w-full bg-surface-container">
+<img class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" data-alt="Artisan hands gently kneading and pulling stretchy soft white mochi dough dusted with fine katakuriko starch, flour particles floating subtly in bright warm daylight, minimal aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ-dUMpThU5UWlloa5944d7_QjixAunjay-LaOYwfF7Z89Hm8ceJWjVaxNe7oVVZEicaJd5QUVfhykEdLEmSnAjU1fcyDhkJskGgSJmoGGANZ0aNEYGYEOFn4H1AAotZy9FXwoe1DhxHipDWxWFfaFG4dBp4bSEG3V3_PrjyaGDxoj6qlFJpU454g0-6FhTL0CI3ArP65HHTkSSdAsW22BEFC_SM4cMsO5eFIC3wSairZgVUzGJt3z"/>
+<span class="absolute top-3 left-3 w-8 h-8 rounded-full bg-primary text-on-primary font-headline-sm text-headline-sm flex items-center justify-center shadow-md">
+            2
+          </span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Pembuatan Kulit Elastis</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Pengukusan uap presisi dan penumbukan lambat agar adonan kulit mempertahankan kadar kelembapan sempurna yang tidak mudah mengeras.
+          </p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col gap-space-md rounded-lg p-space-md bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)]">
+<div class="relative overflow-hidden rounded-md aspect-[4/3] w-full bg-surface-container">
+<img class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" data-alt="Confectioner delicately piping velvety whipped cream and wrapping whole sweet strawberries inside delicate pale pink mochi skin, resting on artisan ceramic plates, pastel pink background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRKIKvqSCpr35Czpz4k0q9kI5swfm7AIwXShbnJJ1dgUbr8Zm8lRJLxWPJlbAdsLUFLof4z0vY8Ycw9pJhfWEKh9QXnEthfQqm02c9zX9mwv6vjqt-ZYtRTIzX-1xxiDSmqNV_UIM_uJlXjt-5KtkTTdVuQSNx7_kHpTBI6J-LktcSZbRaxXLe_6tqD95VWYFBax8-ff2Zo11FD67WjXGszprj28wsugCQuLRObBM5PyPNkIzJYc6S"/>
+<span class="absolute top-3 left-3 w-8 h-8 rounded-full bg-primary text-on-primary font-headline-sm text-headline-sm flex items-center justify-center shadow-md">
+            3
+          </span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Isian Melimpah &amp; Finishing</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Pembungkusan manual tangan secara presisi dengan krim lembut dingin berlimpah serta taburan tepung teratai tipis aromatik.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive FAQ & Support Section -->
+<section class="w-full bg-surface-container-low/60 py-space-xl"><div class="w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin flex flex-col gap-space-xl"><div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch"><div class="lg:col-span-6 p-space-xl rounded-xl bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)] flex flex-col justify-between"><div class="flex flex-col gap-space-sm"><div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-fixed text-primary font-label-sm text-label-sm w-fit"><span class="material-symbols-outlined text-[16px]">visibility</span><span>Visi Kami</span></div><h3 class="font-headline-lg text-headline-lg text-on-surface">Menjadi Pelopor Daifuku Mochi Artisan Terbaik di Asia Tenggara</h3><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Membawa kehangatan tradisi wagashi autentik Jepang yang dipadukan harmonis dengan kekayaan buah tropis Indonesia, menghadirkan standar kelembutan dan kemurnian rasa tanpa kompromi.</p></div><div class="mt-space-md pt-space-sm border-t border-surface-container flex items-center gap-3"><span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span><span class="font-label-sm text-label-sm text-outline">Fokus pada kualitas presisi, integritas rasa, &amp; inovasi berkala.</span></div></div><div class="lg:col-span-6 p-space-xl rounded-xl bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)] flex flex-col justify-between"><div class="flex flex-col gap-space-sm"><div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-fixed text-secondary font-label-sm text-label-sm w-fit"><span class="material-symbols-outlined text-[16px]">flag</span><span>Misi Kami</span></div><h3 class="font-headline-lg text-headline-lg text-on-surface">Tiga Langkah Nyata Dalam Setiap Butir Mochi</h3><ul class="flex flex-col gap-3 font-body-md text-body-md text-on-surface-variant"><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">check_circle</span><span><strong>Presisi &amp; Kesegaran Harian:</strong> Memproduksi secara terbatas setiap fajar dengan pengawasan rantai dingin 4°C tanpa pengawet sintesis.</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">check_circle</span><span><strong>Kemitraan Petani Berkelanjutan:</strong> Menyerap panen buah stroberi dan mangga premium dari petani dataran tinggi Ciwidey &amp; Lembang secara adil.</span></li><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">check_circle</span><span><strong>Keramahan &amp; Halal 100%:</strong> Menjamin setiap bahan baku dan proses tersertifikasi halal dengan pelayanan yang tulus dan hangat.</span></li></ul></div></div></div><div class="p-space-lg md:p-space-xl rounded-xl bg-surface-container flex flex-col md:flex-row items-center gap-space-lg shadow-[0_2px_8px_rgba(74,62,78,0.03)]"><div class="w-16 h-16 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0 shadow-sm"><span class="material-symbols-outlined text-[32px]">nest_eco_leaf</span></div><div class="flex flex-col gap-1 flex-1"><span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">Keberlanjutan &amp; Komitmen Lokal</span><h4 class="font-headline-sm text-headline-sm text-on-surface">Tumbuh Bersama Komunitas Petani Ciwidey &amp; Lembang</h4><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Setiap kilogram buah stroberi segar dan mangga harum manis dipetik langsung dari kebun mitra lokal bersertifikat Good Agricultural Practice (GAP). Kami menjamin harga beli yang adil bagi petani dan memastikan jejak karbon pengiriman seminimal mungkin.</p></div></div><div class="flex flex-col gap-space-lg"><div class="text-center max-w-xl mx-auto"><span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Para Pengrajin di Balik Ekimochi</span><h3 class="font-headline-lg text-headline-lg text-on-surface mt-1">Dedikasi Master Wagashi &amp; Tim Dapur</h3><p class="font-body-md text-body-md text-on-surface-variant mt-1">Kombinasi pengalaman kuliner Kyoto dengan kehangatan keramahan para barista &amp; pembuat mochi Indonesia.</p></div><div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg"><div class="p-space-lg rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)] flex flex-col gap-space-sm"><div class="flex items-center gap-space-md"><div class="w-14 h-14 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-headline-sm text-headline-sm font-bold">AR</div><div><h4 class="font-headline-sm text-headline-sm text-on-surface">Aiko Rahardjo</h4><p class="font-label-sm text-label-sm text-primary">Founder &amp; Head Artisan</p></div></div><p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Alumnus Wagashi Academy Kyoto dengan pengalaman 8 tahun meracik adonan mochi tradisional dan filling pastry modern.</p></div><div class="p-space-lg rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)] flex flex-col gap-space-sm"><div class="flex items-center gap-space-md"><div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary font-headline-sm text-headline-sm font-bold">KT</div><div><h4 class="font-headline-sm text-headline-sm text-on-surface">Kenji Takahashi</h4><p class="font-label-sm text-label-sm text-secondary">Culinary &amp; Quality Advisor</p></div></div><p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Pakar pengolahan tepung ketan Shiratamako dan penjaga konsistensi standar higienis dapur terbuka Ekimochi.</p></div><div class="p-space-lg rounded-lg bg-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(236,72,153,0.08)] flex flex-col gap-space-sm"><div class="flex items-center gap-space-md"><div class="w-14 h-14 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary font-headline-sm text-headline-sm font-bold">NS</div><div><h4 class="font-headline-sm text-headline-sm text-on-surface">Nadia Safira</h4><p class="font-label-sm text-label-sm text-tertiary">Local Sourcing &amp; Experience Lead</p></div></div><p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Menjembatani kemitraan erat bersama kelompok tani buah lokal serta memastikan pengalaman bersantap terbaik di boutique studio.</p></div></div></div></div></section>
+<!-- Interactive Concierge CTA Banner -->
+<section class="w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin py-space-xl"><div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-primary-container via-primary to-tertiary text-on-primary p-space-lg md:p-space-xl shadow-[0_16px_40px_rgba(236,72,153,0.22)]"><div class="absolute -right-16 -top-16 w-64 h-64 bg-secondary-container/30 rounded-full blur-2xl pointer-events-none"></div><div class="absolute -left-10 -bottom-10 w-48 h-48 bg-primary-fixed/20 rounded-full blur-xl pointer-events-none"></div><div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-space-lg"><div class="flex items-start gap-space-md max-w-xl"><div class="w-14 h-14 rounded-full bg-surface-container-lowest/20 backdrop-blur-md flex items-center justify-center shrink-0 text-on-primary"><span class="material-symbols-outlined text-[32px]">storefront</span></div><div class="flex flex-col gap-1"><div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-lowest/20 backdrop-blur-sm text-on-primary font-label-sm text-label-sm w-fit mb-1"><span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span><span>Kunjungi Atelier &amp; Tasting Studio Kami</span></div><h3 class="font-headline-lg text-headline-lg font-bold">Rasakan Kelembutan Daifuku Segar Langsung dari Dapur Kami</h3><p class="font-body-md text-body-md text-inverse-on-surface opacity-90">Nikmati sensasi mochi yang baru selesai dibalut dengan secangkir ceremonial matcha hangat di Senopati Jakarta atau Riau Bandung.</p></div></div><div class="flex flex-col sm:flex-row items-center gap-space-sm w-full lg:w-auto shrink-0"><a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-surface-container-lowest text-primary font-label-lg text-label-lg shadow-lg hover:bg-surface-container-high transition-transform duration-200 hover:scale-105" href="#"><span class="material-symbols-outlined text-[20px]">pin_drop</span><span>Lihat Lokasi Outlet</span></a><a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-secondary-container text-on-secondary-container font-label-lg text-label-lg shadow-md hover:bg-secondary-fixed transition-transform duration-200 hover:scale-105" href="#"><span class="material-symbols-outlined text-[20px]">restaurant_menu</span><span>Jelajahi Menu Mochi</span></a></div></div></div></section>
+</div>
+<script>
+  // FAQ Filter and Accordion Interaction Script
+  document.addEventListener('DOMContentLoaded', () => {
+    // Accordion Logic
+    const triggers = document.querySelectorAll('.faq-trigger');
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-item');
+        const content = item.querySelector('.faq-content');
+        const icon = trigger.querySelector('.faq-icon');
+        const isOpen = !content.classList.contains('hidden');
+
+        // Close all items in the accordion for neatness
+        document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+        document.querySelectorAll('.faq-icon').forEach(ic => ic.classList.remove('rotate-180'));
+
+        if (!isOpen) {
+          content.classList.remove('hidden');
+          icon.classList.add('rotate-180');
+        }
+      });
+    });
+
+    // Filter Logic
+    const filterTabs = document.querySelectorAll('.faq-tab');
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Update active tab styles
+        filterTabs.forEach(t => {
+          t.classList.remove('active', 'bg-primary', 'text-on-primary', 'shadow-[0_4px_12px_rgba(236,72,153,0.2)]');
+          t.classList.add('bg-surface-container-lowest', 'text-on-surface-variant');
+        });
+
+        tab.classList.add('active', 'bg-primary', 'text-on-primary', 'shadow-[0_4px_12px_rgba(236,72,153,0.2)]');
+        tab.classList.remove('bg-surface-container-lowest', 'text-on-surface-variant');
+
+        const category = tab.getAttribute('data-category');
+
+        faqItems.forEach(item => {
+          if (category === 'all' || item.getAttribute('data-cat') === category) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script></main><footer class="w-full bg-surface-container-low mt-space-xl"><div class="w-full max-w-[1280px] mx-auto px-margin py-space-xl"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-space-xl mb-space-xl"><div class="lg:col-span-2 flex flex-col gap-space-md"><div class="flex items-center gap-space-sm"><img alt="Ekimochi Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEHv5d_JfvyYWkoPBLUFEL2AwSP6yWNHfyjXpFLVJNBq9oLP3zJPJGUsbjjCe19ENYOTDGKBBDwxybOr7HfRBjCQNJrKen-b3vlsen8i8uXUPRuWGaJxk8GVxdKqShjx9lNbzctnHGEUT4VdvDHlGTB_kpLXE44z3e5QA7gyqaNX5ZS7YkC1tzCDY8NSBDK-0coFwovbMYgs89DeabbL0WmCTXvxfGPj-js_rR2pY"/><span class="font-headline-sm text-headline-sm text-primary font-bold">ekimochi</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Menghadirkan kelembutan daifuku mochi artisan bertekstur kenyal, lembut bak awan dengan isian buah segar dan krim premium pilihan dari Kyoto &amp; Hokkaido.</p><div class="flex items-center gap-space-sm"><a class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary shadow-[0_2px_6px_-1px_rgba(74,62,78,0.04)] hover:bg-primary hover:text-on-primary transition-all" href="#"><span class="material-symbols-outlined text-[18px]">share</span></a><a class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary shadow-[0_2px_6px_-1px_rgba(74,62,78,0.04)] hover:bg-primary hover:text-on-primary transition-all" href="#"><span class="material-symbols-outlined text-[18px]">chat</span></a><a class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary shadow-[0_2px_6px_-1px_rgba(74,62,78,0.04)] hover:bg-primary hover:text-on-primary transition-all" href="#"><span class="material-symbols-outlined text-[18px]">alternate_email</span></a></div></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-on-surface">Lokasi Outlet</h3><div class="flex flex-col gap-space-xs font-body-sm text-body-sm text-on-surface-variant"><p class="font-label-md text-label-md text-on-surface">Senopati Boutique Studio</p><p>Jl. Senopati No. 42, Kebayoran Baru, Jakarta Selatan</p><p class="font-label-sm text-label-sm text-primary">Setiap Hari: 09:00 - 21:00 WIB</p></div><div class="flex flex-col gap-space-xs font-body-sm text-body-sm text-on-surface-variant mt-space-sm"><p class="font-label-md text-label-md text-on-surface">Riau Atelier Bandung</p><p>Jl. L.L.R.E Martadinata No. 78, Cihapit, Bandung</p><p class="font-label-sm text-label-sm text-primary">Setiap Hari: 10:00 - 21:00 WIB</p></div></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-on-surface">Navigasi Cepat</h3><ul class="flex flex-col gap-space-xs font-body-sm text-body-sm text-on-surface-variant"><li><a class="hover:text-primary transition-colors" data-path="varian-rasa" href="#">Koleksi Signature Daifuku</a></li><li><a class="hover:text-primary transition-colors" data-path="paket-box" href="#">Custom Box of 4 &amp; 6</a></li><li><a class="hover:text-primary transition-colors" data-path="seasonal-edition" href="#">Edisi Sakura Musiman</a></li><li><a class="hover:text-primary transition-colors" data-path="corporate-gift" href="#">Hampers &amp; Souvenir</a></li><li><a class="hover:text-primary transition-colors" data-path="outlet-dan-faq" href="#">Petunjuk Konsumsi &amp; Simpan</a></li></ul></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-on-surface">Eki Sweets Club</h3><p class="font-body-sm text-body-sm text-on-surface-variant">Dapatkan promo eksklusif batch mingguan dan undangan mencicip rasa seasonal baru.</p><div class="flex items-center gap-space-xs"><input class="w-full px-space-md py-space-xs rounded-full bg-surface-container-lowest font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-secondary-container shadow-[0_2px_6px_-1px_rgba(74,62,78,0.03)]" placeholder="Ketik email Anda..." type="email"/><button class="p-space-xs rounded-full bg-primary text-on-primary hover:bg-primary-container transition-all flex items-center justify-center shrink-0" type="button"><span class="material-symbols-outlined text-[18px]">arrow_forward</span></button></div><span class="font-label-sm text-label-sm text-outline">*Bebas unsubscribe kapan saja.</span></div></div><div class="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-surface-variant"><div class="flex items-center gap-space-md flex-wrap"><span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Metode &amp; Pengiriman:</span><span class="px-3 py-1 rounded-full bg-surface-container-lowest font-label-sm text-label-sm text-on-surface shadow-[0_1px_4px_rgba(0,0,0,0.02)]">QRIS Instan</span><span class="px-3 py-1 rounded-full bg-surface-container-lowest font-label-sm text-label-sm text-on-surface shadow-[0_1px_4px_rgba(0,0,0,0.02)]">BCA Virtual Account</span><span class="px-3 py-1 rounded-full bg-surface-container-lowest font-label-sm text-label-sm text-on-surface shadow-[0_1px_4px_rgba(0,0,0,0.02)]">GoSend Chilled</span><span class="px-3 py-1 rounded-full bg-surface-container-lowest font-label-sm text-label-sm text-on-surface shadow-[0_1px_4px_rgba(0,0,0,0.02)]">GrabExpress Cool</span></div><p class="font-body-sm text-body-sm">© 2025 PT Ekimochi Boga Selaras. Hak cipta dilindungi.</p></div></div></footer></body></html>

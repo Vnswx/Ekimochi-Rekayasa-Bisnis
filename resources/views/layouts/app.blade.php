@@ -51,7 +51,7 @@
                 <a href="{{ route('packages.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Paket Box</a>
                 <a href="#tentang" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Tentang Kami</a>
                 <a href="#outlet" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Outlet</a>
-                <a href="#faq" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">FAQ</a>
+                <a href="{{ route('faq') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">FAQ</a>
               </div>
             </div>
           </div>
@@ -138,7 +138,7 @@
       <a href="{{ route('packages.index') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Paket Box</a>
       <a href="#tentang" class="block text-gray-700 font-medium hover:text-[#D26986]">Tentang Kami</a>
       <a href="#outlet" class="block text-gray-700 font-medium hover:text-[#D26986]">Outlet</a>
-      <a href="#faq" class="block text-gray-700 font-medium hover:text-[#D26986]">FAQ</a>
+      <a href="{{ route('faq') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">FAQ</a>
       <button onclick="openLoginModal()" class="w-full bg-[#D26986] text-white py-2 rounded-full font-semibold mt-2">Login / Register</button>
     </div>
   </header>
@@ -201,7 +201,7 @@
         <div class="flex space-x-6 mt-4 sm:mt-0">
           <a href="{{ route('home') }}" class="hover:text-[#D26986]">Kebijakan Privasi</a>
           <a href="{{ route('home') }}" class="hover:text-[#D26986]">Syarat & Ketentuan</a>
-          <a href="{{ route('home') }}#faq" class="hover:text-[#D26986]">FAQ</a>
+          <a href="{{ route('faq') }}" class="hover:text-[#D26986]">FAQ</a>
         </div>
       </div>
     </div>
