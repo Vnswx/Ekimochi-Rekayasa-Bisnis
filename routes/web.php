@@ -83,6 +83,21 @@ Route::middleware('auth')->group(function () {
     // Checkout
     Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'store'])->name('checkout.store');
+    
+    // QR Scan for Dine In
+    Route::get('/scan/{qrToken}', function($qrToken) {
+        $table = App\Models\OutletTable::where('qr_token', $qrToken)
+            ->where('is_active', true)
+            ->with('outlet')
+            ->first();
+        
+        if (!$table) {
+            return redirect()->route('home')->with('error', 'QR Code tidak valid');
+        }
+        
+        // Redirect ke checkout dengan QR token
+        return redirect()->route('checkout.index', ['qr' => $qrToken]);
+    })->name('scan.table');
 
     // Payment
     Route::get('/payment/{order}', [App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
@@ -101,6 +116,17 @@ Route::middleware('auth')->group(function () {
         Route::post('/categories', [\App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('categories.store');
         Route::put('/categories/{category}', [\App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [\App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
+        
+        // Sales / Orders
+        Route::get('/sales', [\App\Http\Controllers\Admin\SalesController::class, 'index'])->name('sales.index');
+        Route::get('/sales/{order}', [\App\Http\Controllers\Admin\SalesController::class, 'show'])->name('sales.show');
+        Route::put('/sales/{order}/status', [\App\Http\Controllers\Admin\SalesController::class, 'updateStatus'])->name('sales.updateStatus');
+        
+        // Outlets & Tables
+        Route::get('/outlets', function() {
+            $outlets = App\Models\Outlet::with('tables')->get();
+            return view('admin.outlets.index', compact('outlets'));
+        })->name('outlets.index');
     });
 });
 

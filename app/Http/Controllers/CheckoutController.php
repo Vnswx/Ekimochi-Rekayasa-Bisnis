@@ -16,7 +16,7 @@ class CheckoutController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $cart = session('cart', []);
         $customPackages = session('cart_custom_packages', []);
@@ -49,22 +49,65 @@ class CheckoutController extends Controller
             $subtotal += $package['total_price'];
         }
 
-        $shippingCost = 15000;
+        // Get outlets for selection
+        $outlets = \App\Models\Outlet::active()->get();
+        
+        // Check if coming from QR scan
+        $qrToken = $request->query('qr');
+        $selectedTable = null;
+        $selectedOutlet = null;
+        
+        if ($qrToken) {
+            $selectedTable = \App\Models\OutletTable::where('qr_token', $qrToken)
+                ->where('is_active', true)
+                ->with('outlet')
+                ->first();
+                
+            if ($selectedTable) {
+                $selectedOutlet = $selectedTable->outlet;
+            }
+        }
+
+        $shippingCost = 0; // Default untuk dine_in dan take_away
         $total = $subtotal + $shippingCost;
         $user = Auth::user();
 
-        return view('checkout.index', compact('cartItems', 'customPackages', 'subtotal', 'shippingCost', 'total', 'user'));
+        return view('checkout.index', compact(
+            'cartItems', 
+            'customPackages', 
+            'subtotal', 
+            'shippingCost', 
+            'total', 
+            'user',
+            'outlets',
+            'selectedTable',
+            'selectedOutlet'
+        ));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        // Base validation
+        $rules = [
+            'order_type' => 'required|in:dine_in,take_away,delivery',
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'required|email|max:255',
             'customer_phone' => 'required|string|max:20',
-            'shipping_address' => 'required|string|max:500',
             'notes' => 'nullable|string|max:1000',
-        ]);
+        ];
+
+        // Conditional validation based on order_type
+        if ($request->order_type === 'dine_in') {
+            $rules['qr_token'] = 'required|exists:outlet_tables,qr_token';
+        } elseif ($request->order_type === 'take_away') {
+            $rules['outlet_id'] = 'required|exists:outlets,id';
+        } elseif ($request->order_type === 'delivery') {
+            $rules['shipping_address'] = 'required|string|max:500';
+            $rules['latitude'] = 'nullable|numeric';
+            $rules['longitude'] = 'nullable|numeric';
+        }
+
+        $validated = $request->validate($rules);
 
         $cart = session('cart', []);
         $customPackages = session('cart_custom_packages', []);
@@ -79,6 +122,7 @@ class CheckoutController extends Controller
         try {
             $subtotal = 0;
             $orderItems = [];
+            $totalItemCount = 0;
 
             // Process regular products
             foreach ($cart as $productId => $quantity) {
@@ -90,6 +134,7 @@ class CheckoutController extends Controller
 
                 $itemSubtotal = $product->price * $quantity;
                 $subtotal += $itemSubtotal;
+                $totalItemCount += $quantity;
 
                 $orderItems[] = [
                     'product' => $product,
@@ -102,8 +147,8 @@ class CheckoutController extends Controller
             // Process custom packages
             foreach ($customPackages as $package) {
                 $subtotal += $package['total_price'];
+                $totalItemCount += $package['total_items'];
                 
-                // Add custom package as a single order item
                 $orderItems[] = [
                     'product' => null,
                     'is_custom_package' => true,
@@ -114,26 +159,83 @@ class CheckoutController extends Controller
                 ];
             }
 
-            $shippingCost = 15000;
+            // Determine outlet, shipping cost, and delivery distance
+            $outletId = null;
+            $outletTableId = null;
+            $shippingCost = 0;
+            $deliveryDistance = null;
+            $shippingAddress = null;
+
+            if ($validated['order_type'] === 'dine_in') {
+                $table = \App\Models\OutletTable::where('qr_token', $validated['qr_token'])
+                    ->where('is_active', true)
+                    ->firstOrFail();
+                $outletId = $table->outlet_id;
+                $outletTableId = $table->id;
+                $shippingCost = 0;
+            } elseif ($validated['order_type'] === 'take_away') {
+                $outletId = $validated['outlet_id'];
+                $shippingCost = 0;
+            } elseif ($validated['order_type'] === 'delivery') {
+                $shippingAddress = $validated['shipping_address'];
+                
+                // Find nearest outlet and calculate shipping cost
+                if (isset($validated['latitude']) && isset($validated['longitude'])) {
+                    $nearestOutlet = $this->findNearestOutlet($validated['latitude'], $validated['longitude']);
+                    
+                    if (!$nearestOutlet) {
+                        throw new \Exception('Tidak ada outlet terdekat yang ditemukan');
+                    }
+                    
+                    $deliveryDistance = $nearestOutlet->distanceTo($validated['latitude'], $validated['longitude']);
+                    
+                    if ($deliveryDistance > 15) {
+                        throw new \Exception('Maaf, lokasi Anda terlalu jauh dari outlet kami (maksimal 15 km). Jarak: ' . number_format($deliveryDistance, 2) . ' km');
+                    }
+                    
+                    // Calculate shipping cost based on distance
+                    if ($deliveryDistance <= 5) {
+                        $shippingCost = 15000;
+                    } elseif ($deliveryDistance <= 10) {
+                        $shippingCost = 25000;
+                    } elseif ($deliveryDistance <= 15) {
+                        $shippingCost = 35000;
+                    }
+                    
+                    $outletId = $nearestOutlet->id;
+                } else {
+                    // Default jika tidak ada koordinat
+                    $shippingCost = 15000;
+                    $outletId = \App\Models\Outlet::active()->first()->id;
+                }
+            }
+
             $totalAmount = $subtotal + $shippingCost;
+
+            // Calculate estimated ready time
+            $estimatedReadyTime = $this->calculateEstimatedReadyTime($validated['order_type'], $totalItemCount);
 
             $order = Order::create([
                 'order_number' => Order::generateOrderNumber(),
+                'order_type' => $validated['order_type'],
+                'outlet_id' => $outletId,
+                'outlet_table_id' => $outletTableId,
                 'user_id' => Auth::id(),
                 'customer_name' => $validated['customer_name'],
                 'customer_email' => $validated['customer_email'],
                 'customer_phone' => $validated['customer_phone'],
-                'shipping_address' => $validated['shipping_address'],
+                'shipping_address' => $shippingAddress,
                 'subtotal' => $subtotal,
                 'shipping_cost' => $shippingCost,
+                'delivery_distance' => $deliveryDistance,
                 'total_amount' => $totalAmount,
+                'estimated_ready_time' => $estimatedReadyTime,
                 'status' => 'pending',
                 'notes' => $validated['notes'] ?? null,
             ]);
 
             foreach ($orderItems as $item) {
                 if (isset($item['is_custom_package']) && $item['is_custom_package']) {
-                    // Save custom package as order item
                     OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => null,
@@ -142,10 +244,9 @@ class CheckoutController extends Controller
                         'price' => $item['price'],
                         'quantity' => 1,
                         'subtotal' => $item['subtotal'],
-                        'notes' => json_encode($item['custom_package_data']), // Store package details in notes
+                        'notes' => json_encode($item['custom_package_data']),
                     ]);
                 } else {
-                    // Regular product
                     OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => $item['product']->id,
@@ -174,5 +275,44 @@ class CheckoutController extends Controller
             return back()->withInput()
                 ->with('error', 'Gagal membuat order: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Find nearest outlet based on coordinates
+     */
+    private function findNearestOutlet($lat, $lon)
+    {
+        $outlets = \App\Models\Outlet::active()->get();
+        $nearestOutlet = null;
+        $minDistance = PHP_FLOAT_MAX;
+
+        foreach ($outlets as $outlet) {
+            $distance = $outlet->distanceTo($lat, $lon);
+            if ($distance !== null && $distance < $minDistance) {
+                $minDistance = $distance;
+                $nearestOutlet = $outlet;
+            }
+        }
+
+        return $nearestOutlet;
+    }
+
+    /**
+     * Calculate estimated ready time
+     * Base time + 2 minutes per item
+     */
+    private function calculateEstimatedReadyTime($orderType, $itemCount)
+    {
+        $baseMinutes = [
+            'dine_in' => 15,
+            'take_away' => 20,
+            'delivery' => 30,
+        ];
+
+        $base = $baseMinutes[$orderType] ?? 20;
+        $additional = $itemCount * 2;
+        $totalMinutes = $base + $additional;
+
+        return now()->addMinutes($totalMinutes);
     }
 }
