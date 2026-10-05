@@ -46,9 +46,9 @@
                    required>
             <div class="border-2 border-gray-200 rounded-2xl p-5 text-center transition-all peer-checked:border-[#D26986] peer-checked:bg-[#FBE8EE] peer-checked:shadow-lg">
               <div class="text-4xl mb-2">
-                @if($key == 'small') 📦
-                @elseif($key == 'medium') 📦📦
-                @else 📦📦📦
+                @if($key == 'small') 
+                @elseif($key == 'medium') 
+                @else 
                 @endif
               </div>
               <p class="font-bold text-gray-900 mb-1">{{ $box['name'] }}</p>

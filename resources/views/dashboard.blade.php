@@ -257,12 +257,12 @@
         $displayedProducts = $products->whereNotIn('category.name', ['Paket Box'])->take(6);
       @endphp
       @foreach($products->whereNotIn('category.name', ['Paket Box']) as $index => $product)
-      <div class="product-card bg-white rounded-3xl p-5 shadow-sm hover:shadow-xl transition border border-rose-100 flex flex-col justify-between" 
+      <div class="product-card bg-white rounded-3xl p-5 shadow-sm hover:shadow-xl transition border border-rose-100 flex flex-col justify-between group" 
            data-category="{{ strtolower(str_replace(' ', '-', $product->category->name)) }}"
            style="display: {{ $index < 6 ? 'flex' : 'none' }};">
-        <div>
+        <a href="{{ route('catalog.show', $product) }}" class="cursor-pointer">
           <div class="relative overflow-hidden rounded-2xl mb-4">
-            <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-56 object-cover transform hover:scale-105 transition duration-500">
+            <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-56 object-cover transform group-hover:scale-105 transition duration-500">
             @if($loop->first)
             <span class="absolute top-3 left-3 bg-[#D26986] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Terlaris</span>
             @endif
@@ -271,15 +271,15 @@
             <span class="bg-rose-50 text-[#D26986] text-xs font-semibold px-2.5 py-0.5 rounded">{{ $product->category->name }}</span>
             <span class="bg-amber-50 text-amber-700 text-xs font-semibold px-2.5 py-0.5 rounded"><i class="fa-solid fa-star text-amber-400 mr-1"></i>4.9</span>
           </div>
-          <h3 class="font-bold text-lg text-gray-800">{{ $product->name }}</h3>
+          <h3 class="font-bold text-lg text-gray-800 group-hover:text-[#D26986] transition">{{ $product->name }}</h3>
           <p class="text-gray-500 text-xs mt-1 leading-relaxed">{{ Str::limit($product->description, 80) }}</p>
-        </div>
+        </a>
         <div class="flex items-center justify-between mt-6 pt-4 border-t border-rose-50">
           <div>
             <span class="text-[10px] text-gray-400 block uppercase font-bold">Harga Satuan</span>
             <span class="text-lg font-extrabold text-[#D26986]">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
           </div>
-          <button onclick="addToCart('{{ $product->name }}', {{ $product->price }}, '{{ asset('images/homepage/' . $product->image) }}')" class="w-10 h-10 rounded-full bg-[#D26986] hover:bg-[#BD5773] text-white flex items-center justify-center shadow-md transition transform active:scale-95">
+          <button onclick="addToCart('{{ $product->name }}', {{ $product->price }}, '{{ asset('storage/' . $product->image) }}')" class="w-10 h-10 rounded-full bg-[#D26986] hover:bg-[#BD5773] text-white flex items-center justify-center shadow-md transition transform active:scale-95">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
@@ -304,7 +304,7 @@
       <!-- Box Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
         @foreach($boxPackages as $index => $box)
-        <div class="bg-white rounded-3xl p-6 shadow-md border {{ $index === 1 ? 'border-2 border-[#D26986] shadow-xl transform md:-translate-y-4' : 'border-rose-100' }} flex flex-col justify-between relative">
+        <div class="bg-white rounded-3xl p-6 shadow-md border {{ $index === 1 ? 'border-2 border-[#D26986] shadow-xl transform md:-translate-y-4' : 'border-rose-100' }} flex flex-col justify-between relative group">
           @if($index === 1)
           <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#D26986] text-white text-[10px] uppercase font-extrabold tracking-wider px-4 py-1 rounded-full shadow-md">
             Paling Favorit
@@ -313,9 +313,11 @@
           <span class="absolute top-4 right-4 bg-{{ $index === 0 ? 'rose' : 'indigo' }}-50 text-{{ $index === 0 ? '[#D26986]' : 'indigo-700' }} text-xs font-bold px-3 py-1 rounded-full">{{ $index === 0 ? 'Paling Hemat' : 'Eksklusif' }}</span>
           @endif
           <div>
-            <img src="{{ asset('storage/' . $box->image) }}" alt="{{ $box->name }}" class="w-full h-48 object-cover rounded-2xl mb-6">
-            <h3 class="text-xl font-extrabold text-gray-900">{{ $box->name }}</h3>
-            <p class="text-xs text-gray-500 mt-1">{{ Str::limit($box->description, 90) }}</p>
+            <a href="{{ route('packages.show', $box) }}" class="block cursor-pointer">
+              <img src="{{ asset('storage/' . $box->image) }}" alt="{{ $box->name }}" class="w-full h-48 object-cover rounded-2xl mb-6 transform group-hover:scale-105 transition duration-500">
+              <h3 class="text-xl font-extrabold text-gray-900 group-hover:text-[#D26986] transition">{{ $box->name }}</h3>
+              <p class="text-xs text-gray-500 mt-1">{{ Str::limit($box->description, 90) }}</p>
+            </a>
             <ul class="mt-4 space-y-2 text-xs text-gray-600">
               @if(str_contains($box->name, '4'))
               <li><i class="fa-solid fa-check text-[#D26986] mr-2"></i> Bebas pilih 4 varian rasa mochi</li>
@@ -337,9 +339,14 @@
               <span class="text-xs text-gray-400 font-bold uppercase">Harga Paket</span>
               <span class="text-2xl font-extrabold text-[#D26986]">Rp {{ number_format($box->price, 0, ',', '.') }}</span>
             </div>
-            <button onclick="addToCart('{{ $box->name }}', {{ $box->price }}, '{{ asset('images/homepage/' . $box->image) }}')" class="w-full bg-[#D26986] hover:bg-[#BD5773] text-white font-bold py-3 rounded-full shadow-md transition text-sm">
-              Pilih Paket Box
-            </button>
+            <div class="grid grid-cols-2 gap-2">
+              <a href="{{ route('packages.show', $box) }}" class="w-full bg-white border-2 border-[#D26986] hover:bg-rose-50 text-[#D26986] font-bold py-3 rounded-full transition text-sm text-center">
+                <i class="fa-solid fa-eye mr-1"></i> Detail
+              </a>
+              <button onclick="addToCart('{{ $box->name }}', {{ $box->price }}, '{{ asset('storage/' . $box->image) }}')" class="w-full bg-[#D26986] hover:bg-[#BD5773] text-white font-bold py-3 rounded-full shadow-md transition text-sm">
+                <i class="fa-solid fa-plus mr-1"></i> Keranjang
+              </button>
+            </div>
           </div>
         </div>
         @endforeach
