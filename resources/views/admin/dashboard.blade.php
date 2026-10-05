@@ -11,7 +11,70 @@
       <p class="text-sm text-gray-500 mt-1">Selamat datang kembali, {{ Auth::user()->name }}! Berikut adalah situasi terkini toko Anda.</p>
     </div>
 
-    <!-- Stats Grid -->
+    <!-- Sales Stats (Primary) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Total Revenue -->
+      <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 shadow-lg text-white">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+            <i class="fa-solid fa-money-bill-wave text-2xl"></i>
+          </div>
+          <span class="text-xs font-bold bg-white/20 px-2 py-1 rounded-full">Total</span>
+        </div>
+        <h3 class="text-3xl font-bold">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
+        <p class="text-sm text-white/80 mt-1">Total Pendapatan</p>
+        <div class="mt-4 text-xs bg-white/10 rounded-lg px-3 py-2">
+          <i class="fa-solid fa-calendar-day mr-1"></i> Hari Ini: Rp {{ number_format($todayRevenue, 0, ',', '.') }}
+        </div>
+      </div>
+
+      <!-- Total Orders -->
+      <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+            <i class="fa-solid fa-shopping-cart text-blue-600 text-xl"></i>
+          </div>
+          <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">Pesanan</span>
+        </div>
+        <h3 class="text-3xl font-bold text-gray-900">{{ $totalOrders }}</h3>
+        <p class="text-sm text-gray-500 mt-1">Total Pesanan</p>
+        <div class="mt-4 text-xs text-blue-600">
+          <i class="fa-solid fa-calendar-day mr-1"></i> Hari Ini: {{ $todayOrders }} pesanan
+        </div>
+      </div>
+
+      <!-- Pending Orders -->
+      <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+            <i class="fa-solid fa-clock text-amber-600 text-xl"></i>
+          </div>
+          <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Pending</span>
+        </div>
+        <h3 class="text-3xl font-bold text-gray-900">{{ $pendingOrders }}</h3>
+        <p class="text-sm text-gray-500 mt-1">Pesanan Pending</p>
+        <div class="mt-4 text-xs text-gray-600">
+          <span class="text-orange-600"><i class="fa-solid fa-circle mr-1"></i> Proses: {{ $processingOrders }}</span>
+        </div>
+      </div>
+
+      <!-- Completed Orders -->
+      <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+            <i class="fa-solid fa-check-circle text-green-600 text-xl"></i>
+          </div>
+          <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">Selesai</span>
+        </div>
+        <h3 class="text-3xl font-bold text-gray-900">{{ $completedOrders }}</h3>
+        <p class="text-sm text-gray-500 mt-1">Pesanan Selesai</p>
+        <a href="{{ route('admin.sales.index') }}" class="mt-4 inline-flex items-center text-xs font-semibold text-green-600 hover:text-green-700">
+          Lihat Semua <i class="fa-solid fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Product Stats (Secondary) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
         <div class="flex items-center justify-between mb-4">
@@ -71,6 +134,53 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Recent Orders -->
+      <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-lg font-bold text-gray-900">Pesanan Terkini</h2>
+          <a href="{{ route('admin.sales.index') }}" class="text-xs font-semibold text-[#D26986] hover:text-[#BD5773]">
+            Lihat semua <i class="fa-solid fa-arrow-right ml-1"></i>
+          </a>
+        </div>
+        
+        <div class="space-y-4">
+          @forelse($recentOrders as $order)
+          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-2">
+                <h3 class="text-sm font-bold text-gray-900">{{ $order->order_number }}</h3>
+                @if($order->payment)
+                  @if($order->payment->status === 'settlement')
+                    <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Dibayar</span>
+                  @elseif($order->payment->status === 'pending')
+                    <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Pending</span>
+                  @else
+                    <span class="text-xs font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">{{ ucfirst($order->payment->status) }}</span>
+                  @endif
+                @endif
+              </div>
+              <p class="text-xs text-gray-600">{{ $order->customer_name }}</p>
+              <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                <span><i class="fa-solid fa-box mr-1"></i>{{ $order->items->count() }} item</span>
+                <span>•</span>
+                <span class="font-semibold text-[#D26986]">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-clock mr-1"></i>{{ $order->created_at->diffForHumans() }}</span>
+              </div>
+            </div>
+            <a href="{{ route('admin.sales.show', $order->id) }}" class="text-xs font-medium text-gray-600 hover:text-[#D26986] ml-4">
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+          @empty
+          <div class="text-center py-8 text-gray-500">
+            <i class="fa-solid fa-inbox text-4xl mb-2"></i>
+            <p class="text-sm">Belum ada pesanan</p>
+          </div>
+          @endforelse
+        </div>
+      </div>
+
       <!-- Categories Overview -->
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
         <div class="flex items-center justify-between mb-6">

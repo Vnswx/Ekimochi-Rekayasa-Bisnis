@@ -50,6 +50,9 @@
           <a href="{{ route('admin.dashboard') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-[#D26986] text-white' : 'text-gray-600 hover:bg-gray-100' }} transition">
             <i class="fa-solid fa-house mr-1"></i> Dashbor
           </a>
+          <a href="{{ route('admin.sales.index') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('admin.sales.*') ? 'bg-[#D26986] text-white' : 'text-gray-600 hover:bg-gray-100' }} transition">
+            <i class="fa-solid fa-chart-line mr-1"></i> Penjualan
+          </a>
           <a href="{{ route('admin.products.index') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('admin.products.*') ? 'bg-[#D26986] text-white' : 'text-gray-600 hover:bg-gray-100' }} transition">
             <i class="fa-solid fa-box mr-1"></i> Produk
           </a>
@@ -115,6 +118,9 @@
     <div x-data="{ mobileOpen: false }" x-show="mobileOpen" class="md:hidden bg-white border-t border-gray-200 px-4 py-4 space-y-2">
       <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-[#D26986] text-white' : 'text-gray-700 hover:bg-gray-100' }} text-sm font-medium">
         <i class="fa-solid fa-house mr-2"></i> Dashboard
+      </a>
+      <a href="{{ route('admin.sales.index') }}" class="block px-3 py-2 rounded-lg {{ request()->routeIs('admin.sales.*') ? 'bg-[#D26986] text-white' : 'text-gray-700 hover:bg-gray-100' }} text-sm font-medium">
+        <i class="fa-solid fa-chart-line mr-2"></i> Penjualan
       </a>
       <a href="{{ route('admin.products.index') }}" class="block px-3 py-2 rounded-lg {{ request()->routeIs('admin.products.*') ? 'bg-[#D26986] text-white' : 'text-gray-700 hover:bg-gray-100' }} text-sm font-medium">
         <i class="fa-solid fa-box mr-2"></i> Products

@@ -56,6 +56,7 @@ class DashboardController extends Controller
      */
     public function adminDashboard(): View
     {
+        // Product statistics
         $totalProducts = Product::count();
         $activeProducts = Product::where('status', 'active')->count();
         $inactiveProducts = Product::where('status', 'inactive')->count();
@@ -70,6 +71,29 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
         
+        // Sales statistics
+        $totalOrders = \App\Models\Order::count();
+        $totalRevenue = \App\Models\Order::whereHas('payment', function($q) {
+            $q->where('status', 'settlement');
+        })->sum('total_amount');
+        
+        $pendingOrders = \App\Models\Order::where('status', 'pending')->count();
+        $processingOrders = \App\Models\Order::where('status', 'processing')->count();
+        $completedOrders = \App\Models\Order::where('status', 'completed')->count();
+        
+        // Today's sales
+        $todayOrders = \App\Models\Order::whereDate('created_at', today())->count();
+        $todayRevenue = \App\Models\Order::whereDate('created_at', today())
+            ->whereHas('payment', function($q) {
+                $q->where('status', 'settlement');
+            })->sum('total_amount');
+        
+        // Recent orders
+        $recentOrders = \App\Models\Order::with(['user', 'payment', 'items'])
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+        
         return view('admin.dashboard', compact(
             'totalProducts',
             'activeProducts',
@@ -78,7 +102,15 @@ class DashboardController extends Controller
             'outOfStockProducts',
             'totalCategories',
             'categories',
-            'recentProducts'
+            'recentProducts',
+            'totalOrders',
+            'totalRevenue',
+            'pendingOrders',
+            'processingOrders',
+            'completedOrders',
+            'todayOrders',
+            'todayRevenue',
+            'recentOrders'
         ));
     }
 }

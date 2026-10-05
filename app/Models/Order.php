@@ -14,6 +14,9 @@ class Order extends Model
 
     protected $fillable = [
         'order_number',
+        'order_type',
+        'outlet_id',
+        'outlet_table_id',
         'user_id',
         'customer_name',
         'customer_email',
@@ -21,7 +24,9 @@ class Order extends Model
         'shipping_address',
         'subtotal',
         'shipping_cost',
+        'delivery_distance',
         'total_amount',
+        'estimated_ready_time',
         'status',
         'notes',
     ];
@@ -29,7 +34,9 @@ class Order extends Model
     protected $casts = [
         'subtotal' => 'decimal:2',
         'shipping_cost' => 'decimal:2',
+        'delivery_distance' => 'decimal:2',
         'total_amount' => 'decimal:2',
+        'estimated_ready_time' => 'datetime',
     ];
 
     public static function generateOrderNumber(): string
@@ -56,6 +63,16 @@ class Order extends Model
         return $this->hasOne(Payment::class);
     }
 
+    public function outlet(): BelongsTo
+    {
+        return $this->belongsTo(Outlet::class);
+    }
+
+    public function outletTable(): BelongsTo
+    {
+        return $this->belongsTo(OutletTable::class);
+    }
+
     public function isPaid(): bool
     {
         return $this->payment && $this->payment->status === 'settlement';
@@ -64,5 +81,20 @@ class Order extends Model
     public function isPending(): bool
     {
         return $this->status === 'pending';
+    }
+
+    public function isDineIn(): bool
+    {
+        return $this->order_type === 'dine_in';
+    }
+
+    public function isTakeAway(): bool
+    {
+        return $this->order_type === 'take_away';
+    }
+
+    public function isDelivery(): bool
+    {
+        return $this->order_type === 'delivery';
     }
 }
