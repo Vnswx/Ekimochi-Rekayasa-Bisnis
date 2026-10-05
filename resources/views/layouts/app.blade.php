@@ -49,7 +49,7 @@
                 <a href="/" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Beranda</a>
                 <a href="{{ route('catalog.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Katalog</a>
                 <a href="{{ route('packages.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Paket Box</a>
-                <a href="#tentang" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Tentang Kami</a>
+                <a href="{{ route('about') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Tentang Kami</a>
                 <a href="#outlet" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Outlet</a>
                 <a href="{{ route('faq') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">FAQ</a>
               </div>
@@ -133,10 +133,10 @@
 
     <!-- Mobile Menu Dropdown -->
     <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-rose-100 px-6 py-4 space-y-3 shadow-lg">
-      <a href="#beranda" class="block text-gray-700 font-medium hover:text-[#D26986]">Beranda</a>
+      <a href="/" class="block text-gray-700 font-medium hover:text-[#D26986]">Beranda</a>
       <a href="{{ route('catalog.index') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Katalog</a>
       <a href="{{ route('packages.index') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Paket Box</a>
-      <a href="#tentang" class="block text-gray-700 font-medium hover:text-[#D26986]">Tentang Kami</a>
+      <a href="{{ route('about') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Tentang Kami</a>
       <a href="#outlet" class="block text-gray-700 font-medium hover:text-[#D26986]">Outlet</a>
       <a href="{{ route('faq') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">FAQ</a>
       <button onclick="openLoginModal()" class="w-full bg-[#D26986] text-white py-2 rounded-full font-semibold mt-2">Login / Register</button>
