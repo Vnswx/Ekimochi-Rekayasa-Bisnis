@@ -8,8 +8,8 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center">
       <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-rose-100 mb-6">
-        <i class="fa-solid fa-circle-question text-[#D26986]"></i>
-        <span class="text-sm font-semibold text-gray-700">Pusat Bantuan</span>
+        <!-- <i class="fa-solid fa-circle-question text-[#D26986]"></i> -->
+        <!-- <span class="text-sm font-semibold text-gray-700">Pusat Bantuan</span> -->
       </div>
       <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
         Pertanyaan yang Sering Diajukan
