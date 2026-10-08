@@ -16,9 +16,13 @@
     <!-- Profile Header -->
     <div class="bg-gradient-to-r from-[#D26986] to-[#BD5773] p-8 text-white">
       <div class="flex items-center gap-6">
-        <div class="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center text-4xl font-bold border-4 border-white/30">
-          {{ strtoupper(substr($user->name, 0, 1)) }}
-        </div>
+        @if($user->profile_photo)
+          <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="w-24 h-24 rounded-full object-cover border-4 border-white/30 shadow-lg">
+        @else
+          <div class="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center text-4xl font-bold border-4 border-white/30">
+            {{ $user->initial }}
+          </div>
+        @endif
         <div>
           <h1 class="text-3xl font-bold">{{ $user->name }}</h1>
           {{-- <p class="text-white/90 mt-1">@{{ $user->username }}</p> --}}
