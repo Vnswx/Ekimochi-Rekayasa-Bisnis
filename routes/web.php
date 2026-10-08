@@ -127,6 +127,9 @@ Route::middleware('auth')->group(function () {
             $outlets = App\Models\Outlet::with('tables')->get();
             return view('admin.outlets.index', compact('outlets'));
         })->name('outlets.index');
+        
+        // Users Management
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
     });
 });
 
