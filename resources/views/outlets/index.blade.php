@@ -55,7 +55,7 @@
       <!-- Map Thumbnail -->
       <div class="relative h-48 bg-gradient-to-br from-[#FBE8EE] to-rose-100 overflow-hidden">
         @if($outlet->latitude && $outlet->longitude)
-        <img src="https://api.mapbox.com/styles/v1/mapbox/light-v11/static/pin-s-cafe+D26986({{ $outlet->longitude }},{{ $outlet->latitude }})/{{ $outlet->longitude }},{{ $outlet->latitude }},13,0/600x300@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" 
+        <!-- <img src="https://api.mapbox.com/styles/v1/mapbox/light-v11/static/pin-s-cafe+D26986({{ $outlet->longitude }},{{ $outlet->latitude }})/{{ $outlet->longitude }},{{ $outlet->latitude }},13,0/600x300@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"  -->
              alt="Map {{ $outlet->name }}"
              class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
         @else
