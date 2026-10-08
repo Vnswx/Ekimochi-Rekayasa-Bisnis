@@ -38,7 +38,7 @@
       <!-- Logo & Brand -->
       <div class="flex items-center space-x-8">
         <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2">
-          <img width="200" src="{{ asset('images\homepage\3dgifmaker68576.gif') }}" alt="">
+          <img width="200" src="{{ asset('images\homepage\logo perusahaan.png') }}" alt="">
           <div class="hidden sm:block">
             {{-- <div class="text-sm font-bold text-gray-900">Admin Panel</div>
             <div class="text-xs text-gray-500">Ekimochi Management</div> --}}
