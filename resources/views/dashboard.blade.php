@@ -69,11 +69,11 @@
             <div class="flex items-center justify-between h-20">
               <!-- Navlist Navigasi -->
               <div class="md:flex items-center space-x-1 text-sm font-medium text-gray-600">
-                <a href="/" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Beranda</a>
+                 <a href="/" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Beranda</a>
                 <a href="{{ route('catalog.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Katalog</a>
                 <a href="{{ route('packages.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Paket Box</a>
-                <a href="#tentang" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Tentang Kami</a>
-                <a href="#outlet" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Outlet</a>
+                <a href="{{ route('about') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Tentang Kami</a>
+                <a href="{{ route('outlets.index') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">Outlet</a>
                 <a href="{{ route('faq') }}" class="nav-link px-3 py-2 rounded-lg hover:text-white hover:bg-[#D26986] transition">FAQ</a>
               </div>
             </div>
