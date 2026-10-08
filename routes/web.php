@@ -57,6 +57,12 @@ Route::view('/faq', 'faq')->name('faq');
 // About Page
 Route::view('/about', 'about')->name('about');
 
+// Outlets Page
+Route::get('/outlets', function() {
+    $outlets = \App\Models\Outlet::active()->with('tables')->get();
+    return view('outlets.index', compact('outlets'));
+})->name('outlets.index');
+
 // Cart Routes (public)
 Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{product}', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
