@@ -3,7 +3,7 @@
 @section('title', 'Edit Profile - Ekimochi')
 
 @section('content')
-<div class="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
   <a href="{{ route('profile.show') }}" class="inline-flex items-center text-[#D26986] hover:text-[#BD5773] font-semibold text-sm mb-6">
     <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Profile
   </a>
@@ -27,13 +27,13 @@
   @endif
 
   <!-- Photo Profile Card -->
-  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-8 mb-6">
-    <h2 class="text-xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
+  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-4 sm:p-8 mb-6">
+    <h2 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
       <i class="fa-solid fa-camera text-[#D26986]"></i>
       Foto Profile
     </h2>
     
-    <div class="flex flex-col md:flex-row gap-8 items-start">
+    <div class="flex flex-col md:flex-row gap-6 sm:gap-8 items-start">
       <!-- Current Photo Preview -->
       <div class="flex-shrink-0">
         <div class="text-center">
@@ -120,8 +120,8 @@
   </div>
 
   <!-- Basic Info Card -->
-  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-8 mb-6">
-    <h2 class="text-xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
+  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-4 sm:p-8 mb-6">
+    <h2 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
       <i class="fa-solid fa-user text-[#D26986]"></i>
       Informasi Dasar
     </h2>
@@ -159,8 +159,8 @@
   </div>
 
   <!-- Email Card -->
-  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-8 mb-6">
-    <h2 class="text-xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
+  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-4 sm:p-8 mb-6">
+    <h2 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
       <i class="fa-solid fa-envelope text-[#D26986]"></i>
       Email Account
     </h2>
@@ -196,8 +196,8 @@
   </div>
 
   <!-- Password Card -->
-  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-8">
-    <h2 class="text-xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
+  <div class="bg-white rounded-3xl shadow-lg border border-rose-100 p-4 sm:p-8">
+    <h2 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 pb-3 border-b-2 border-rose-100 flex items-center gap-2">
       <i class="fa-solid fa-lock text-[#D26986]"></i>
       Ubah Password
     </h2>
