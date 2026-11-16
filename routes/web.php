@@ -63,6 +63,9 @@ Route::get('/outlets', function() {
     return view('outlets.index', compact('outlets'));
 })->name('outlets.index');
 
+// Blog Page
+Route::view('/blog', 'blog.blog')->name('blog');
+
 // Cart Routes (public)
 Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{product}', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
