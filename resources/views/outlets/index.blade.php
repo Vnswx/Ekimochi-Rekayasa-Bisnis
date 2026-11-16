@@ -52,10 +52,19 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     @foreach($outlets as $outlet)
     <div class="bg-white rounded-3xl shadow-md border border-rose-100 overflow-hidden hover:shadow-xl transition group">
-      <!-- Map Thumbnail -->
+      <!-- Outlet Photo -->
       <div class="relative h-48 bg-gradient-to-br from-[#FBE8EE] to-rose-100 overflow-hidden">
-       
-        
+        @if($outlet->image_url)
+        <img src="{{ $outlet->image_url }}"
+             alt="Outlet {{ $outlet->name }}"
+             loading="lazy"
+             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        @else
+        <div class="w-full h-full flex items-center justify-center">
+          <i class="fa-solid fa-store text-5xl text-[#D26986]/40"></i>
+        </div>
+        @endif
+
         <!-- City Badge -->
         <div class="absolute top-4 left-4">
           <span class="bg-white text-[#D26986] px-4 py-1.5 rounded-full text-xs font-bold shadow-md">

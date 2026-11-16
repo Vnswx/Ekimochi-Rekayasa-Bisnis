@@ -57,7 +57,7 @@ class ProductSeeder extends Seeder
                 'price' => 5000,
                 'stock' => 100,
                 'unit' => 'pcs',
-                'image' => 'strawberry.png',
+                'image' => 'products/strawberry.png',
                 'status' => 'active',
             ],
             [
@@ -68,7 +68,7 @@ class ProductSeeder extends Seeder
                 'price' => 5000,
                 'stock' => 100,
                 'unit' => 'pcs',
-                'image' => 'matcha.png',
+                'image' => 'products/matcha.png',
                 'status' => 'active',
             ],
             [
@@ -79,7 +79,7 @@ class ProductSeeder extends Seeder
                 'price' => 5000,
                 'stock' => 100,
                 'unit' => 'pcs',
-                'image' => 'chocolate.png',
+                'image' => 'products/chocolate.png',
                 'status' => 'active',
             ],
             // Original Series
@@ -91,7 +91,7 @@ class ProductSeeder extends Seeder
                 'price' => 6000,
                 'stock' => 80,
                 'unit' => 'pcs',
-                'image' => 'taro.png',
+                'image' => 'products/taro.png',
                 'status' => 'active',
             ],
             [
@@ -102,7 +102,7 @@ class ProductSeeder extends Seeder
                 'price' => 6000,
                 'stock' => 80,
                 'unit' => 'pcs',
-                'image' => 'mango.png',
+                'image' => 'products/mango.png',
                 'status' => 'active',
             ],
             // Premium
@@ -114,7 +114,7 @@ class ProductSeeder extends Seeder
                 'price' => 8000,
                 'stock' => 50,
                 'unit' => 'pcs',
-                'image' => 'lotus.png',
+                'image' => 'products/lotus.png',
                 'status' => 'active',
             ],
             // Paket Box
@@ -126,7 +126,7 @@ class ProductSeeder extends Seeder
                 'price' => 49000,
                 'stock' => 30,
                 'unit' => 'box',
-                'image' => 'kiekimochi matcha.png',
+                'image' => 'products/kiekimochi matcha.png',
                 'status' => 'active',
             ],
             [
@@ -137,7 +137,7 @@ class ProductSeeder extends Seeder
                 'price' => 59000,
                 'stock' => 40,
                 'unit' => 'box',
-                'image' => 'kiekimochi strwberry.png',
+                'image' => 'products/kiekimochi strwberry.png',
                 'status' => 'active',
             ],
             [
@@ -148,7 +148,7 @@ class ProductSeeder extends Seeder
                 'price' => 124000,
                 'stock' => 20,
                 'unit' => 'box',
-                'image' => 'kiekimochi coklat.png',
+                'image' => 'products/kiekimochi coklat.png',
                 'status' => 'active',
             ],
         ];

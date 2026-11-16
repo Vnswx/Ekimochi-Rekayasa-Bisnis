@@ -12,11 +12,21 @@
     @foreach($outlets as $outlet)
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
         <div class="p-6 border-b border-gray-200">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-xl font-bold text-gray-900">{{ $outlet->name }}</h2>
-                    <p class="text-sm text-gray-600 mt-1">{{ $outlet->address }}, {{ $outlet->city }}</p>
-                    <p class="text-sm text-gray-500">{{ $outlet->phone }}</p>
+            <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-4 min-w-0">
+                    @if($outlet->image_url)
+                    <img src="{{ $outlet->image_url }}" alt="Outlet {{ $outlet->name }}"
+                         class="w-20 h-20 rounded-lg object-cover border border-gray-200 flex-shrink-0">
+                    @else
+                    <div class="w-20 h-20 rounded-lg bg-rose-50 border border-gray-200 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-store text-[#D26986]"></i>
+                    </div>
+                    @endif
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">{{ $outlet->name }}</h2>
+                        <p class="text-sm text-gray-600 mt-1">{{ $outlet->address }}, {{ $outlet->city }}</p>
+                        <p class="text-sm text-gray-500">{{ $outlet->phone }}</p>
+                    </div>
                 </div>
                 <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $outlet->is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700' }}">
                     {{ $outlet->is_active ? 'Aktif' : 'Tidak Aktif' }}

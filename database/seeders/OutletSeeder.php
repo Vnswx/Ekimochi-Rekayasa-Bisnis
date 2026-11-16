@@ -5,9 +5,15 @@ namespace Database\Seeders;
 use App\Models\Outlet;
 use App\Models\OutletTable;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class OutletSeeder extends Seeder
 {
+    /**
+     * Jumlah meja yang dibuat untuk setiap outlet.
+     */
+    private const TABLES_PER_OUTLET = 10;
+
     /**
      * Run the database seeds.
      */
@@ -16,7 +22,8 @@ class OutletSeeder extends Seeder
         $outlets = [
             [
                 'name' => 'Ekimochi Senayan City',
-                'address' => 'Senayan City Lt. LG',
+                'image' => 'outlets/jakarta-senayan.jpg',
+                'address' => 'Senayan City Lt. LG, Jl. Asia Afrika Lot. 19',
                 'city' => 'Jakarta Selatan',
                 'phone' => '021-72791234',
                 'latitude' => -6.225788,
@@ -25,6 +32,7 @@ class OutletSeeder extends Seeder
             ],
             [
                 'name' => 'Ekimochi Bandung',
+                'image' => 'outlets/bandung.jpg',
                 'address' => 'Jl. Riau No. 54',
                 'city' => 'Bandung',
                 'phone' => '022-4231234',
@@ -34,7 +42,8 @@ class OutletSeeder extends Seeder
             ],
             [
                 'name' => 'Ekimochi Surabaya',
-                'address' => 'Tunjungan Plaza 3',
+                'image' => 'outlets/surabaya.jpg',
+                'address' => 'Tunjungan Plaza 3 Lt. 5',
                 'city' => 'Surabaya',
                 'phone' => '031-5321234',
                 'latitude' => -7.263149,
@@ -43,18 +52,31 @@ class OutletSeeder extends Seeder
             ],
         ];
 
-        foreach ($outlets as $outletData) {
-            $outlet = Outlet::create($outletData);
+        DB::transaction(function () use ($outlets) {
+            foreach ($outlets as $outletData) {
+                $outlet = Outlet::updateOrCreate(
+                    ['name' => $outletData['name']],
+                    $outletData
+                );
 
-            // Buat 10 meja untuk setiap outlet
-            for ($i = 1; $i <= 10; $i++) {
-                OutletTable::create([
-                    'outlet_id' => $outlet->id,
-                    'table_number' => str_pad($i, 2, '0', STR_PAD_LEFT),
-                    'qr_token' => OutletTable::generateQrToken(),
-                    'is_active' => true,
-                ]);
+                for ($i = 1; $i <= self::TABLES_PER_OUTLET; $i++) {
+                    OutletTable::firstOrCreate(
+                        [
+                            'outlet_id' => $outlet->id,
+                            'table_number' => str_pad($i, 2, '0', STR_PAD_LEFT),
+                        ],
+                        [
+                            'qr_token' => OutletTable::generateQrToken(),
+                            'is_active' => true,
+                        ]
+                    );
+                }
             }
-        }
+        });
+
+        $totalOutlets = Outlet::count();
+        $totalTables = OutletTable::count();
+
+        $this->command?->info("Outlet seeded successfully! {$totalOutlets} outlet, {$totalTables} meja.");
     }
 }
