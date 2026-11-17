@@ -780,13 +780,22 @@
         return;
       }
 
-      const products = [
-        @foreach($products as $product)
-        { name: '{{ $product->name }}', price: {{ $product->price }}, img: '{{ asset('storage/' . $product->image) }}' },
-        @endforeach
-      ];
+      // Data produk dari backend (aman dari XSS dengan JSON encoding)
+      const products = {!! json_encode($products->map(function($product) {
+        return [
+          'id' => $product->id,
+          'name' => $product->name,
+          'price' => $product->price,
+          'stock' => $product->stock,
+          'image' => asset('storage/' . $product->image),
+          'category' => optional($product->category)->name ?? 'Uncategorized'
+        ];
+      })->values()) !!};
 
-      const filtered = products.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
+      const filtered = products.filter(p => 
+        p.name.toLowerCase().includes(query.toLowerCase()) ||
+        p.category.toLowerCase().includes(query.toLowerCase())
+      );
 
       if (filtered.length === 0) {
         resultsContainer.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">Produk tidak ditemukan.</p>`;
@@ -794,21 +803,47 @@
       }
 
       let html = '';
-      filtered.forEach(item => {
-        html += `
-            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-rose-50 transition cursor-pointer" onclick="addToCart('${item.name}', ${item.price}, '${item.img}'); closeSearchModal();">
+      filtered.slice(0, 8).forEach(item => {
+        if (item.stock > 0) {
+          html += `
+            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-rose-50 transition cursor-pointer border border-transparent hover:border-rose-200" onclick='addToCartFromSearch(${JSON.stringify(item)})'>
                 <div class="flex items-center space-x-3">
-                    <img src="${item.img}" class="w-10 h-10 rounded-lg object-cover">
+                    <img src="${item.image}" alt="${item.name}" class="w-10 h-10 rounded-lg object-cover" onerror="this.src='/images/placeholder.png'">
                     <div>
                         <h4 class="font-bold text-xs text-gray-800">${item.name}</h4>
                         <p class="text-[10px] text-[#D26986] font-semibold">Rp ${item.price.toLocaleString('id-ID')}</p>
+                        <p class="text-[9px] text-gray-500">Stok: ${item.stock}</p>
                     </div>
                 </div>
                 <span class="text-xs text-[#D26986] font-bold"><i class="fa-solid fa-plus"></i> Tambah</span>
             </div>
-        `;
+          `;
+        } else {
+          html += `
+            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 opacity-60">
+                <div class="flex items-center space-x-3">
+                    <img src="${item.image}" alt="${item.name}" class="w-10 h-10 rounded-lg object-cover grayscale">
+                    <div>
+                        <h4 class="font-bold text-xs text-gray-500">${item.name}</h4>
+                        <p class="text-[10px] text-gray-400 font-semibold">Stok Habis</p>
+                    </div>
+                </div>
+                <span class="text-xs text-gray-400"><i class="fa-solid fa-ban"></i></span>
+            </div>
+          `;
+        }
       });
+      
+      if (filtered.length > 8) {
+        html += `<p class="text-[10px] text-gray-400 text-center pt-2">Dan ${filtered.length - 8} produk lainnya...</p>`;
+      }
+      
       resultsContainer.innerHTML = html;
+    }
+
+    function addToCartFromSearch(product) {
+      addToCart(product.name, product.price, product.image);
+      closeSearchModal();
     }
 
     function handleLoginSubmit() {
