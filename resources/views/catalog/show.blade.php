@@ -59,11 +59,24 @@
               {{ $product->name }}
             </h1>
             <div class="flex items-baseline space-x-2">
+              @if(!empty($activePromo))
+              <span class="text-4xl font-extrabold text-[#D26986]">
+                Rp {{ number_format($activePromo->discountedPrice($product->price), 0, ',', '.') }}
+              </span>
+              <span class="text-lg text-gray-400 line-through">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+              @else
               <span class="text-4xl font-extrabold text-[#D26986]">
                 Rp {{ number_format($product->price, 0, ',', '.') }}
               </span>
+              @endif
               <span class="text-sm text-gray-500">/ {{ $product->unit }}</span>
             </div>
+            @if(!empty($activePromo))
+            <p class="mt-2 inline-flex items-center text-xs font-bold text-[#D26986] bg-[#FBE8EE] px-3 py-1.5 rounded-full">
+              <i class="fa-solid fa-bolt mr-1"></i>
+              Promo {{ $activePromo->name }} — diskon {{ $activePromo->discountLabel() }} sedang berlaku
+            </p>
+            @endif
           </div>
 
           <!-- Stock Status -->

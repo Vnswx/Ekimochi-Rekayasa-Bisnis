@@ -64,7 +64,10 @@ Route::get('/outlets', function() {
 })->name('outlets.index');
 
 // Blog Page
-Route::view('/blog', 'blog.blog')->name('blog');
+Route::get('/blog', function () {
+    $promos = \App\Models\Promo::active()->orderBy('created_at', 'desc')->get();
+    return view('blog.blog', compact('promos'));
+})->name('blog');
 
 // Cart Routes (public)
 Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
@@ -145,6 +148,40 @@ Route::middleware('auth')->group(function () {
         
         // Users Management
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
+        
+        // CRM
+        Route::get('/crm', [\App\Http\Controllers\Admin\CrmController::class, 'index'])->name('crm.index');
+        
+        // User Settings (Manajemen Pengguna)
+        Route::get('/user-settings', [\App\Http\Controllers\Admin\UserSettingsController::class, 'index'])->name('userSettings.index');
+        
+        // Order Settings (Manajemen Pesanan & Pengiriman)
+        Route::get('/order-settings', [\App\Http\Controllers\Admin\OrderSettingsController::class, 'index'])->name('orderSettings.index');
+        Route::put('/order-settings/{order}/status', [\App\Http\Controllers\Admin\OrderSettingsController::class, 'updateStatus'])->name('orderSettings.updateStatus');
+        
+        // Analitik & Statistik
+        Route::get('/analytics', [\App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('analytics.index');
+        
+        // Promo & Diskon
+        Route::get('/promo', [\App\Http\Controllers\Admin\PromoController::class, 'index'])->name('promo.index');
+        Route::get('/promo/create', [\App\Http\Controllers\Admin\PromoController::class, 'create'])->name('promo.create');
+        Route::post('/promo', [\App\Http\Controllers\Admin\PromoController::class, 'store'])->name('promo.store');
+        Route::get('/promo/{promo}/edit', [\App\Http\Controllers\Admin\PromoController::class, 'edit'])->name('promo.edit');
+        Route::put('/promo/{promo}', [\App\Http\Controllers\Admin\PromoController::class, 'update'])->name('promo.update');
+        Route::delete('/promo/{promo}', [\App\Http\Controllers\Admin\PromoController::class, 'destroy'])->name('promo.destroy');
+        Route::post('/promo/{promo}/toggle', [\App\Http\Controllers\Admin\PromoController::class, 'toggle'])->name('promo.toggle');
+        
+        // Outlet & QR Management
+        Route::get('/outlet', [\App\Http\Controllers\Admin\OutletController::class, 'index'])->name('outlet.index');
+        Route::get('/outlet/create', [\App\Http\Controllers\Admin\OutletController::class, 'create'])->name('outlet.create');
+        Route::post('/outlet', [\App\Http\Controllers\Admin\OutletController::class, 'store'])->name('outlet.store');
+        Route::get('/outlet/{outlet}/edit', [\App\Http\Controllers\Admin\OutletController::class, 'edit'])->name('outlet.edit');
+        Route::put('/outlet/{outlet}', [\App\Http\Controllers\Admin\OutletController::class, 'update'])->name('outlet.update');
+        Route::delete('/outlet/{outlet}', [\App\Http\Controllers\Admin\OutletController::class, 'destroy'])->name('outlet.destroy');
+        Route::post('/outlet/{outlet}/toggle', [\App\Http\Controllers\Admin\OutletController::class, 'toggleOutlet'])->name('outlet.toggle');
+        Route::post('/outlet/{outlet}/tables', [\App\Http\Controllers\Admin\OutletController::class, 'storeTable'])->name('outlet.tables.store');
+        Route::post('/outlet/tables/{table}/toggle', [\App\Http\Controllers\Admin\OutletController::class, 'toggleTable'])->name('outlet.tables.toggle');
+        Route::delete('/outlet/tables/{table}', [\App\Http\Controllers\Admin\OutletController::class, 'destroyTable'])->name('outlet.tables.destroy');
     });
 });
 

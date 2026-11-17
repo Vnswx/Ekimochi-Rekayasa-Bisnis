@@ -12,23 +12,60 @@ class CartController extends Controller
         $cart = session('cart', []);
         $customPackages = session('cart_custom_packages', []);
         $cartItems = [];
-        $subtotal = 0;
 
+        $promoService = new \App\Services\PromoService();
+        $promo = $promoService->activePromo();
+
+        // Pass 1: hitung subtotal asli (sebelum diskon) produk reguler
+        $rawProductSubtotal = 0;
         foreach ($cart as $productId => $quantity) {
             $product = Product::find($productId);
-            
             if ($product) {
-                $itemSubtotal = $product->price * $quantity;
+                $rawProductSubtotal += (float) $product->price * $quantity;
+            }
+        }
+
+        $promoApplied = $promoService->applies($promo, $rawProductSubtotal);
+        $subtotal = 0;
+
+        // Pass 2: bangun item dengan harga diskon jika promo berlaku
+        foreach ($cart as $productId => $quantity) {
+            $product = Product::find($productId);
+
+            if ($product) {
+                $unitPrice = $promoApplied && $promo
+                    ? $promoService->unitPrice($promo, $product->price)
+                    : (float) $product->price;
+                $itemSubtotal = round($unitPrice * $quantity, 2);
                 $cartItems[] = [
                     'product' => $product,
                     'quantity' => $quantity,
+                    'unit_price' => $unitPrice,
                     'subtotal' => $itemSubtotal,
                 ];
                 $subtotal += $itemSubtotal;
             }
         }
 
-        return view('cart.index', compact('cartItems', 'subtotal', 'customPackages'));
+        $discount = $promoApplied && $promo
+            ? $promoService->discountFor($promo, $rawProductSubtotal)
+            : 0;
+
+        $promoNotice = null;
+        if ($promo && !$promoApplied) {
+            $promoNotice = "Promo {$promo->name} berlaku untuk min. belanja Rp "
+                . number_format($promo->min_purchase, 0, ',', '.');
+        }
+
+        return view('cart.index', compact(
+            'cartItems',
+            'subtotal',
+            'customPackages',
+            'promo',
+            'promoApplied',
+            'discount',
+            'promoNotice'
+        ));
     }
 
     public function add(Request $request, Product $product)

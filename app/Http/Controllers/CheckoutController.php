@@ -28,16 +28,34 @@ class CheckoutController extends Controller
 
         $cartItems = [];
         $subtotal = 0;
+        $rawProductSubtotal = 0;
+
+        // Pass 1: subtotal asli (sebelum diskon) produk reguler
+        foreach ($cart as $productId => $quantity) {
+            $product = Product::find($productId);
+
+            if ($product && $product->status === 'active') {
+                $rawProductSubtotal += (float) $product->price * $quantity;
+            }
+        }
+
+        $promoService = new \App\Services\PromoService();
+        $promo = $promoService->activePromo();
+        $promoApplied = $promoService->applies($promo, $rawProductSubtotal);
 
         // Process regular products
         foreach ($cart as $productId => $quantity) {
             $product = Product::find($productId);
-            
+
             if ($product && $product->status === 'active') {
-                $itemSubtotal = $product->price * $quantity;
+                $unitPrice = $promoApplied && $promo
+                    ? $promoService->unitPrice($promo, $product->price)
+                    : (float) $product->price;
+                $itemSubtotal = round($unitPrice * $quantity, 2);
                 $cartItems[] = [
                     'product' => $product,
                     'quantity' => $quantity,
+                    'unit_price' => $unitPrice,
                     'subtotal' => $itemSubtotal,
                 ];
                 $subtotal += $itemSubtotal;
@@ -47,6 +65,16 @@ class CheckoutController extends Controller
         // Process custom packages
         foreach ($customPackages as $package) {
             $subtotal += $package['total_price'];
+        }
+
+        $discount = $promoApplied && $promo
+            ? $promoService->discountFor($promo, $rawProductSubtotal)
+            : 0;
+
+        $promoNotice = null;
+        if ($promo && !$promoApplied) {
+            $promoNotice = "Promo {$promo->name} berlaku untuk min. belanja Rp "
+                . number_format($promo->min_purchase, 0, ',', '.');
         }
 
         // Get outlets for selection
@@ -81,7 +109,11 @@ class CheckoutController extends Controller
             'user',
             'outlets',
             'selectedTable',
-            'selectedOutlet'
+            'selectedOutlet',
+            'promo',
+            'promoApplied',
+            'discount',
+            'promoNotice'
         ));
     }
 
@@ -123,6 +155,17 @@ class CheckoutController extends Controller
             $subtotal = 0;
             $orderItems = [];
             $totalItemCount = 0;
+            $rawProductSubtotal = 0;
+
+            // Pass 1: subtotal asli (sebelum diskon) produk reguler
+            foreach ($cart as $productId => $quantity) {
+                $product = Product::findOrFail($productId);
+                $rawProductSubtotal += (float) $product->price * $quantity;
+            }
+
+            $promoService = new \App\Services\PromoService();
+            $promo = $promoService->activePromo();
+            $promoApplied = $promoService->applies($promo, $rawProductSubtotal);
 
             // Process regular products
             foreach ($cart as $productId => $quantity) {
@@ -132,14 +175,17 @@ class CheckoutController extends Controller
                     throw new \Exception("Stok {$product->name} tidak mencukupi");
                 }
 
-                $itemSubtotal = $product->price * $quantity;
+                $unitPrice = $promoApplied && $promo
+                    ? $promoService->unitPrice($promo, $product->price)
+                    : (float) $product->price;
+                $itemSubtotal = round($unitPrice * $quantity, 2);
                 $subtotal += $itemSubtotal;
                 $totalItemCount += $quantity;
 
                 $orderItems[] = [
                     'product' => $product,
                     'quantity' => $quantity,
-                    'price' => $product->price,
+                    'price' => $unitPrice,
                     'subtotal' => $itemSubtotal,
                 ];
             }
@@ -158,6 +204,10 @@ class CheckoutController extends Controller
                     'subtotal' => $package['total_price'],
                 ];
             }
+
+            $discountAmount = $promoApplied && $promo
+                ? $promoService->discountFor($promo, $rawProductSubtotal)
+                : 0;
 
             // Determine outlet, shipping cost, and delivery distance
             $outletId = null;
@@ -232,6 +282,9 @@ class CheckoutController extends Controller
                 'estimated_ready_time' => $estimatedReadyTime,
                 'status' => 'pending',
                 'notes' => $validated['notes'] ?? null,
+                'promo_id' => $promoApplied && $promo ? $promo->id : null,
+                'promo_name' => $promoApplied && $promo ? $promo->name : null,
+                'discount_amount' => $discountAmount,
             ]);
 
             foreach ($orderItems as $item) {
