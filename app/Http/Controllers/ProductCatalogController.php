@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Promo;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -65,9 +66,12 @@ class ProductCatalogController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
         $categories = Category::withCount('products')->get();
-        // dd($products);
 
-        return view('catalog.index', compact('products', 'categories'));
+        // Promo aktif (untuk tampilan diskon di katalog)
+        $activePromos = Promo::active()->orderBy('created_at', 'desc')->get();
+        $activePromo = $activePromos->first();
+
+        return view('catalog.index', compact('products', 'categories', 'activePromos', 'activePromo'));
     }
 
     /**
@@ -86,6 +90,9 @@ class ProductCatalogController extends Controller
             ->limit(4)
             ->get();
 
-        return view('catalog.show', compact('product', 'relatedProducts'));
+        // Promo aktif (untuk tampilan diskon di halaman detail)
+        $activePromo = Promo::active()->orderBy('created_at', 'desc')->first();
+
+        return view('catalog.show', compact('product', 'relatedProducts', 'activePromo'));
     }
 }

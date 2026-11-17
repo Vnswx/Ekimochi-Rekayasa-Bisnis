@@ -29,6 +29,9 @@ class Order extends Model
         'estimated_ready_time',
         'status',
         'notes',
+        'promo_id',
+        'promo_name',
+        'discount_amount',
     ];
 
     protected $casts = [

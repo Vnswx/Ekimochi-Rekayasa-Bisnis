@@ -30,36 +30,19 @@
   </script>
 </head>
 
-<body class="bg-gray-50 text-gray-900 antialiased">
+<body class="bg-gray-50 text-gray-900 antialiased min-h-screen flex flex-col" x-data="{ sidebarOpen: false }">
 
-  <!-- Admin Navbar -->
+  <!-- Admin Navbar (tetap) -->
   <header class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Logo & Brand -->
-      <div class="flex items-center space-x-8">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Left: Hamburger (mobile) + Logo -->
+      <div class="flex items-center space-x-2 sm:space-x-4">
+        <button @click="sidebarOpen = true" class="lg:hidden p-2 text-gray-600 hover:text-[#D26986]" aria-label="Buka menu">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
         <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2">
-          <img width="200" src="{{ asset('images\homepage\logo perusahaan.png') }}" alt="">
-          <div class="hidden sm:block">
-            {{-- <div class="text-sm font-bold text-gray-900">Admin Panel</div>
-            <div class="text-xs text-gray-500">Ekimochi Management</div> --}}
-          </div>
+          <img width="180" src="{{ asset('images\homepage\logo perusahaan.png') }}" alt="">
         </a>
-        
-        <!-- Admin Navigation -->
-        <nav class="hidden md:flex items-center space-x-1 text-sm font-medium">
-          <a href="{{ route('admin.dashboard') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-[#D26986] text-white' : 'text-gray-600 hover:bg-gray-100' }} transition">
-            <i class="fa-solid fa-house mr-1"></i> Dashbor
-          </a>
-          <a href="{{ route('admin.sales.index') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('admin.sales.*') ? 'bg-[#D26986] text-white' : 'text-gray-600 hover:bg-gray-100' }} transition">
-            <i class="fa-solid fa-chart-line mr-1"></i> Penjualan
-          </a>
-          <a href="{{ route('admin.products.index') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('admin.products.*') ? 'bg-[#D26986] text-white' : 'text-gray-600 hover:bg-gray-100' }} transition">
-            <i class="fa-solid fa-box mr-1"></i> Produk
-          </a>
-          <a href="{{ route('admin.categories.index') }}" class="px-3 py-2 rounded-lg {{ request()->routeIs('admin.categories.*') ? 'bg-[#D26986] text-white' : 'text-gray-600 hover:bg-gray-100' }} transition">
-            <i class="fa-solid fa-tags mr-1"></i> Kategori
-          </a>
-        </nav>
       </div>
 
       <!-- Right Actions -->
@@ -69,7 +52,7 @@
           <i class="fa-solid fa-external-link-alt"></i>
           <span>Lihat Situs</span>
         </a>
-        
+
         <!-- Admin Profile Dropdown -->
         <div class="relative" x-data="{ open: false }">
           <button @click="open = !open" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
@@ -79,7 +62,7 @@
             <span class="hidden sm:inline text-sm font-medium text-gray-700">{{ Str::limit(Auth::user()->name, 15) }}</span>
             <i class="fa-solid fa-chevron-down text-xs text-gray-500"></i>
           </button>
-          
+
           <!-- Dropdown Menu -->
           <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50">
             <div class="px-4 py-3 border-b border-gray-100">
@@ -106,38 +89,33 @@
             </div>
           </div>
         </div>
-        
-        <!-- Mobile Menu Toggle -->
-        <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2 text-gray-600 hover:text-[#D26986]">
-          <i class="fa-solid fa-bars text-xl"></i>
-        </button>
       </div>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div x-data="{ mobileOpen: false }" x-show="mobileOpen" class="md:hidden bg-white border-t border-gray-200 px-4 py-4 space-y-2">
-      <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-[#D26986] text-white' : 'text-gray-700 hover:bg-gray-100' }} text-sm font-medium">
-        <i class="fa-solid fa-house mr-2"></i> Dashboard
-      </a>
-      <a href="{{ route('admin.sales.index') }}" class="block px-3 py-2 rounded-lg {{ request()->routeIs('admin.sales.*') ? 'bg-[#D26986] text-white' : 'text-gray-700 hover:bg-gray-100' }} text-sm font-medium">
-        <i class="fa-solid fa-chart-line mr-2"></i> Penjualan
-      </a>
-      <a href="{{ route('admin.products.index') }}" class="block px-3 py-2 rounded-lg {{ request()->routeIs('admin.products.*') ? 'bg-[#D26986] text-white' : 'text-gray-700 hover:bg-gray-100' }} text-sm font-medium">
-        <i class="fa-solid fa-box mr-2"></i> Products
-      </a>
-      <a href="{{ route('admin.categories.index') }}" class="block px-3 py-2 rounded-lg {{ request()->routeIs('admin.categories.*') ? 'bg-[#D26986] text-white' : 'text-gray-700 hover:bg-gray-100' }} text-sm font-medium">
-        <i class="fa-solid fa-tags mr-2"></i> Categories
-      </a>
-      <a href="{{ route('home') }}" target="_blank" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 text-sm font-medium">
-        <i class="fa-solid fa-external-link-alt mr-2"></i> View Site
-      </a>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="min-h-screen">
-    @yield('content')
-  </main>
+  <!-- Mobile Overlay -->
+  <div x-show="sidebarOpen" @click="sidebarOpen = false" x-transition.opacity class="fixed inset-0 z-40 bg-gray-900/50 lg:hidden"></div>
+
+  <!-- Mobile Off-canvas Sidebar -->
+  <aside class="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-white shadow-xl flex flex-col transform transition-transform duration-300 -translate-x-full lg:hidden"
+         :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
+    @include('admin.partials.sidebar')
+  </aside>
+
+  <!-- Body: Sidebar + Content -->
+  <div class="flex flex-1 items-stretch">
+    <!-- Desktop Sidebar -->
+    <aside class="hidden lg:block w-64 shrink-0 bg-white border-r border-gray-200">
+      <div class="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+        @include('admin.partials.sidebar')
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0">
+      @yield('content')
+    </main>
+  </div>
 
   <!-- Footer -->
   <footer class="bg-white border-t border-gray-200 py-6 mt-12">
@@ -152,6 +130,8 @@
       </div>
     </div>
   </footer>
+
+  @yield('scripts')
 
 </body>
 </html>

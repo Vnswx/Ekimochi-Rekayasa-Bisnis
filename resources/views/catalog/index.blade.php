@@ -129,6 +129,32 @@
       </div>
       @endif
 
+      <!-- Promo Banner -->
+      @if(!empty($activePromos) && $activePromos->isNotEmpty())
+      <div class="bg-gradient-to-r from-[#BD5773] to-[#D26986] rounded-2xl p-5 text-white shadow-md">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider text-white/80 mb-1">Promo Sedang Berlangsung</p>
+              @foreach($activePromos as $promo)
+              <p class="font-bold text-sm {{ $loop->first ? '' : 'mt-1' }}">
+                {{ $promo->name }} —
+                <span class="inline-block bg-white text-[#D26986] px-2 py-0.5 rounded-full text-[11px] font-extrabold">-{{ $promo->discountLabel() }}</span>
+                @if((float) $promo->min_purchase > 0)
+                <span class="text-xs text-white/80">(min. belanja Rp {{ number_format($promo->min_purchase, 0, ',', '.') }})</span>
+                @endif
+              </p>
+              @endforeach
+              <p class="text-xs text-white/80 mt-1.5">Harga di bawah sudah termasuk diskon promo yang sedang berjalan.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      @endif
+
       <!-- Product Grid -->
       @if($products->count() > 0)
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -146,6 +172,9 @@
               @elseif($product->stock < 10)
               <span class="absolute top-3 left-3 bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Stok Terbatas</span>
               @endif
+              @if(!empty($activePromo))
+              <span class="absolute top-3 right-3 bg-[#D26986] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">-{{ $activePromo->discountLabel() }}</span>
+              @endif
             </div>
             <div class="flex items-center space-x-2 mb-2">
               <span class="bg-[#FBE8EE] text-[#D26986] text-[10px] font-semibold px-2 py-0.5 rounded">{{ $product->category->name }}</span>
@@ -161,7 +190,12 @@
           <div class="flex items-center justify-between mt-4 pt-4 border-t border-rose-50">
             <div>
               <span class="text-[9px] text-gray-400 block uppercase font-bold">Harga</span>
+              @if(!empty($activePromo))
+              <span class="block text-xs text-gray-400 line-through">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+              <span class="text-base font-extrabold text-[#D26986]">Rp {{ number_format($activePromo->discountedPrice($product->price), 0, ',', '.') }}</span>
+              @else
               <span class="text-base font-extrabold text-[#D26986]">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+              @endif
               @if($product->stock > 0)
               <span class="block text-[9px] text-gray-500 mt-0.5">Stok: {{ $product->stock }}</span>
               @endif

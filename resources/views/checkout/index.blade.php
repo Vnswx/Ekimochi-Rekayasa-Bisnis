@@ -344,7 +344,14 @@
               </div>
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-bold text-gray-900 truncate">{{ $item['product']->name }}</p>
-                <p class="text-xs text-gray-500 mt-1">{{ $item['quantity'] }} x Rp {{ number_format($item['product']->price, 0, ',', '.') }}</p>
+                <p class="text-xs text-gray-500 mt-1">
+                  @if(!empty($promoApplied) && isset($item['unit_price']))
+                  {{ $item['quantity'] }} x Rp {{ number_format($item['unit_price'], 0, ',', '.') }}
+                  <span class="line-through text-gray-400">Rp {{ number_format($item['product']->price, 0, ',', '.') }}</span>
+                  @else
+                  {{ $item['quantity'] }} x Rp {{ number_format($item['product']->price, 0, ',', '.') }}
+                  @endif
+                </p>
                 <p class="text-sm font-bold text-[#D26986] mt-1">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</p>
               </div>
             </div>
@@ -375,6 +382,19 @@
               <span class="text-gray-600">Subtotal Produk</span>
               <span class="font-semibold text-gray-900">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
             </div>
+
+            @if(!empty($promoApplied) && $discount > 0)
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-gray-600">Diskon Promo <span class="text-[#D26986] font-semibold">({{ $promo->name }})</span></span>
+              <span class="font-semibold text-emerald-600">- Rp {{ number_format($discount, 0, ',', '.') }}</span>
+            </div>
+            @endif
+
+            @if(!empty($promoNotice))
+            <div class="flex items-center justify-between text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
+              <span><i class="fa-solid fa-circle-info mr-1"></i>{{ $promoNotice }}</span>
+            </div>
+            @endif
 
             <div class="flex items-center justify-between text-sm" x-show="orderType === 'delivery'">
               <span class="text-gray-600">Biaya Pengiriman</span>

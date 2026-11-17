@@ -194,6 +194,55 @@
   </div>
 </section>
 
+@if(!empty($promos) && $promos->isNotEmpty())
+<!-- Promo Notification -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
+  <div class="bg-gradient-to-r from-[#BD5773] to-[#D26986] rounded-3xl shadow-md overflow-hidden">
+    <div class="p-6 sm:p-8">
+      <div class="flex items-center gap-2 mb-5">
+        <span class="inline-flex items-center bg-white/20 text-white px-3 py-1 rounded-full text-[11px] font-bold">
+          <i class="fa-solid fa-bolt mr-1"></i> PEMBERITAHUAN DISKON
+        </span>
+        <span class="text-white/80 text-xs">Promo sedang berlangsung — jangan sampai kehabisan!</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @foreach($promos as $promo)
+        <div class="bg-white/10 border border-white/20 rounded-2xl p-5 backdrop-blur">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="text-white font-extrabold text-lg">{{ $promo->name }}</h3>
+              @if($promo->description)
+              <p class="text-white/85 text-sm mt-1 leading-relaxed">{{ $promo->description }}</p>
+              @endif
+              @if((float) $promo->min_purchase > 0)
+              <p class="text-white/70 text-xs mt-2">
+                <i class="fa-solid fa-cart-shopping mr-1"></i>Min. belanja Rp {{ number_format($promo->min_purchase, 0, ',', '.') }}
+              </p>
+              @endif
+              @if($promo->ends_at)
+              <p class="text-white/70 text-xs mt-1">
+                <i class="fa-regular fa-calendar mr-1"></i>Berakhir {{ $promo->ends_at->format('d M Y') }}
+              </p>
+              @endif
+            </div>
+            <span class="inline-flex items-center px-3 py-1.5 bg-white text-[#D26986] rounded-full text-sm font-extrabold whitespace-nowrap">
+              {{ $promo->discountLabel() }}
+            </span>
+          </div>
+        </div>
+        @endforeach
+      </div>
+      <div class="mt-6">
+        <a href="{{ route('catalog.index') }}" class="inline-flex items-center space-x-2 bg-white hover:bg-rose-50 text-[#D26986] font-bold px-6 py-3 rounded-full transition text-sm">
+          <span>Manfaatkan Promo di Katalog</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+@endif
+
 <!-- Post List -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16" x-data="{ filter: 'Semua' }">
   <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">

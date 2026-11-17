@@ -99,7 +99,12 @@
               <!-- Price -->
               <div>
                 <span class="text-xs text-gray-500 block">Harga Satuan</span>
+                @if(!empty($promoApplied) && isset($item['unit_price']))
+                <span class="block text-sm text-gray-400 line-through">Rp {{ number_format($item['product']->price, 0, ',', '.') }}</span>
+                <span class="text-lg font-bold text-[#D26986]">Rp {{ number_format($item['unit_price'], 0, ',', '.') }}</span>
+                @else
                 <span class="text-lg font-bold text-[#D26986]">Rp {{ number_format($item['product']->price, 0, ',', '.') }}</span>
+                @endif
               </div>
 
               <!-- Quantity Control -->
@@ -264,6 +269,19 @@
           <div class="flex items-center justify-between text-sm">
             <span class="text-gray-600">Paket Custom</span>
             <span class="font-semibold text-yellow-600">{{ count($customPackages) }} paket (PO)</span>
+          </div>
+          @endif
+
+          @if(!empty($promoApplied) && $discount > 0)
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-gray-600">Diskon Promo <span class="text-[#D26986] font-semibold">({{ $promo->name }})</span></span>
+            <span class="font-semibold text-emerald-600">- Rp {{ number_format($discount, 0, ',', '.') }}</span>
+          </div>
+          @endif
+
+          @if(!empty($promoNotice))
+          <div class="flex items-center justify-between text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
+            <span class="flex items-center"><i class="fa-solid fa-circle-info mr-1"></i>{{ $promoNotice }}</span>
           </div>
           @endif
 
