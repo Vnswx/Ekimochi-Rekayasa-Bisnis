@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -97,6 +98,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
     Route::post('/profile/photo', [ProfileController::class, 'uploadPhoto'])->name('profile.photo.upload');
     Route::delete('/profile/photo', [ProfileController::class, 'deletePhoto'])->name('profile.photo.delete');
+
+    // Preferensi & Riwayat Notifikasi
+    Route::get('/notification', [NotificationController::class, 'index'])->name('notification.index');
+    Route::put('/notification', [NotificationController::class, 'update'])->name('notification.update');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notification.readAll');
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notification.read');
 
     // Checkout
     Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout.index');

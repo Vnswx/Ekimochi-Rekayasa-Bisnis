@@ -74,6 +74,16 @@
         </a>
         
         @auth
+        <!-- Notification Bell -->
+        <a href="{{ route('notification.index') }}" title="Notifikasi"
+           class="relative p-2 text-gray-600 hover:text-[#D26986] transition rounded-full hover:bg-rose-50 {{ request()->routeIs('notification.*') ? 'text-[#D26986] bg-rose-50' : '' }}">
+          <i class="fa-regular fa-bell text-lg"></i>
+          @if(($unreadNotifications = Auth::user()->unreadNotifications()->count()) > 0)
+          <span class="absolute top-0 right-0 bg-[#D26986] text-white text-xs min-w-5 h-5 px-1 flex items-center justify-center rounded-full font-bold">
+            {{ $unreadNotifications > 9 ? '9+' : $unreadNotifications }}
+          </span>
+          @endif
+        </a>
         <!-- Profile Dropdown (Authenticated) -->
         <div class="relative" x-data="{ open: false }">
           <button @click="open = !open" class="flex items-center space-x-2 bg-[#D26986] hover:bg-[#BD5773] text-white px-4 py-2.5 rounded-full font-semibold text-sm shadow-md transition">
@@ -100,6 +110,10 @@
             <a href="{{ route('profile.edit') }}" class="flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-rose-50 transition">
               <i class="fa-solid fa-pen-to-square w-5"></i>
               <span>Edit Profile</span>
+            </a>
+            <a href="{{ route('notification.index') }}" class="flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-rose-50 transition">
+              <i class="fa-solid fa-bell w-5"></i>
+              <span>Preferensi Notifikasi</span>
             </a>
             @if(Auth::user()->isAdmin())
             <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-rose-50 transition">
@@ -141,6 +155,10 @@
       <a href="{{ route('outlets.index') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Outlet</a>
       <a href="{{ route('blog') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Blog</a>
       <a href="{{ route('faq') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">FAQ</a>
+      @auth
+      <a href="{{ route('profile.show') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Profil Saya</a>
+      <a href="{{ route('notification.index') }}" class="block text-gray-700 font-medium hover:text-[#D26986]">Preferensi Notifikasi</a>
+      @endauth
       <button onclick="openLoginModal()" class="w-full bg-[#D26986] text-white py-2 rounded-full font-semibold mt-2">Login / Register</button>
     </div>
   </header>

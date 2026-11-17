@@ -64,6 +64,34 @@
         <span>Edit Profile</span>
       </a>
 
+      <!-- Menu Pengaturan Akun -->
+      <div class="mt-8 pt-6 border-t-2 border-rose-100">
+        <h2 class="text-lg sm:text-xl font-bold text-gray-900 mb-4">Pengaturan Akun</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <a href="{{ route('notification.index') }}" class="group flex items-start gap-4 p-4 rounded-2xl bg-rose-50 border border-rose-100 hover:border-[#D26986] hover:shadow-md transition">
+            <span class="w-11 h-11 rounded-xl bg-white text-[#D26986] flex items-center justify-center shrink-0 shadow-sm">
+              <i class="fa-solid fa-bell"></i>
+            </span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-sm font-bold text-gray-900">Preferensi Notifikasi</span>
+              <span class="block text-xs text-gray-600 mt-1 leading-relaxed">Atur notifikasi promo, status pesanan, dan channel pengiriman.</span>
+            </span>
+            <i class="fa-solid fa-chevron-right text-xs text-gray-400 mt-2 group-hover:text-[#D26986] transition"></i>
+          </a>
+
+          <a href="{{ route('profile.edit') }}" class="group flex items-start gap-4 p-4 rounded-2xl bg-white border border-rose-100 hover:border-[#D26986] hover:shadow-md transition">
+            <span class="w-11 h-11 rounded-xl bg-rose-50 text-[#D26986] flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-sm font-bold text-gray-900">Edit Profile</span>
+              <span class="block text-xs text-gray-600 mt-1 leading-relaxed">Perbarui nama, email, password, dan foto profil.</span>
+            </span>
+            <i class="fa-solid fa-chevron-right text-xs text-gray-400 mt-2 group-hover:text-[#D26986] transition"></i>
+          </a>
+        </div>
+      </div>
+
       @if(!$user->email)
       <div class="mt-6 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-lg">
         <p class="text-sm font-semibold text-amber-800">Email belum diisi</p>

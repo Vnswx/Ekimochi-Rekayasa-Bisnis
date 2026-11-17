@@ -29,6 +29,26 @@ class User extends Authenticatable
         'google_id',
         'google_token',
         'google_refresh_token',
+        'notify_promo',
+        'notify_order',
+        'notify_product',
+        'notify_outlet',
+        'notify_email',
+        'notify_whatsapp',
+        'notify_push',
+    ];
+
+    /**
+     * Nilai bawaan preferensi notifikasi bila kolom belum terisi.
+     */
+    public const NOTIFICATION_DEFAULTS = [
+        'promo' => true,
+        'order' => true,
+        'product' => true,
+        'outlet' => false,
+        'email' => true,
+        'whatsapp' => false,
+        'push' => true,
     ];
 
     /**
@@ -49,6 +69,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'notify_promo' => 'boolean',
+        'notify_order' => 'boolean',
+        'notify_product' => 'boolean',
+        'notify_outlet' => 'boolean',
+        'notify_email' => 'boolean',
+        'notify_whatsapp' => 'boolean',
+        'notify_push' => 'boolean',
     ];
 
     /**
@@ -73,6 +100,38 @@ class User extends Authenticatable
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Ambil satu preferensi notifikasi ('promo', 'order', 'product',
+     * 'outlet', 'email', 'whatsapp', atau 'push').
+     */
+    public function notificationPreference(string $key): bool
+    {
+        if (! array_key_exists($key, self::NOTIFICATION_DEFAULTS)) {
+            return false;
+        }
+
+        $column = 'notify_' . $key;
+        $value = $this->getAttribute($column);
+
+        return $value === null ? self::NOTIFICATION_DEFAULTS[$key] : (bool) $value;
+    }
+
+    /**
+     * Seluruh preferensi notifikasi dalam bentuk array asosiatif.
+     *
+     * @return array<string, bool>
+     */
+    public function notificationPreferences(): array
+    {
+        $preferences = [];
+
+        foreach (array_keys(self::NOTIFICATION_DEFAULTS) as $key) {
+            $preferences[$key] = $this->notificationPreference($key);
+        }
+
+        return $preferences;
     }
 
     /**

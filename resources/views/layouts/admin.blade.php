@@ -74,6 +74,10 @@
               <i class="fa-solid fa-user w-5"></i>
               <span>Profil Saya</span>
             </a>
+            <a href="{{ route('notification.index') }}" class="flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition">
+              <i class="fa-solid fa-bell w-5"></i>
+              <span>Preferensi Notifikasi</span>
+            </a>
             <a href="{{ route('home') }}" class="flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition">
               <i class="fa-solid fa-home w-5"></i>
               <span>Homepage</span>

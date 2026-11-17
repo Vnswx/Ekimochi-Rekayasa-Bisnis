@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePromoRequest;
 use App\Http\Requests\UpdatePromoRequest;
 use App\Models\Promo;
+use App\Services\PromoNotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -49,15 +50,21 @@ class PromoController extends Controller
     /**
      * Store a newly created promo.
      */
-    public function store(StorePromoRequest $request): RedirectResponse
+    public function store(StorePromoRequest $request, PromoNotificationService $notifier): RedirectResponse
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
 
-        Promo::create($data);
+        $promo = Promo::create($data);
 
-        return redirect()->route('admin.promo.index')
-            ->with('success', 'Promo berhasil ditambahkan!');
+        $pesan = 'Promo berhasil ditambahkan!';
+
+        if ($promo->isCurrentlyActive()) {
+            $hasil = $notifier->notifyPublished($promo);
+            $pesan .= ' ' . $this->ringkasanNotifikasi($hasil);
+        }
+
+        return redirect()->route('admin.promo.index')->with('success', $pesan);
     }
 
     /**
@@ -96,13 +103,44 @@ class PromoController extends Controller
     /**
      * Toggle promo active status directly.
      */
-    public function toggle(Promo $promo): RedirectResponse
+    public function toggle(Promo $promo, PromoNotificationService $notifier): RedirectResponse
     {
+        $sebelumnyaAktif = $promo->isCurrentlyActive();
+
         $promo->update(['is_active' => !$promo->is_active]);
 
-        return back()->with(
-            'success',
-            "Promo {$promo->name} berhasil " . ($promo->is_active ? 'diaktifkan' : 'dinonaktifkan') . "!"
-        );
+        $pesan = "Promo {$promo->name} berhasil " . ($promo->is_active ? 'diaktifkan' : 'dinonaktifkan') . '!';
+
+        // Kirim notifikasi hanya saat promo berubah dari tidak berlaku menjadi berlaku.
+        if (! $sebelumnyaAktif && $promo->fresh()->isCurrentlyActive()) {
+            $hasil = $notifier->notifyPublished($promo->fresh());
+            $pesan .= ' ' . $this->ringkasanNotifikasi($hasil);
+        }
+
+        return back()->with('success', $pesan);
+    }
+
+    /**
+     * Ringkasan hasil pengiriman notifikasi promo untuk flash message.
+     *
+     * @param  array{sent:int, skipped:int, emailed:int, failed:int}  $hasil
+     */
+    private function ringkasanNotifikasi(array $hasil): string
+    {
+        if ($hasil['sent'] === 0) {
+            return 'Belum ada pengguna dengan preferensi notifikasi promo yang aktif.';
+        }
+
+        $pesan = "{$hasil['sent']} pengguna menerima notifikasi promo";
+
+        if ($hasil['emailed'] > 0) {
+            $pesan .= " ({$hasil['emailed']} via email)";
+        }
+
+        if ($hasil['failed'] > 0) {
+            $pesan .= ", {$hasil['failed']} gagal";
+        }
+
+        return $pesan . '.';
     }
 }
