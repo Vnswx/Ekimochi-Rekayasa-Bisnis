@@ -21,5 +21,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
+
+        // Register View Composer for global search
+        \Illuminate\Support\Facades\View::composer('layouts.app', \App\View\Composers\SearchComposer::class);
     }
 }
