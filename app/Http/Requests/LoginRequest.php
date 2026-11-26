@@ -23,7 +23,10 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:8'],
+            // No min:8 here: a login form must accept whatever password the
+            // account already has (e.g. the seeded demo user's 7-char password),
+            // the policy is enforced at registration instead.
+            'password' => ['required', 'string'],
             'remember' => ['nullable', 'boolean'],
         ];
     }
@@ -38,7 +41,6 @@ class LoginRequest extends FormRequest
         return [
             'email.required' => 'Email atau username wajib diisi.',
             'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal 8 karakter.',
         ];
     }
 }
