@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('home');
 
+// Health check endpoint (Railway healthcheckPath in railway.json)
+Route::get('/up', fn () => response('ok', 200))->name('health');
+
 // Guest routes (only accessible when not authenticated)
 Route::middleware('guest')->group(function () {
     // Register
