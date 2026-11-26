@@ -28,8 +28,14 @@ class LoginController extends Controller
 
         // Try login with email first, then try with username
         $loginField = filter_var($credentials['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        $credentials[$loginField] = $credentials['email'];
-        unset($credentials['email']);
+
+        // Only move the value when logging in by username: the previous version
+        // always unset the key, so `Auth::attempt()` was left with just the
+        // password and every email login failed.
+        if ($loginField === 'username') {
+            $credentials['username'] = $credentials['email'];
+            unset($credentials['email']);
+        }
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
