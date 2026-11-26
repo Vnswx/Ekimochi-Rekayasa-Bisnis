@@ -216,7 +216,7 @@
           @endif
           <div class="flex-1">
             <h3 class="text-base font-bold text-gray-900">{{ $user->name }}</h3>
-            <p class="text-sm text-gray-500">@{{ $user->username }}</p>
+            <p class="text-sm text-gray-500">{{ $user->username }}</p>
           </div>
           @if($user->role === 'admin')
             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">

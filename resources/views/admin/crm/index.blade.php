@@ -136,7 +136,7 @@
                   @endif
                   <div class="ml-4">
                     <div class="text-sm font-semibold text-gray-900">{{ $customer->name }}</div>
-                    <div class="text-xs text-gray-500">@{{ $customer->username }}</div>
+                    <div class="text-xs text-gray-500">{{ $customer->username }}</div>
                   </div>
                 </div>
               </td>
@@ -208,7 +208,7 @@
           @endif
           <div class="flex-1">
             <h3 class="text-base font-bold text-gray-900">{{ $customer->name }}</h3>
-            <p class="text-sm text-gray-500">@{{ $customer->username }}</p>
+            <p class="text-sm text-gray-500">{{ $customer->username }}</p>
           </div>
           @if($customer->orders_count >= 2)
             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
