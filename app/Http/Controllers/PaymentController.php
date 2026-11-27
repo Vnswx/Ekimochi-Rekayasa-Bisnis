@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
     public function __construct()
     {
-        // Set Midtrans configuration
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
-        \Midtrans\Config::$isProduction = config('midtrans.is_production');
-        \Midtrans\Config::$isSanitized = config('midtrans.is_sanitized');
-        \Midtrans\Config::$is3ds = config('midtrans.is_3ds');
+        \Midtrans\Config::$isProduction = (bool) config('midtrans.is_production');
+        \Midtrans\Config::$isSanitized = (bool) config('midtrans.is_sanitized');
+        \Midtrans\Config::$is3ds = (bool) config('midtrans.is_3ds');
     }
 
     /**
@@ -23,31 +24,31 @@ class PaymentController extends Controller
      */
     public function create(Request $request, Order $order)
     {
-        // Validasi order milik user yang login
         if ($order->user_id !== auth()->id()) {
             abort(403, 'Unauthorized access to order');
         }
 
-        // Cek apakah sudah ada payment pending
-        if ($order->payment && $order->payment->isPending()) {
+        if ($order->status === 'cancelled') {
+            return redirect()->route('catalog.index')->with('error', 'Pesanan ini sudah dibatalkan.');
+        }
+
+        if ($order->payment && ($order->isPaid() || $order->payment->isPending())) {
             return redirect()->route('payment.show', $order->payment);
         }
 
         try {
             $transactionId = 'TRX-' . $order->order_number . '-' . time();
 
-            // Prepare item details untuk Midtrans
             $itemDetails = [];
             foreach ($order->items as $item) {
                 $itemDetails[] = [
-                    'id' => $item->product_id,
+                    'id' => (string) ($item->product_id ?? 'CUSTOM-' . $item->id),
                     'price' => (int) $item->price,
                     'quantity' => $item->quantity,
-                    'name' => $item->product_name,
+                    'name' => Str::limit($item->product_name, 50, ''),
                 ];
             }
 
-            // Add shipping cost sebagai item terpisah
             if ($order->shipping_cost > 0) {
                 $itemDetails[] = [
                     'id' => 'SHIPPING',
@@ -57,44 +58,34 @@ class PaymentController extends Controller
                 ];
             }
 
-            // Transaction details
-            $transactionDetails = [
-                'order_id' => $transactionId,
-                'gross_amount' => (int) $order->total_amount,
-            ];
-
-            // Customer details
-            $customerDetails = [
-                'first_name' => $order->customer_name,
-                'email' => $order->customer_email,
-                'phone' => $order->customer_phone,
-                'shipping_address' => [
-                    'address' => $order->shipping_address,
-                ],
-            ];
-
-            // Enabled payment methods
-            $enabledPayments = [
-                'qris',           // QRIS dari bank manapun
-                'bca_va',         // BCA Virtual Account
-                'bni_va',         // BNI Virtual Account
-                'bri_va',         // BRI Virtual Account
-                'permata_va',     // Permata VA
-                'other_va',       // Bank lain (Mandiri, CIMB, dll)
-            ];
-
-            // Build Snap parameter
             $params = [
-                'transaction_details' => $transactionDetails,
+                'transaction_details' => [
+                    'order_id' => $transactionId,
+                    'gross_amount' => (int) $order->total_amount,
+                ],
                 'item_details' => $itemDetails,
-                'customer_details' => $customerDetails,
-                'enabled_payments' => $enabledPayments,
+                'customer_details' => [
+                    'first_name' => Str::limit($order->customer_name, 100, ''),
+                    'email' => $order->customer_email,
+                    'phone' => Str::limit((string) $order->customer_phone, 19, ''),
+                    'shipping_address' => [
+                        'address' => Str::limit((string) $order->shipping_address, 200, ''),
+                    ],
+                ],
+                'enabled_payments' => [
+                    'qris',
+                    'bca_va',
+                    'bni_va',
+                    'bri_va',
+                    'permata_va',
+                    'echannel',   // Mandiri Bill
+                    'other_va',
+                ],
+                'expiry' => ['unit' => 'hours', 'duration' => 24],
             ];
 
-            // Get Snap token dari Midtrans
             $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-            // Simpan payment record
             $payment = Payment::create([
                 'order_id' => $order->id,
                 'transaction_id' => $transactionId,
@@ -102,15 +93,15 @@ class PaymentController extends Controller
                 'amount' => $order->total_amount,
                 'status' => 'pending',
                 'snap_token' => $snapToken,
-                'expired_at' => now()->addHours(24), // 24 jam
+                'expired_at' => now()->addHours(24),
             ]);
 
             return redirect()->route('payment.show', $payment);
 
         } catch (\Exception $e) {
             Log::error('Midtrans payment creation failed: ' . $e->getMessage());
-            
-            return back()->with('error', 'Gagal membuat pembayaran. Silakan coba lagi.');
+
+            return back()->with('error', 'Gagal membuat pembayaran. ' . (config('app.debug') ? $e->getMessage() : 'Silakan coba lagi.'));
         }
     }
 
@@ -121,7 +112,6 @@ class PaymentController extends Controller
     {
         $order = $payment->order;
 
-        // Validasi order milik user yang login
         if ($order->user_id !== auth()->id()) {
             abort(403);
         }
@@ -130,73 +120,15 @@ class PaymentController extends Controller
     }
 
     /**
-     * Webhook dari Midtrans untuk notifikasi status payment
+     * Webhook dari Midtrans
      */
     public function notification(Request $request)
     {
         try {
-            $notification = new \Midtrans\Notification();
-
-            $transactionStatus = $notification->transaction_status;
-            $paymentType = $notification->payment_type;
-            $orderId = $notification->order_id;
-            $fraudStatus = $notification->fraud_status ?? null;
-
-            Log::info('Midtrans notification received', [
-                'order_id' => $orderId,
-                'transaction_status' => $transactionStatus,
-                'payment_type' => $paymentType,
-            ]);
-
-            // Find payment by transaction_id
-            $payment = Payment::where('transaction_id', $orderId)->firstOrFail();
-            $order = $payment->order;
-
-            // Update payment type
-            $payment->payment_type = $paymentType;
-
-            // Update status berdasarkan transaction_status
-            if ($transactionStatus == 'capture') {
-                if ($fraudStatus == 'accept') {
-                    $payment->status = 'settlement';
-                    $payment->paid_at = now();
-                    $order->status = 'paid';
-                }
-            } elseif ($transactionStatus == 'settlement') {
-                $payment->status = 'settlement';
-                $payment->paid_at = now();
-                $order->status = 'paid';
-            } elseif ($transactionStatus == 'pending') {
-                $payment->status = 'pending';
-                
-                // Simpan VA number atau QR code URL jika ada
-                if (isset($notification->va_numbers)) {
-                    $payment->va_number = $notification->va_numbers[0]->va_number ?? null;
-                    $payment->bank_name = $notification->va_numbers[0]->bank ?? null;
-                }
-                
-                if (isset($notification->actions)) {
-                    foreach ($notification->actions as $action) {
-                        if ($action->name === 'generate-qr-code') {
-                            $payment->qr_code_url = $action->url;
-                        }
-                    }
-                }
-            } elseif ($transactionStatus == 'deny' || $transactionStatus == 'cancel') {
-                $payment->status = $transactionStatus;
-                $order->status = 'cancelled';
-            } elseif ($transactionStatus == 'expire') {
-                $payment->status = 'expire';
-                $order->status = 'cancelled';
-            }
-
-            // Simpan full response
-            $payment->midtrans_response = json_encode($notification);
-            $payment->save();
-            $order->save();
+            $payment = Payment::where('transaction_id', $request->input('order_id'))->firstOrFail();
+            $this->syncFromMidtrans($payment);
 
             return response()->json(['status' => 'success']);
-
         } catch (\Exception $e) {
             Log::error('Midtrans notification handler failed: ' . $e->getMessage());
             return response()->json(['status' => 'error'], 500);
@@ -204,15 +136,24 @@ class PaymentController extends Controller
     }
 
     /**
-     * Check status payment (polling dari frontend)
+     * Polling dari frontend (sekaligus fallback bila webhook belum masuk)
      */
     public function checkStatus(Payment $payment)
     {
         $order = $payment->order;
 
-        // Validasi order milik user yang login
         if ($order->user_id !== auth()->id()) {
             abort(403);
+        }
+
+        if ($payment->isPending()) {
+            try {
+                $this->syncFromMidtrans($payment);
+                $payment->refresh();
+                $order->refresh();
+            } catch (\Exception $e) {
+                Log::warning('Midtrans status sync skipped: ' . $e->getMessage());
+            }
         }
 
         return response()->json([
@@ -220,5 +161,55 @@ class PaymentController extends Controller
             'order_status' => $order->status,
             'paid_at' => $payment->paid_at?->format('Y-m-d H:i:s'),
         ]);
+    }
+
+    /**
+     * Ambil status terbaru langsung dari Midtrans lalu perbarui database.
+     */
+    private function syncFromMidtrans(Payment $payment): void
+    {
+        // Jangan menurunkan status yang sudah final
+        if ($payment->status === 'settlement') {
+            return;
+        }
+
+        $data = \Midtrans\Transaction::status($payment->transaction_id);
+        $data = is_array($data) ? (object) $data : $data;
+
+        $status = $data->transaction_status;
+        $fraud = $data->fraud_status ?? null;
+        $order = $payment->order;
+
+        $payment->payment_type = $data->payment_type ?? $payment->payment_type;
+
+        if ($status === 'settlement' || ($status === 'capture' && $fraud === 'accept')) {
+            $payment->status = 'settlement';
+            $payment->paid_at = now();
+        } elseif ($status === 'pending') {
+            if (!empty($data->va_numbers)) {
+                $payment->va_number = $data->va_numbers[0]->va_number ?? null;
+                $payment->bank_name = $data->va_numbers[0]->bank ?? null;
+            }
+        } elseif (in_array($status, ['deny', 'cancel', 'expire'], true)) {
+            $payment->status = $status;
+
+            if ($order->status !== 'cancelled') {
+                $order->status = 'cancelled';
+                $this->restoreStock($order);
+            }
+        }
+
+        $payment->midtrans_response = json_encode($data);
+        $payment->save();
+        $order->save();
+    }
+
+    private function restoreStock(Order $order): void
+    {
+        foreach ($order->items as $item) {
+            if ($item->product_id) {
+                Product::where('id', $item->product_id)->increment('stock', $item->quantity);
+            }
+        }
     }
 }

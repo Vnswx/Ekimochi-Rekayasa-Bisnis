@@ -157,7 +157,7 @@
             fetch('{{ route('payment.status', $payment) }}')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.status === 'settlement') {
+                    if (data.status !== 'pending') {
                         window.location.reload();
                     }
                 });
